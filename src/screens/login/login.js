@@ -16,7 +16,9 @@ import Color from '../../constants/Color';
 import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import axios from 'axios';
+
+import {service} from '../../services/service';
+
 // import ErrorModal from '../../components/ErrorModal';
 
 const Login = ({
@@ -34,50 +36,36 @@ const Login = ({
   const [passwordErr, setpasswordErr] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(false);
-  const loginHandler = () => {
-    // alert('dssda');
-    if (email === '' || email === ' ') {
-      setemailErr(true);
-    } else {
-      setemailErr(false);
+  // const loginHandler = () => {
+  //   // alert('dssda');
+  //   if (email === '' || email === ' ') {
+  //     setemailErr(true);
+  //   } else {
+  //     setemailErr(false);
+  //   }
+  //   if (password === '' || password === ' ') {
+  //     setpasswordErr(true);
+  //   } else {
+  //     setpasswordErr(false);
+  //   }
+  //   if (email !== '' && password !== '') {
+  //     const body = JSON.stringify({
+  //       email: email,
+  //       password: password,
+  //     });
+  //     setLoading(true);
+  //   }
+  //   // if (email !== '' && password !== '') {
+  //   //   navigation.navigate('Home');
+  //   // }
+  //   // alert('dasddsaasddasasddsa');
+  // };
+
+  const loginHandler = ({email, password}) => {
+    console.log('login');
+    if (email && password) {
     }
-    if (password === '' || password === ' ') {
-      setpasswordErr(true);
-    } else {
-      setpasswordErr(false);
-    }
-    if (email !== '' && password !== '') {
-      const body = JSON.stringify({
-        email: email,
-        password: password,
-      });
-      setLoading(true);
-      axios({
-        method: 'POST',
-        url: 'https://moosikk.herokuapp.com/api/v1/auth/login',
-        data: body,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then(async (response) => {
-          setLoading(false);
-          // await AsyncStorage.setItem('token', response.data.token);
-          navigation.navigate('Home');
-          // alert('Post has been favorited');
-        })
-        .catch(function (response) {
-          //handle error
-          // alert('User already exists');
-          // console.log(response);
-          setLoading(false);
-          setErrors(true);
-        });
-    }
-    // if (email !== '' && password !== '') {
-    //   navigation.navigate('Home');
-    // }
-    // alert('dasddsaasddasasddsa');
+    // dispatch(login(true));
   };
 
   return (

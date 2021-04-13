@@ -6,8 +6,11 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
+import {useDispatch} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Color from '../constants/Color';
+import {service} from '../services/service';
+import {emailVerification} from '../store/actions/Auth';
 
 const VerifyInputs = ({navigation, callBackHandler}) => {
   const CELL_COUNT = 4;
@@ -18,9 +21,25 @@ const VerifyInputs = ({navigation, callBackHandler}) => {
     value,
     setValue,
   });
+  const dispatch = useDispatch();
 
   const verificationHandler = () => {
-    callBackHandler();
+    // callBackHandler();
+    service
+      .verifyEmail({emailVerificationCode: value})
+      .then((data) => {
+        console.log(data.data);
+        if (data.data.error) {
+          alert(data.data.error);
+        } else {
+          console.log(data.data);
+          dispatch(emailVerification);
+          navigation.navigate('Login');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

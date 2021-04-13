@@ -11,7 +11,7 @@ import {
   StatusBar,
   ImageBackground,
 } from 'react-native';
-
+import {useDispatch} from 'react-redux';
 import CountryPicker from 'react-native-country-picker-modal';
 import PhoneInput from 'react-native-phone-input';
 import {CheckBox} from 'react-native-elements';
@@ -27,6 +27,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 import VerifyInputs from '../../components/VerifyInputs';
+import {service} from '../../services/service';
+import {register} from '../../store/actions/Auth';
 // import ErrorModal from '../../components/ErrorModal';
 
 const Signup = ({
@@ -40,6 +42,7 @@ const Signup = ({
 }) => {
   const [checkedEmail, setcheckedEmail] = useState('');
   const [checkedTerms, setcheckedTerms] = useState('');
+  const [showVerification, setShowVerification] = useState(false);
 
   const [visible, setvisible] = useState(false);
   const [phone, setphone] = useState('');
@@ -59,6 +62,7 @@ const Signup = ({
     phoneNumber: '',
     password: '',
   });
+  const dispatch = useDispatch();
 
   // counrt picker work
   const onPressFlag = () => {
@@ -106,6 +110,7 @@ const Signup = ({
       email === ' '
     ) {
       setemailErr(true);
+      // return false;
     } else {
       setemailErr(false);
     }
@@ -138,43 +143,39 @@ const Signup = ({
       phoneNumber.length > 7
     ) {
       setVerified(true);
+      return true;
+    } else {
+      return false;
     }
   };
 
   const signupHandler = () => {
-    const body = JSON.stringify({
-      email: email,
-      password: password,
-      gender: 'male',
-      name: name,
-    });
+    if (verificationHandler()) {
+      const body = {
+        email: email,
+        password: password,
+        gender: 'male',
+        name: name,
+      };
 
-    console.log(body);
-
-    setLoading(true);
-    axios({
-      method: 'POST',
-      url: 'https://moosikk.herokuapp.com/api/v1/auth/register',
-      data: body,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(async (response) => {
-        setLoading(false);
-        console.log(response.data);
-        await AsyncStorage.setItem('token', response.data.token);
-        navigation.navigate('Login');
-        // alert('Post has been favorited');
-      })
-      .catch(function (response) {
-        //handle error
-        // alert('User already exists');
-        // console.log(response);
-        setLoading(false);
-        // setErrors(true);
-        console.log(response);
-      });
+      // console.log(body);
+      setLoading(true);
+      service
+        .register(body)
+        .then((data) => {
+          setLoading(false);
+          dispatch(register(data.data));
+          if (!data.data.success) {
+            alert(data.data.error);
+          }
+          setShowVerification(true);
+        })
+        .catch((err) => {
+          setLoading(false);
+          dispatch(register(data.data));
+          console.log(err.response.data, 'error');
+        });
+    }
   };
 
   return (
@@ -203,7 +204,7 @@ const Signup = ({
             <Text style={styles.txtSignup}>Register your Account</Text>
 
             <View style={styles.containerMargin}>
-              {!verified ? (
+              {!showVerification ? (
                 <View>
                   <View style={styles.inputBoxes}>
                     <AntDesign name="user" color="#bbb" size={20} />
@@ -388,7 +389,7 @@ const Signup = ({
 
                   <TouchableOpacity
                     style={styles.btnSignup}
-                    onPress={verificationHandler}>
+                    onPress={signupHandler}>
                     <Text style={styles.btnSignupTxt}>SIGN UP</Text>
                     <AntDesign
                       style={{marginTop: 0}}
@@ -406,7 +407,10 @@ const Signup = ({
                   </TouchableOpacity>
                 </View>
               ) : (
-                <VerifyInputs callBackHandler={signupHandler} />
+                <VerifyInputs
+                  navigation={navigation}
+                  callBackHandler={signupHandler}
+                />
               )}
               {loading && (
                 <ActivityIndicator
