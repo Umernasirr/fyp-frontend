@@ -11,6 +11,7 @@ import {
   StatusBar,
   ImageBackground,
 } from 'react-native';
+import {useDispatch} from 'react-redux';
 
 import Color from '../../constants/Color';
 import LinearGradient from 'react-native-linear-gradient';
@@ -18,6 +19,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {service} from '../../services/service';
+import {login} from '../../store/actions/Auth';
 
 // import ErrorModal from '../../components/ErrorModal';
 
@@ -36,6 +38,7 @@ const Login = ({
   const [passwordErr, setpasswordErr] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(false);
+  const disptach = useDispatch();
   // const loginHandler = () => {
   //   // alert('dssda');
   //   if (email === '' || email === ' ') {
@@ -60,10 +63,31 @@ const Login = ({
   //   // }
   //   // alert('dasddsaasddasasddsa');
   // };
-
-  const loginHandler = ({email, password}) => {
-    console.log('login');
+  const verificationHandler = () => {
     if (email && password) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const loginHandler = () => {
+    console.log(email, 'email');
+    if (verificationHandler()) {
+      service
+        .login({email, password})
+        .then((data) => {
+          if (data.data.error) {
+            alert(data.data.error);
+          } else {
+            console.log(data.data);
+            disptach(login);
+            navigation.navigate('Home');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
     // dispatch(login(true));
   };

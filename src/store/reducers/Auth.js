@@ -16,8 +16,17 @@ const initialState = {
 export default (state = initialState, action = {}) => {
   console.log(action, 'action');
   switch (action.type) {
-    case Auth.LOGIN_API:
-      return {...state, isLoggedIn: action.isLoggedIn};
+    case Auth.LOGIN_SUCCESS:
+      Store.setUserToken(action.value.token);
+      return {
+        ...state,
+        loading: false,
+        isLoggedIn: true,
+        isRegistered: true,
+        verification: true,
+        user: action.value.user,
+        token: action.value.token,
+      };
     case Auth.REGISTER_SUCCESS:
       Store.setUserToken(action.value.token);
       return {
