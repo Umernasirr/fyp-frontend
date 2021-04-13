@@ -103,8 +103,6 @@ const Generate = ({navigation}) => {
       },
     })
       .then(async (response) => {
-        console.log(response.data);
-
         const startPlayer = async () => {
           let isInit = await trackPlayerInit(response.data.data);
           setIsTrackPlayerInit(isInit);

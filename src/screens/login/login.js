@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -20,6 +20,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {service} from '../../services/service';
 import {login} from '../../store/actions/Auth';
+import {Store} from '../../services/store';
 
 // import ErrorModal from '../../components/ErrorModal';
 
@@ -38,7 +39,7 @@ const Login = ({
   const [passwordErr, setpasswordErr] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(false);
-  const disptach = useDispatch();
+  const dispatch = useDispatch();
   // const loginHandler = () => {
   //   // alert('dssda');
   //   if (email === '' || email === ' ') {
@@ -71,6 +72,14 @@ const Login = ({
     }
   };
 
+  useEffect(() => {
+    const userToken = Store.getUserToken();
+    console.log(userToken);
+    if (!userToken) {
+      navigation.navigate('Home');
+    }
+  }, []);
+
   const loginHandler = () => {
     console.log(email, 'email');
     if (verificationHandler()) {
@@ -81,7 +90,7 @@ const Login = ({
             alert(data.data.error);
           } else {
             console.log(data.data);
-            disptach(login);
+            dispatch(login);
             navigation.navigate('Home');
           }
         })

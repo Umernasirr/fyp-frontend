@@ -75,6 +75,16 @@ const VerifyInputs = ({navigation, callBackHandler}) => {
           size={28}
         />
       </TouchableOpacity>
+
+      <TouchableOpacity style={styles.btnAgain} onPress={callBackHandler}>
+        <Text style={styles.btnForgotTxt}>Resend Code</Text>
+        <AntDesign
+          style={{marginTop: 0}}
+          name="arrowright"
+          color="white"
+          size={28}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -116,6 +126,18 @@ const styles = StyleSheet.create({
 
     backgroundColor: Color.primary,
     marginVertical: 30,
+    borderRadius: 10,
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'row',
+    alignContent: 'center',
+    marginHorizontal: '10%',
+    justifyContent: 'center',
+  },
+
+  btnAgain: {
+    padding: 15,
+
     borderRadius: 10,
     display: 'flex',
     flex: 1,

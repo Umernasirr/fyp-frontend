@@ -3,7 +3,6 @@ import {Store} from './store';
 // const model = 'auth';
 export const service = {
   login: (data) => {
-    console.log(data, 'dataaa');
     return api.invoke('POST', `auth/login`, data);
   },
   register: (data) => {
@@ -11,5 +10,13 @@ export const service = {
   },
   verifyEmail: (data) => {
     return api.invoke('POST', 'auth/email-verification', data);
+  },
+
+  getSongs: () => {
+    return api.invoke('GET', 'song');
+  },
+
+  getUsers: () => {
+    return api.invoke('GET', 'auth/get-users');
   },
 };

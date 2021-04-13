@@ -14,7 +14,6 @@ const initialState = {
 };
 
 export default (state = initialState, action = {}) => {
-  console.log(action, 'action');
   switch (action.type) {
     case Auth.LOGIN_SUCCESS:
       Store.setUserToken(action.value.token);

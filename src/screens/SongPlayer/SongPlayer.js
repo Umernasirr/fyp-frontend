@@ -16,26 +16,35 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import SoundCloudWaveform from 'react-native-soundcloud-waveform';
 
-const SongPlayer = ({navigation}) => {
+const SongPlayer = ({navigation, route}) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);
   const [isSeeking, setIsSeeking] = useState(false);
+  const [url, setUrl] = useState('');
+  const [description, setDescription] = useState('');
+
+  const [createdAt, setCreatedAt] = useState('');
 
   const title = 'Take On Me';
   const author = 'Aha - Rick Roll';
 
-  const startPlayer = async () => {
+  const startPlayer = async (url) => {
     // Set up the player
     await TrackPlayer.setupPlayer();
 
     // Add a track to the queue
+    const tempUrl =
+      url !== ''
+        ? url
+        : 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3';
+
     await TrackPlayer.add({
       id: '1',
-      url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+      url: tempUrl,
       type: 'default',
-      title: 'My Title',
-      album: 'My Album',
-      artist: 'AI Generated Music',
+      title: description,
+      album: description,
+      artist: createdAt,
     });
 
     await TrackPlayer.play();
@@ -52,7 +61,7 @@ const SongPlayer = ({navigation}) => {
 
   const onButtonPressed = () => {
     if (!isPlaying) {
-      startPlayer();
+      startPlayer(url);
 
       setIsPlaying(true);
     } else {
@@ -62,7 +71,6 @@ const SongPlayer = ({navigation}) => {
   };
 
   const audioProgress = (value) => {
-    console.log(value);
     setSliderValue(value);
   };
 
@@ -71,6 +79,13 @@ const SongPlayer = ({navigation}) => {
     const position = TrackPlayer.getPosition();
 
     console.log(`${duration - position} seconds left.`);
+
+    if (route.params) {
+      setUrl(route.params.url);
+      setDescription(route.params.description);
+
+      setCreatedAt(route.params.createdAt);
+    }
   });
 
   return (
@@ -129,7 +144,7 @@ const SongPlayer = ({navigation}) => {
                   size={25}
                 />
 
-                <Text style={styles.txtDuration}>5.56</Text>
+                <Text style={styles.txtDuration}>0.20</Text>
               </View>
             </View>
           </ScrollView>

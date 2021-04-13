@@ -12,6 +12,7 @@ import ForgotPassword from '../screens/forgotpassword/forgotpassword';
 import Settings from '../screens/settings/settings';
 import Header from '../components/Header';
 import SongPlayer from '../screens/SongPlayer/SongPlayer';
+import UserList from '../screens/userList/userList';
 
 import Color from '../constants/Color';
 const Stack = createStackNavigator();
@@ -62,6 +63,17 @@ const BottomTabStack = () => (
       }}
       component={MusicStackScreens}
     />
+
+    <BottomTab.Screen
+      name="UserList"
+      options={{
+        tabBarIcon: ({color, size}) => (
+          <Feather name="user" color={color} size={20} />
+        ),
+      }}
+      component={UserList}
+    />
+
     <BottomTab.Screen
       name="Settings"
       component={Settings}

@@ -1,15 +1,15 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import Feather from 'react-native-vector-icons/Feather';
+import Entypo from 'react-native-vector-icons/Entypo';
 import Color from '../constants/Color';
 
 import {useNavigation} from '@react-navigation/native';
-const SongItem = ({description, createdAt, url}) => {
+const UserItem = ({name, createdAt, gender}) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('SongPlayer', {description, createdAt, url});
+        navigation.navigate('Home');
       }}
       style={styles.container}>
       <Image
@@ -17,8 +17,9 @@ const SongItem = ({description, createdAt, url}) => {
         source={{uri: 'https://via.placeholder.com/150'}}
       />
       <View style={styles.txtContainer}>
-        <Text style={styles.txtTitle}>{description.toUpperCase()}</Text>
-        <Text style={styles.txtAuthor}>{createdAt}</Text>
+        <Text style={styles.txtTitle}>{name.toUpperCase()}</Text>
+        <Text style={styles.txtDetails}>{createdAt}</Text>
+        <Text style={styles.txtDetails}>{gender}</Text>
       </View>
 
       <View
@@ -27,17 +28,11 @@ const SongItem = ({description, createdAt, url}) => {
           alignItems: 'flex-end',
         }}>
         <View style={styles.btnContainer}>
-          <Feather
+          <Entypo
             style={styles.icon}
-            name="heart"
+            name="add-user"
             size={25}
-            color={Color.primary}
-          />
-          <Feather
-            style={styles.icon}
-            name="play-circle"
-            size={26}
-            color={Color.whiteColor}
+            color={Color.purple}
           />
         </View>
       </View>
@@ -45,33 +40,41 @@ const SongItem = ({description, createdAt, url}) => {
   );
 };
 
-export default SongItem;
+export default UserItem;
 
 const styles = StyleSheet.create({
   container: {
     borderRadius: 30,
-    padding: 20,
-    marginVertical: 10,
+    padding: 10,
+    marginVertical: 5,
     marginHorizontal: 10,
     flex: 1,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     borderColor: Color.primary,
+    backgroundColor: 'rgba(255,255,255,0.9)',
     borderWidth: 1,
   },
 
-  img: {width: 50, height: 50, borderRadius: 30},
+  img: {
+    width: 50,
+    height: 50,
+    borderRadius: 30,
+    borderColor: Color.background,
+    borderWidth: 1,
+  },
   txtContainer: {
     marginHorizontal: 10,
   },
   txtTitle: {
-    color: 'white',
+    color: Color.purple,
+
     fontWeight: 'bold',
     fontSize: 16,
   },
-  txtAuthor: {
-    color: '#e4e4e4e4',
+  txtDetails: {
+    color: Color.background,
   },
   btnContainer: {flex: 1, flexDirection: 'row', alignItems: 'center'},
 

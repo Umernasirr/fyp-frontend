@@ -11,44 +11,43 @@ import {
 import {Searchbar} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Color from '../../constants/Color';
-import SongItem from '../../components/SongItem';
+import UserItem from '../../components/UserItem';
 import {Songs} from '../../constants/index';
 import {service} from '../../services/service';
 import {ActivityIndicator} from 'react-native';
-const Home = ({navigation, route}) => {
+const Home = ({navigation}) => {
   const [searchQuery, setSearchQuery] = React.useState('');
-  const [songList, setSongList] = useState([]);
-  const [allSongs, setAllSongList] = useState([]);
-  const [title, setTitle] = useState('');
+  const [userList, setUserList] = useState([]);
+  const [allUser, setAllUserList] = useState([]);
+
   const onChangeSearch = (query) => {
     setSearchQuery(query);
 
-    const tempSongs = allSongs.filter((song) => {
-      return song.description
+    const tempUsers = allUser.filter((song) => {
+      return song.name
         .toLowerCase()
         .trim()
         .includes(query.toLowerCase().trim());
     });
 
-    setSongList(tempSongs);
+    setUserList(tempUsers);
   };
 
-  const getSongs = () => {
-    service.getSongs().then((data) => {
+  const getUsers = () => {
+    service.getUsers().then((data) => {
       if (data.data.error) {
         alert(data.data.error);
       } else {
-        setSongList(data.data.data);
-        setAllSongList(data.data.data);
+        console.log(data.data.users);
+        setUserList(data.data.users);
+        setAllUserList(data.data.users);
       }
     });
   };
 
   useEffect(() => {
-    getSongs();
-
-    // Return the function to unsubscribe from the event so it gets removed on unmount
-  }, [navigation]);
+    getUsers();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -68,7 +67,7 @@ const Home = ({navigation, route}) => {
           style={styles.image}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.marginContainer}>
-              <Text style={styles.txtHeading}>{title}</Text>
+              <Text style={styles.txtHeading}>Meet New People</Text>
               <Searchbar
                 style={{borderRadius: 20}}
                 placeholder="Search"
@@ -78,9 +77,7 @@ const Home = ({navigation, route}) => {
             </View>
 
             <View style={styles.songsContainer}>
-              <Text style={styles.txtSubheading}>Latest Releases</Text>
-
-              {songList && songList.length > 0 ? (
+              {userList && userList.length > 0 ? (
                 <FlatList
                   style={styles.songsList}
                   ItemSeparatorComponent={
@@ -94,18 +91,15 @@ const Home = ({navigation, route}) => {
                       />
                     ))
                   }
-                  data={songList}
+                  data={userList}
                   renderItem={({item}) => {
-                    const desc =
-                      item.description && item.description.length > 20
-                        ? item.description.slice(0, 20) + '...'
-                        : item.description;
+                    console.log(item);
 
                     return (
-                      <SongItem
-                        description={item.description?.slice(0, 20)}
-                        createdAt={item.createdAt?.slice(0, 10)}
-                        url={item.url}
+                      <UserItem
+                        name={item.name}
+                        createdAt={item.createdAt.slice(0, 10)}
+                        gender={item.gender}
                       />
                     );
                   }}
