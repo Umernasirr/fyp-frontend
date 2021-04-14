@@ -20,3 +20,11 @@ export const emailVerification = (payload) => (disptach) => {
     disptach({type: Auth.EMAIL_VERIFICATION_SUCCESS, value: payload});
   }
 };
+
+// export const sendForgetPasswordVerificationCode = (payload) => (dispatch) => {
+//   if(payload.success) {
+//     dispatch({
+//       type: Auth.FORGET_PASSWORD_VERIFICATION_CODE, value
+//     })
+//   }
+// }

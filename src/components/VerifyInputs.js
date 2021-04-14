@@ -12,7 +12,13 @@ import Color from '../constants/Color';
 import {service} from '../services/service';
 import {emailVerification} from '../store/actions/Auth';
 
-const VerifyInputs = ({navigation, callBackHandler}) => {
+const VerifyInputs = ({
+  navigation,
+  callBackHandler,
+  type,
+  email,
+  showUpdatePasswordComponent,
+}) => {
   const CELL_COUNT = 4;
 
   const [value, setValue] = useState('');
@@ -23,23 +29,81 @@ const VerifyInputs = ({navigation, callBackHandler}) => {
   });
   const dispatch = useDispatch();
 
-  const verificationHandler = () => {
-    // callBackHandler();
-    service
-      .verifyEmail({emailVerificationCode: value})
-      .then((data) => {
-        console.log(data.data);
+  const resendCodeHandler = () => {
+    if (type === 'resetpassword') {
+      console.log(email);
+      service
+        .resendForgetPasswordVerificationCode({email})
+        .then((data) => {
+          console.log(data.data, 'dsds');
+
+          if (!data.data.error) {
+            alert('Verification Code sent Successfully');
+          } else {
+            alert(data.data.error);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      service.resendEmailVerificationCode().then((data) => {
         if (data.data.error) {
           alert(data.data.error);
         } else {
-          console.log(data.data);
-          dispatch(emailVerification);
-          navigation.navigate('Login');
+          alert('Verification Code sent successfully');
         }
-      })
-      .catch((err) => {
-        console.log(err);
       });
+    }
+  };
+  const validationHandler = () => {
+    if (value.length === 4) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const verificationHandler = () => {
+    // callBackHandler();
+    // console.log(type, ' type');
+    if (validationHandler()) {
+      if (type === 'resetpassword') {
+        service
+          .verifyForgetPasswordVerificationCode({
+            resetPasswordCode: value,
+            email,
+          })
+          .then((data) => {
+            if (data.data.error) {
+              alert(data.data.error);
+            } else {
+              showUpdatePasswordComponent();
+              console.log(data.data);
+            }
+          })
+          .catch((err) => console.log(err));
+        console.log('resetpass');
+      } else {
+        service
+          .verifyEmail({emailVerificationCode: value})
+          .then((data) => {
+            console.log(data.data);
+            if (data.data.error) {
+              alert(data.data.error);
+            } else {
+              console.log(data.data);
+              dispatch(emailVerification);
+              navigation.navigate('Login');
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    } else {
+      alert('Please type verification code of 4 digits');
+    }
   };
 
   return (
@@ -76,7 +140,7 @@ const VerifyInputs = ({navigation, callBackHandler}) => {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.btnAgain} onPress={callBackHandler}>
+      <TouchableOpacity style={styles.btnAgain} onPress={resendCodeHandler}>
         <Text style={styles.btnForgotTxt}>Resend Code</Text>
         <AntDesign
           style={{marginTop: 0}}

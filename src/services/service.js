@@ -19,4 +19,35 @@ export const service = {
   getUsers: () => {
     return api.invoke('GET', 'auth/get-users');
   },
+  sendForgetPasswordVerificationCode: (data) => {
+    return api.invoke(
+      'POST',
+      'auth/send-forget-password-verification-code',
+      data,
+    );
+  },
+  resendForgetPasswordVerificationCode: (data) => {
+    return api.invoke(
+      'PUT',
+      'auth/resend-forget-password-verification-code',
+      data,
+    );
+  },
+  resendEmailVerificationCode: (data) => {
+    return api.invoke('PUT', 'auth/resend-email-verification-code', data);
+  },
+  verifyForgetPasswordVerificationCode: (data) => {
+    return api.invoke(
+      'POST',
+      'auth/verify-forget-password-verification-code',
+      data,
+    );
+  },
+  updatePasswordAfterVerificationCode: (data) => {
+    return api.invoke(
+      'PUT',
+      'auth/update-password-after-verification-code',
+      data,
+    );
+  },
 };

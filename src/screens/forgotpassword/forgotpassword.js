@@ -17,13 +17,16 @@ import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import VerifyInputs from '../../components/VerifyInputs';
+
+import {service} from '../../services/service';
+
 const ResetPassword = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [emailErr, setEmailErr] = useState(false);
   const [pass1, setPass1] = useState('');
   const [pass2, setPass2] = useState('');
   const [loading, setLoading] = useState('');
-  const [validation, setValidation] = useState(false);
+  const [validation, setValidation] = useState(true);
   const [showPasswordFields, setShowPasswordFields] = useState(false);
 
   const [showPass1, setShowPass1] = useState(false);
@@ -31,6 +34,69 @@ const ResetPassword = ({navigation}) => {
 
   const handleVerification = () => {
     setShowPasswordFields(true);
+  };
+
+  const handleValidation = () => {
+    if (email) {
+      setEmailErr(false);
+      return true;
+    } else {
+      setEmailErr(true);
+      return false;
+    }
+  };
+
+  const handlePasswordValidation = () => {
+    if (pass1 !== pass2) {
+      alert('password and confirm password dont match');
+      return false;
+    } else if (pass1.length < 7) {
+      alert('password length should be greater than 6');
+      return false;
+    } else {
+      return true;
+    }
+  };
+  const resetPasswordHandler = () => {
+    if (handlePasswordValidation()) {
+      service
+        .updatePasswordAfterVerificationCode({email, newPassword: pass1})
+        .then((data) => {
+          if (data.data.error) {
+            // console.log(data)
+            alert(data.data.error);
+          } else {
+            alert('Password updated  successfully. Please Log in your account');
+            navigation.navigate('Login');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const showUpdatePasswordComponent = () => {
+    setValidation(true);
+    setShowPasswordFields(true);
+  };
+
+  const sendVerificationCodeHandler = () => {
+    if (handleValidation()) {
+      service
+        .sendForgetPasswordVerificationCode({email})
+        .then((data) => {
+          if (data.data.success) {
+            setValidation(false);
+            console.log(data.data);
+          } else {
+            alert(data.data.error);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   return (
@@ -79,7 +145,7 @@ const ResetPassword = ({navigation}) => {
                     ) : (
                       <TouchableOpacity
                         style={styles.btnLogin}
-                        onPress={() => {}}>
+                        onPress={sendVerificationCodeHandler}>
                         <Text style={styles.btnLoginTxt}>
                           Send Verification Code
                         </Text>
@@ -95,7 +161,12 @@ const ResetPassword = ({navigation}) => {
                     </TouchableOpacity>
                   </View>
                 ) : (
-                  <VerifyInputs callBackHandler={handleVerification} />
+                  <VerifyInputs
+                    email={email}
+                    type={'resetpassword'}
+                    callBackHandler={handleVerification}
+                    showUpdatePasswordComponent={showUpdatePasswordComponent}
+                  />
                 )
               ) : (
                 showPasswordFields && (
@@ -154,9 +225,7 @@ const ResetPassword = ({navigation}) => {
 
                     <TouchableOpacity
                       style={styles.btnLogin}
-                      onPress={() => {
-                        navigation.navigate('Login');
-                      }}>
+                      onPress={resetPasswordHandler}>
                       <Text style={styles.btnLoginTxt}>Reset Password</Text>
                     </TouchableOpacity>
                   </View>

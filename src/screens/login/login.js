@@ -74,8 +74,8 @@ const Login = ({
 
   useEffect(() => {
     const userToken = Store.getUserToken();
-    console.log(userToken);
-    if (!userToken) {
+    console.log(userToken, 'token');
+    if (!userToken && userToken !== undefined) {
       navigation.navigate('Home');
     }
   }, []);
