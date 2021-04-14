@@ -17,6 +17,8 @@ export default (state = initialState, action = {}) => {
   switch (action.type) {
     case Auth.LOGIN_SUCCESS:
       Store.setUserToken(action.value.token);
+      console.log('red', Store.getUserToken());
+      console.log(action.value.token, 'reducer');
       return {
         ...state,
         loading: false,
@@ -47,6 +49,16 @@ export default (state = initialState, action = {}) => {
       };
     case Auth.EMAIL_VERIFICATION_SUCCESS:
       Store.remove('accessToken');
+      return {
+        logoutLoading: false,
+        loading: false,
+        isLoggedIn: false,
+        isRegistered: true,
+        verfication: false,
+        user: {},
+        token: '',
+      };
+    case Auth.RESET:
       return {
         logoutLoading: false,
         loading: false,

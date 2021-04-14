@@ -7,15 +7,20 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-
+import {connect} from 'react-redux';
 import Color from '../../constants/Color';
 import LinearGradient from 'react-native-linear-gradient';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
-const Settings = ({navigation}) => {
+import {reset} from '../../store/actions/Auth';
+import {useDispatch} from 'react-redux';
+const Settings = ({navigation, user}) => {
+  const dispatch = useDispatch();
+  console.log(user, 'user');
   const handleLogout = () => {
-    navigation.navigate('Login');
+    dispatch(reset(navigation));
+    // navigation.navigate('Login');
   };
   return (
     <View style={styles.container}>
@@ -34,28 +39,28 @@ const Settings = ({navigation}) => {
                     style={styles.profileImage}
                   />
                 </View>
-                <Text style={styles.profileTxt}>Umer Nasir</Text>
+                <Text style={styles.profileTxt}>{user && user.name}</Text>
               </View>
 
               <View style={styles.card}>
                 <View style={styles.cardContainer}>
                   <Text style={styles.cardTitle}>Display Name</Text>
                   <View>
-                    <Text style={styles.cardTxt}>Umer Nasir</Text>
+                    <Text style={styles.cardTxt}>{user && user.name}</Text>
                   </View>
                 </View>
 
                 <View style={styles.cardContainer}>
                   <Text style={styles.cardTitle}>Email Address</Text>
                   <View>
-                    <Text style={styles.cardTxt}>umernasirr@gmail.com</Text>
+                    <Text style={styles.cardTxt}>{user && user.email}</Text>
                   </View>
                 </View>
 
                 <View style={styles.cardContainer}>
-                  <Text style={styles.cardTitle}>Password</Text>
+                  <Text style={styles.cardTitle}>Gender</Text>
                   <View>
-                    <Text style={styles.cardTxt}>123456</Text>
+                    <Text style={styles.cardTxt}>{user && user.gender}</Text>
                   </View>
                 </View>
               </View>
@@ -88,7 +93,10 @@ const Settings = ({navigation}) => {
   );
 };
 
-export default Settings;
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+});
+export default connect(mapStateToProps, {})(Settings);
 
 const styles = StyleSheet.create({
   container: {

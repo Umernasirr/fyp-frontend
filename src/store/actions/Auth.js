@@ -1,7 +1,7 @@
 import Auth from '../constants/Auth';
 
 export const login = (payload) => (dispatch) => {
-  dispatch({type: Auth.LOGIN_API, isLoggedIn: payload});
+  dispatch({type: Auth.LOGIN_SUCCESS, value: payload});
   // dispatch(showWelComeSetting(payload));
 };
 
@@ -19,6 +19,13 @@ export const emailVerification = (payload) => (disptach) => {
   if (payload.success) {
     disptach({type: Auth.EMAIL_VERIFICATION_SUCCESS, value: payload});
   }
+};
+
+export const reset = (navigation) => (disptach) => {
+  disptach({
+    type: Auth.RESET,
+  });
+  navigation.navigate('Login');
 };
 
 // export const sendForgetPasswordVerificationCode = (payload) => (dispatch) => {

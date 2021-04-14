@@ -14,6 +14,7 @@ import {
 import {useDispatch} from 'react-redux';
 
 import Color from '../../constants/Color';
+import {connect} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -31,6 +32,7 @@ const Login = ({
   // error,
   // login,
   navigation,
+  token,
   // clearError,
 }) => {
   const [email, setEmail] = useState('');
@@ -39,6 +41,7 @@ const Login = ({
   const [passwordErr, setpasswordErr] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(false);
+  const [tokens, setToken] = useState('');
   const dispatch = useDispatch();
   // const loginHandler = () => {
   //   // alert('dssda');
@@ -74,11 +77,19 @@ const Login = ({
 
   useEffect(() => {
     const userToken = Store.getUserToken();
+    console.log(Store.getUserToken(), 'tokennn');
     console.log(userToken, 'token');
-    if (!userToken && userToken !== undefined) {
+    setToken(token);
+    console.log(token, 'statee');
+    // alert(userToken);
+    if (
+      (userToken && userToken !== undefined) ||
+      (token && token !== undefined)
+    ) {
       navigation.navigate('Home');
     }
   }, []);
+  console.log(Store.getUserToken(), 'tokennn');
 
   const loginHandler = () => {
     console.log(email, 'email');
@@ -90,7 +101,7 @@ const Login = ({
             alert(data.data.error);
           } else {
             console.log(data.data);
-            dispatch(login);
+            dispatch(login(data.data));
             navigation.navigate('Home');
           }
         })
@@ -208,15 +219,12 @@ const Login = ({
   );
 };
 
-// const mapStateToProps = (state) => ({
-//   loading: state.authReducer.loading,
-//   isAuthenticated: state.authReducer.isAuthenticated,
-//   user: state.authReducer.user,
-//   error: state.authReducer.error,
-// });
+const mapStateToProps = (state) => ({
+  token: state.auth.token,
+});
 
 // export default connect(mapStateToProps, {login, clearError})(LoginScreen);
-export default Login;
+export default connect(mapStateToProps, {})(Login);
 const styles = StyleSheet.create({
   container: {
     flex: 1,

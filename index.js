@@ -1,14 +1,26 @@
 import {AppRegistry} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import App from './App';
 import {name as appName} from './app.json';
-import {store} from './src/store';
+import {store, persister} from './src/store';
 import {connect, Provider} from 'react-redux';
+import syncStorage from 'sync-storage';
+import {PersistGate} from 'redux-persist/src/integration/react';
 
-const Root = () => (
-  <Provider store={store}>
-    <App />
-  </Provider>
-);
+const Root = () => {
+  useEffect(() => {
+    initializeStorage();
+  }, []);
+  const initializeStorage = async () => {
+    const data = await syncStorage.init();
+  };
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={persister}>
+        <App />
+      </PersistGate>
+    </Provider>
+  );
+};
 
 AppRegistry.registerComponent(appName, () => Root);

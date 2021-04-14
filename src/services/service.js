@@ -33,8 +33,8 @@ export const service = {
       data,
     );
   },
-  resendEmailVerificationCode: (data) => {
-    return api.invoke('PUT', 'auth/resend-email-verification-code', data);
+  resendEmailVerificationCode: () => {
+    return api.invoke('PUT', 'auth/resend-email-verification-code');
   },
   verifyForgetPasswordVerificationCode: (data) => {
     return api.invoke(
