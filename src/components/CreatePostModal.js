@@ -11,12 +11,12 @@ import {
 import Color from '../constants/Color';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Feather from 'react-native-vector-icons/Feather';
+import DocumentPicker from 'react-native-document-picker';
 
 const CreatePostModal = ({visible, setVisible}) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [image, setImage] = useState(null);
   const [songSelected, setSongSelected] = useState('');
-  const [title, setTitle] = useState('');
 
   const [caption, setCaption] = useState('');
 
@@ -33,6 +33,26 @@ const CreatePostModal = ({visible, setVisible}) => {
     });
   };
 
+  const handleDocumentPicker = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.audio],
+      });
+      console.log(
+        res.uri,
+        res.type, // mime type
+        res.name,
+        res.size,
+      );
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
+      } else {
+        throw err;
+      }
+    }
+  };
+
   const handleCreatePost = () => {};
 
   return (
@@ -45,31 +65,28 @@ const CreatePostModal = ({visible, setVisible}) => {
         <Text style={styles.heading}>Create Post: </Text>
 
         <TextInput
-          value={title}
-          onChangeText={(text) => setTitle(text)}
-          label="Title"
-          placeholder="Enter a Title"
-          mode="outlined"
-        />
-
-        <TextInput
           value={caption}
+          multiline
           onChangeText={(text) => setCaption(text)}
           label="Caption"
           placeholde="Describe your Post"
           mode="outlined"
         />
-
-        {image && <Image source={{uri: image}} style={styles.img} />}
-
+        {/* {image && <Image source={{uri: image}} style={styles.img} />} */}
+        {/* 
         <Button
           style={styles.button}
           color={Color.primary}
           onPress={handleImagePicker}>
           Choose an Image
+        </Button> */}
+        <Button
+          style={styles.button}
+          color={Color.primary}
+          onPress={handleDocumentPicker}>
+          Pick a Song
         </Button>
-
-        <View
+        {/* <View
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
@@ -95,15 +112,14 @@ const CreatePostModal = ({visible, setVisible}) => {
               title="Item 2"
             />
           </Menu>
-        </View>
-
+        </View> 
         {songSelected !== '' && (
           <View style={styles.songContainer}>
             <Feather name="music" size={24} color={Color.primary} />
             <Text style={styles.songTxt}>{songSelected}</Text>
           </View>
         )}
-
+        */}
         <Button
           mode="contained"
           style={styles.button}

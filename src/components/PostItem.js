@@ -1,13 +1,30 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  Keyboard,
+} from 'react-native';
 import Color from '../constants/Color';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CommentModal from './CommentModal';
 
-const PostItem = ({title, caption, createdAt, user}) => {
+const PostItem = ({caption, createdAt, user}) => {
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [liked, setLiked] = useState(false);
   const [favourited, setFavourited] = useState(false);
+  const [comment, setComment] = useState('');
+
+  const handleKeyDown = (e) => {
+    // TODO: HANDLE ADD COMMENT
+
+    Keyboard.dismiss();
+
+    setComment('');
+  };
 
   return (
     <View style={styles.container}>
@@ -56,6 +73,16 @@ const PostItem = ({title, caption, createdAt, user}) => {
         </TouchableOpacity>
       </View>
 
+      <View>
+        <TextInput
+          placeholder="Add a Comment"
+          style={styles.input}
+          value={comment}
+          onChangeText={setComment}
+          onSubmitEditing={handleKeyDown}
+        />
+      </View>
+
       <CommentModal
         visible={showCommentModal}
         setVisible={setShowCommentModal}
@@ -70,8 +97,8 @@ const styles = StyleSheet.create({
   container: {
     height: 500,
     margin: 10,
-    borderRadius: 20,
-    padding: 20,
+    borderRadius: 24,
+    padding: 24,
     backgroundColor: Color.dark,
   },
   title: {
@@ -87,8 +114,8 @@ const styles = StyleSheet.create({
   },
   imgUser: {width: 40, height: 40, borderRadius: 20},
   img: {
-    width: '100%',
-    height: '60%',
+    width: '90%',
+    height: '45%',
     borderRadius: 10,
     alignSelf: 'center',
     justifyContent: 'center',
@@ -108,11 +135,18 @@ const styles = StyleSheet.create({
   actionButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 20,
+    marginTop: 20,
+    paddingHorizontal: 10,
   },
   iconTxt: {
     fontSize: 10,
     paddingVertical: 10,
     color: Color.whiteColor,
+  },
+
+  input: {
+    backgroundColor: Color.whiteColor,
+    padding: 10,
+    borderRadius: 20,
   },
 });

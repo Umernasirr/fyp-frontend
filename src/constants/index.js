@@ -29,7 +29,6 @@ const Songs = [
 const POSTS = [
   {
     id: 1,
-    title: 'Important Post',
     createdAt: '30 minutes ago',
     musicFile: 'google.com',
     caption: 'Lorem ipsum dolar arigato gonsaimus, m dolar arigato gonsaimus',
@@ -42,7 +41,6 @@ const POSTS = [
 
   {
     id: 1,
-    title: '2nd Post',
     createdAt: '1 Hour ago',
     caption: 'Lorem ipsum dolar arigato gonsaimus, m dolar arigato gonsaimus',
     musicFile: 'google.com',
@@ -55,7 +53,6 @@ const POSTS = [
 
   {
     id: 1,
-    title: 'Amazing Post boys',
     caption: 'Lorem ipsum dolar arigato gonsaimus, m dolar arigato gonsaimus',
     createdAt: '3 Days Ago',
     musicFile: 'google.com',

@@ -1,13 +1,21 @@
-import React from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {FlatList, StyleSheet, Text, View, TextInput} from 'react-native';
 import {Portal, Modal} from 'react-native-paper';
 import {COMMENTS} from '../constants';
 import Color from '../constants/Color';
 import CommentItem from './CommentItem';
 const CommentModal = ({visible, setVisible}) => {
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
+  const [comment, setComment] = useState('');
 
+  const handleKeyDown = (e) => {
+    // TODO: HANDLE ADD COMMENT
+
+    Keyboard.dismiss();
+
+    setComment('');
+  };
+
+  const hideModal = () => setVisible(false);
   return (
     <Portal>
       <Modal
@@ -43,6 +51,15 @@ const CommentModal = ({visible, setVisible}) => {
                 />
               );
             }}
+          />
+        </View>
+        <View>
+          <TextInput
+            placeholder="Add a Comment"
+            style={styles.input}
+            value={comment}
+            onChangeText={setComment}
+            onSubmitEditing={handleKeyDown}
           />
         </View>
       </Modal>
