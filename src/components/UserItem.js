@@ -17,7 +17,11 @@ const UserItem = ({name, createdAt, gender}) => {
         source={{uri: 'https://via.placeholder.com/150'}}
       />
       <View style={styles.txtContainer}>
+<<<<<<< HEAD
         <Text style={styles.txtTitle}>{name && name.toUpperCase()}</Text>
+=======
+        <Text style={styles.txtTitle}>{name?.toUpperCase()}</Text>
+>>>>>>> ca0854b5e0286a4ac4fb17ebc1594095530d96f3
         <Text style={styles.txtDetails}>{createdAt}</Text>
         <Text style={styles.txtDetails}>{gender}</Text>
       </View>
@@ -44,7 +48,7 @@ export default UserItem;
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 30,
+    borderRadius: 16,
     padding: 10,
     marginVertical: 5,
     marginHorizontal: 10,
