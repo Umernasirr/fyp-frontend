@@ -14,8 +14,6 @@ import Color from '../../constants/Color';
 import TrackPlayer from 'react-native-track-player';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import SoundCloudWaveform from 'react-native-soundcloud-waveform';
-
 const SongPlayer = ({navigation, route}) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);

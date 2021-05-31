@@ -15,6 +15,7 @@ import SongPlayer from '../screens/SongPlayer/SongPlayer';
 import UserList from '../screens/userList/userList';
 
 import Color from '../constants/Color';
+import Feed from '../screens/feed/feed';
 const Stack = createStackNavigator();
 const BottomTab = createMaterialBottomTabNavigator();
 const MusicStack = createStackNavigator();
@@ -25,8 +26,8 @@ const MusicStackScreens = () => (
       options={{
         headerShown: false,
       }}
-      name="Home"
-      component={Home}
+      name="Feed"
+      component={Feed}
     />
     <MusicStack.Screen
       options={{
@@ -62,6 +63,16 @@ const BottomTabStack = () => (
         ),
       }}
       component={MusicStackScreens}
+    />
+
+    <BottomTab.Screen
+      name="SongList"
+      options={{
+        tabBarIcon: ({color, size}) => (
+          <Feather name="music" color={color} size={20} />
+        ),
+      }}
+      component={Home}
     />
 
     <BottomTab.Screen

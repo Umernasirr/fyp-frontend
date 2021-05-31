@@ -9,6 +9,9 @@ export default {
   bgLinear1: 'rgba(0,0,0,0.03)',
   bgLinear2: '#bbb',
   transparent: ' rgba(255,255,255, 0)',
+  light: ' rgba(0,0,0, 0.1)',
+
   primary: '#FF296D',
   background: '#01012A',
+  dark: '#191D42',
 };

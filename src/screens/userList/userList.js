@@ -79,7 +79,7 @@ const Home = ({navigation}) => {
             <View style={styles.songsContainer}>
               {userList && userList.length > 0 ? (
                 <FlatList
-                  style={styles.songsList}
+                  style={styles.userList}
                   ItemSeparatorComponent={
                     Platform.OS !== 'android' &&
                     (({highlighted}) => (
@@ -154,6 +154,6 @@ const styles = StyleSheet.create({
   },
   songsContainer: {
     marginVertical: 10,
-    marginHorizontal: '0%',
+    marginHorizontal: '2%',
   },
 });

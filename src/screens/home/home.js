@@ -12,7 +12,6 @@ import {Searchbar} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Color from '../../constants/Color';
 import SongItem from '../../components/SongItem';
-import {Songs} from '../../constants/index';
 import {service} from '../../services/service';
 import {ActivityIndicator} from 'react-native';
 const Home = ({navigation, route}) => {
@@ -52,14 +51,6 @@ const Home = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      {/* {error !== '' && (
-        <ErrorModal
-          errorVisible={true}
-          error={error}
-          handleErrorClose={handleErrorClose}
-        />
-      )} */}
-
       <LinearGradient
         colors={[Color.linearColor1, Color.linearColor2]}
         style={styles.Linear}>
