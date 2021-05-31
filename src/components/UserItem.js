@@ -17,7 +17,7 @@ const UserItem = ({name, createdAt, gender}) => {
         source={{uri: 'https://via.placeholder.com/150'}}
       />
       <View style={styles.txtContainer}>
-        <Text style={styles.txtTitle}>{name.toUpperCase()}</Text>
+        <Text style={styles.txtTitle}>{name && name.toUpperCase()}</Text>
         <Text style={styles.txtDetails}>{createdAt}</Text>
         <Text style={styles.txtDetails}>{gender}</Text>
       </View>

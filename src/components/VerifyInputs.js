@@ -51,6 +51,7 @@ const VerifyInputs = ({
         if (data.data.error) {
           alert(data.data.error);
         } else {
+          console.log(data.data);
           alert('Verification Code sent successfully');
         }
       });

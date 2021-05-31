@@ -167,8 +167,9 @@ const Signup = ({
           dispatch(register(data.data));
           if (!data.data.success) {
             alert(data.data.error);
+          } else {
+            setShowVerification(true);
           }
-          setShowVerification(true);
         })
         .catch((err) => {
           setLoading(false);

@@ -24,10 +24,10 @@ const Home = ({navigation}) => {
     setSearchQuery(query);
 
     const tempUsers = allUser.filter((song) => {
-      return song.name
-        .toLowerCase()
-        .trim()
-        .includes(query.toLowerCase().trim());
+      return (
+        song.name &&
+        song.name.toLowerCase().trim().includes(query.toLowerCase().trim())
+      );
     });
 
     setUserList(tempUsers);
