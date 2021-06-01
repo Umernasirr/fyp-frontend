@@ -8,20 +8,15 @@ import {
   TextInput,
   ScrollView,
   ActivityIndicator,
-  StatusBar,
-  Slider,
   ImageBackground,
 } from 'react-native';
+import Slider from 'react-native-slider';
+
 import TrackPlayer from 'react-native-track-player';
 import axios from 'axios';
 
-import {Icon} from 'react-native-elements';
-
-import {connect} from 'react-redux';
 import Color from '../../constants/Color';
 import LinearGradient from 'react-native-linear-gradient';
-import GlobalButton from '../../components/GlobalButton';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useTrackPlayerProgress} from 'react-native-track-player/lib/hooks';
 // import ErrorModal from '../../components/ErrorModal';
@@ -48,15 +43,6 @@ const Generate = ({navigation}) => {
   const [musicData, setMusicData] = useState([]);
   const [songDuration, setSongDuration] = useState(0);
   const [loading, setLoading] = useState(false);
-  // useEffect(() => {
-  //   // if (isPlaying) {
-  //   const startPlayer = async () => {
-  //     let isInit = await trackPlayerInit();
-  //     setIsTrackPlayerInit(isInit);
-  //   };
-  //   startPlayer();
-  //   // }
-  // }, []);
 
   useEffect(() => {
     if (!isSeeking && position && duration) {
@@ -168,7 +154,8 @@ const Generate = ({navigation}) => {
               ) : (
                 <TouchableOpacity
                   style={styles.btnGenerate}
-                  onPress={lyricsHandler}>
+                  onPress={lyricsHandler}
+                  disabled={lyrics.length <= 0 ? true : false}>
                   <Text style={styles.btnGenerateTxt}>Generate Music</Text>
                 </TouchableOpacity>
               )}
@@ -181,7 +168,7 @@ const Generate = ({navigation}) => {
                   size={20}
                 />
                 <Slider
-                  style={{width: '100%', height: 20, color: Color.primary}}
+                  style={{width: '90%', height: 20, color: Color.primary}}
                   minimumValue={0}
                   maximumValue={1}
                   value={sliderValue}
@@ -298,25 +285,24 @@ const styles = StyleSheet.create({
   },
 
   containerMargin: {
-    marginHorizontal: '10%',
+    marginHorizontal: '4%',
   },
-
   audioContainer: {
     display: 'flex',
     flexDirection: 'row',
     padding: 20,
     // flex: 0.45,
-    marginTop: 20,
-    backgroundColor: 'white',
+    marginVertical: 10,
+    borderColor: Color.primary,
+    borderWidth: 2,
     borderRadius: 10,
-    color: 'black',
-    width: '100%',
   },
   fontAudio: {
     display: 'flex',
     flexDirection: 'column',
     textAlignVertical: 'center',
-    color: Color.primary,
+    color: Color.whiteColor,
+    marginHorizontal: 10,
   },
 
   image: {

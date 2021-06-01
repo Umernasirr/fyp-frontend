@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import Color from '../constants/Color';
 
 import {useNavigation} from '@react-navigation/native';
@@ -28,10 +28,10 @@ const UserItem = ({name, createdAt, gender}) => {
           alignItems: 'flex-end',
         }}>
         <View style={styles.btnContainer}>
-          <Entypo
+          <Ionicons
             style={styles.icon}
-            name="add-user"
-            size={25}
+            name="chevron-forward"
+            size={30}
             color={Color.purple}
           />
         </View>

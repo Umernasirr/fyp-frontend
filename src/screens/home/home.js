@@ -57,21 +57,21 @@ const Home = ({navigation, route}) => {
         <ImageBackground
           source={require('../../assets/images/background_texture.png')}
           style={styles.image}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.marginContainer}>
-              <Text style={styles.txtHeading}>{title}</Text>
-              <Searchbar
-                style={{borderRadius: 20}}
-                placeholder="Search"
-                onChangeText={onChangeSearch}
-                value={searchQuery}
-              />
-            </View>
+          {songList && songList.length > 0 ? (
+            <View>
+              <View style={styles.marginContainer}>
+                <Text style={styles.txtHeading}>{title}</Text>
+                <Searchbar
+                  style={{borderRadius: 20}}
+                  placeholder="Search"
+                  onChangeText={onChangeSearch}
+                  value={searchQuery}
+                />
+              </View>
 
-            <View style={styles.songsContainer}>
-              <Text style={styles.txtSubheading}>Latest Releases</Text>
+              <View style={styles.songsContainer}>
+                <Text style={styles.txtSubheading}>Latest Releases</Text>
 
-              {songList && songList.length > 0 ? (
                 <FlatList
                   style={styles.songsList}
                   ItemSeparatorComponent={
@@ -85,6 +85,7 @@ const Home = ({navigation, route}) => {
                       />
                     ))
                   }
+                  keyExtractor={(item) => item._id.toString()}
                   data={songList}
                   renderItem={({item}) => {
                     const desc =
@@ -101,13 +102,11 @@ const Home = ({navigation, route}) => {
                     );
                   }}
                 />
-              ) : (
-                <ActivityIndicator size={25} color="#FFF" />
-              )}
+              </View>
             </View>
-
-            {/*  */}
-          </ScrollView>
+          ) : (
+            <ActivityIndicator size={25} color="#FFF" />
+          )}
         </ImageBackground>
       </LinearGradient>
     </View>
@@ -141,12 +140,12 @@ const styles = StyleSheet.create({
   txtSubheading: {
     color: 'white',
     fontSize: 20,
-    marginTop: 20,
+    margin: 20,
     marginHorizontal: 30,
     fontWeight: '600',
   },
   marginContainer: {
-    marginTop: 40,
+    marginTop: 100,
     marginHorizontal: '10%',
   },
   songsContainer: {

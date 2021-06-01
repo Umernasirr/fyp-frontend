@@ -4,9 +4,9 @@ import {
   Text,
   View,
   ImageBackground,
-  ScrollView,
   Platform,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import {Button, Searchbar} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
@@ -43,16 +43,14 @@ const feed = () => {
         <ImageBackground
           source={require('../../assets/images/background_texture.png')}
           style={styles.image}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+          {postsList && postsList.length > 0 ? (
             <View style={styles.marginContainer}>
               <Searchbar
-                style={{borderRadius: 20, marginTop: 20}}
+                style={{borderRadius: 20, marginVertical: 20}}
                 placeholder="Search"
                 onChangeText={onChangeSearch}
                 value={searchQuery}
               />
-              <Text style={styles.heading}>Feed</Text>
-
               <View style={styles.actionButtons}>
                 <Button
                   mode="contained"
@@ -62,36 +60,29 @@ const feed = () => {
                 </Button>
                 <Button color={Color.whiteColor}>TODO Something</Button>
               </View>
-
-              {postsList.length > 0 && (
-                <FlatList
-                  style={styles.songsList}
-                  ItemSeparatorComponent={
-                    Platform.OS !== 'android' &&
-                    (({highlighted}) => (
-                      <View
-                        style={[
-                          styles.separator,
-                          highlighted && {marginLeft: 0},
-                        ]}
-                      />
-                    ))
-                  }
-                  data={postsList}
-                  renderItem={({item}) => (
-                    <PostItem
-                      title={item.title}
-                      caption={item.caption}
-                      createdAt={item.createdAt}
-                      user={item.user}
+              <FlatList
+                style={styles.songsList}
+                ItemSeparatorComponent={
+                  Platform.OS !== 'android' &&
+                  (({highlighted}) => (
+                    <View
+                      style={[styles.separator, highlighted && {marginLeft: 0}]}
                     />
-                  )}
-                />
-              )}
-
-              <FlatList />
+                  ))
+                }
+                keyExtractor={(item) => item.id.toString()}
+                data={postsList}
+                renderItem={({item}) => (
+                  <PostItem
+                    title={item.title}
+                    caption={item.caption}
+                    createdAt={item.createdAt}
+                    user={item.user}
+                  />
+                )}
+              />
             </View>
-          </ScrollView>
+          ) : null}
         </ImageBackground>
       </LinearGradient>
 
@@ -122,6 +113,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   marginContainer: {
+    marginTop: 100,
     marginHorizontal: '2%',
   },
   heading: {

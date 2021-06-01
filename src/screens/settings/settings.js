@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
+import {Button, Divider} from 'react-native-paper';
 import {connect} from 'react-redux';
 import Color from '../../constants/Color';
 import LinearGradient from 'react-native-linear-gradient';
@@ -17,7 +18,6 @@ import {reset} from '../../store/actions/Auth';
 import {useDispatch} from 'react-redux';
 const Settings = ({navigation, user}) => {
   const dispatch = useDispatch();
-  console.log(user, 'user');
   const handleLogout = () => {
     dispatch(reset(navigation));
     // navigation.navigate('Login');
@@ -40,38 +40,37 @@ const Settings = ({navigation, user}) => {
                   />
                 </View>
                 <Text style={styles.profileTxt}>{user && user.name}</Text>
+                <Button color={Color.primary}>Change Photo</Button>
               </View>
 
               <View style={styles.card}>
-                <View style={styles.cardContainer}>
-                  <Text style={styles.cardTitle}>Display Name</Text>
-                  <View>
-                    <Text style={styles.cardTxt}>{user && user.name}</Text>
-                  </View>
-                </View>
+                <TouchableOpacity
+                  style={styles.cardItem}
+                  onPress={() => navigation.navigate('AccountSettings')}>
+                  <Text>Account Settings</Text>
+                </TouchableOpacity>
 
-                <View style={styles.cardContainer}>
-                  <Text style={styles.cardTitle}>Email Address</Text>
-                  <View>
-                    <Text style={styles.cardTxt}>{user && user.email}</Text>
-                  </View>
-                </View>
+                <Divider />
+                <TouchableOpacity
+                  style={styles.cardItem}
+                  onPress={() => navigation.navigate('NotificationSettings')}>
+                  <Text>Notification Settings</Text>
+                </TouchableOpacity>
+                <Divider />
 
-                <View style={styles.cardContainer}>
-                  <Text style={styles.cardTitle}>Gender</Text>
-                  <View>
-                    <Text style={styles.cardTxt}>{user && user.gender}</Text>
-                  </View>
-                </View>
-              </View>
+                <TouchableOpacity
+                  style={styles.cardItem}
+                  onPress={() => navigation.navigate('Help')}>
+                  <Text>Help and Support</Text>
+                </TouchableOpacity>
+                <Divider />
 
-              <View style={styles.card}>
-                <View style={styles.cardContainer}>
-                  <Text style={styles.cardTitle}>Lorem Ipsum</Text>
-                  <View>
-                    <Text style={styles.cardTxt}>Dolar</Text>
-                  </View>
-                </View>
+                <TouchableOpacity
+                  style={styles.cardItem}
+                  onPress={() => navigation.navigate('About')}>
+                  <Text>About Us</Text>
+                </TouchableOpacity>
+                <Divider />
               </View>
             </View>
 
@@ -120,9 +119,10 @@ const styles = StyleSheet.create({
   },
 
   topRow: {
-    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center',
     marginVertical: 20,
-    marginTop: 40,
+    marginTop: 20,
   },
 
   profileImage: {
@@ -135,10 +135,10 @@ const styles = StyleSheet.create({
 
   profileTxt: {
     color: 'white',
-    fontSize: 25,
+    fontSize: 24,
     fontWeight: 'bold',
-    margin: 10,
-    marginHorizontal: 20,
+    marginTop: 10,
+    letterSpacing: 1.1,
   },
 
   cardTitle: {
@@ -157,15 +157,11 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     alignItems: 'baseline',
     backgroundColor: 'white',
-    padding: 20,
+    paddingVertical: 10,
 
     borderRadius: 10,
     marginVertical: 10,
-  },
-
-  cardContainer: {
-    marginVertical: 15,
-    marginHorizontal: 10,
+    flex: 1,
   },
 
   btnLoginTxt: {
@@ -185,5 +181,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: '25%',
     justifyContent: 'center',
+  },
+  cardItem: {
+    padding: 20,
   },
 });

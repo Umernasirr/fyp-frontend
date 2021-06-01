@@ -13,13 +13,16 @@ import Settings from '../screens/settings/settings';
 import Header from '../components/Header';
 import SongPlayer from '../screens/SongPlayer/SongPlayer';
 import UserList from '../screens/userList/userList';
-
+import AccountSettings from '../screens/accountSettings/accountSettings';
 import Color from '../constants/Color';
 import Feed from '../screens/feed/feed';
+import NotificationSettings from '../screens/notificationSettings/notificationSettings';
+import Help from '../screens/help/help';
+import About from '../screens/about/about';
 const Stack = createStackNavigator();
 const BottomTab = createMaterialBottomTabNavigator();
 const MusicStack = createStackNavigator();
-
+const SettingsStack = createStackNavigator();
 const MusicStackScreens = () => (
   <MusicStack.Navigator>
     <MusicStack.Screen
@@ -39,9 +42,52 @@ const MusicStackScreens = () => (
   </MusicStack.Navigator>
 );
 
+const SettingsStackScreens = () => (
+  <SettingsStack.Navigator initialRouteName="SettingsMain">
+    <SettingsStack.Screen
+      options={{
+        headerShown: false,
+      }}
+      name="SettingsMain"
+      component={Settings}
+    />
+    <SettingsStack.Screen
+      options={{
+        headerShown: false,
+      }}
+      name="AccountSettings"
+      component={AccountSettings}
+    />
+
+    <SettingsStack.Screen
+      options={{
+        headerShown: false,
+      }}
+      name="NotificationSettings"
+      component={NotificationSettings}
+    />
+
+    <SettingsStack.Screen
+      options={{
+        headerShown: false,
+      }}
+      name="Help"
+      component={Help}
+    />
+
+    <SettingsStack.Screen
+      options={{
+        headerShown: false,
+      }}
+      name="About"
+      component={About}
+    />
+  </SettingsStack.Navigator>
+);
+
 const BottomTabStack = () => (
   <BottomTab.Navigator
-    initialRouteName="Home"
+    initialRouteName="Settings"
     activeColor={Color.primary}
     inactiveColor="black"
     barStyle={{backgroundColor: 'white', color: 'black'}}>
@@ -87,7 +133,7 @@ const BottomTabStack = () => (
 
     <BottomTab.Screen
       name="Settings"
-      component={Settings}
+      component={SettingsStackScreens}
       options={{
         tabBarIcon: ({color, size}) => (
           <Feather name="settings" color={color} size={20} />
@@ -99,7 +145,7 @@ const BottomTabStack = () => (
 
 function RootNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
         name="SplashScreen"
         options={{

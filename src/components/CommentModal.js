@@ -36,6 +36,7 @@ const CommentModal = ({visible, setVisible}) => {
                 />
               ))
             }
+            keyExtractor={(item) => item.id.toString()}
             data={COMMENTS}
             renderItem={({item}) => {
               console.log(item);

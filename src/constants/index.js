@@ -40,7 +40,7 @@ const POSTS = [
   },
 
   {
-    id: 1,
+    id: 2,
     createdAt: '1 Hour ago',
     caption: 'Lorem ipsum dolar arigato gonsaimus, m dolar arigato gonsaimus',
     musicFile: 'google.com',
@@ -52,7 +52,7 @@ const POSTS = [
   },
 
   {
-    id: 1,
+    id: 3,
     caption: 'Lorem ipsum dolar arigato gonsaimus, m dolar arigato gonsaimus',
     createdAt: '3 Days Ago',
     musicFile: 'google.com',

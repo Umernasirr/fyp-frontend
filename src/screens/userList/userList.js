@@ -38,7 +38,6 @@ const Home = ({navigation}) => {
       if (data.data.error) {
         alert(data.data.error);
       } else {
-        console.log(data.data.users);
         setUserList(data.data.users);
         setAllUserList(data.data.users);
       }
@@ -65,19 +64,19 @@ const Home = ({navigation}) => {
         <ImageBackground
           source={require('../../assets/images/background_texture.png')}
           style={styles.image}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.marginContainer}>
-              <Text style={styles.txtHeading}>Meet New People</Text>
-              <Searchbar
-                style={{borderRadius: 20}}
-                placeholder="Search"
-                onChangeText={onChangeSearch}
-                value={searchQuery}
-              />
-            </View>
+          {userList && userList.length > 0 ? (
+            <View>
+              <View style={styles.marginContainer}>
+                <Text style={styles.txtHeading}>Meet New People</Text>
+                <Searchbar
+                  style={{borderRadius: 20}}
+                  placeholder="Search"
+                  onChangeText={onChangeSearch}
+                  value={searchQuery}
+                />
+              </View>
 
-            <View style={styles.songsContainer}>
-              {userList && userList.length > 0 ? (
+              <View style={styles.songsContainer}>
                 <FlatList
                   style={styles.userList}
                   ItemSeparatorComponent={
@@ -91,26 +90,21 @@ const Home = ({navigation}) => {
                       />
                     ))
                   }
+                  keyExtractor={(item) => item._id.toString()}
                   data={userList}
-                  renderItem={({item}) => {
-                    console.log(item);
-
-                    return (
-                      <UserItem
-                        name={item.name}
-                        createdAt={item.createdAt.slice(0, 10)}
-                        gender={item.gender}
-                      />
-                    );
-                  }}
+                  renderItem={({item}) => (
+                    <UserItem
+                      name={item.name}
+                      createdAt={item.createdAt.slice(0, 10)}
+                      gender={item.gender}
+                    />
+                  )}
                 />
-              ) : (
-                <ActivityIndicator size={25} color="#FFF" />
-              )}
+              </View>
             </View>
-
-            {/*  */}
-          </ScrollView>
+          ) : (
+            <ActivityIndicator size={25} color="#FFF" />
+          )}
         </ImageBackground>
       </LinearGradient>
     </View>
@@ -139,6 +133,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     marginVertical: 20,
+    textAlign: 'center',
   },
 
   txtSubheading: {
@@ -149,8 +144,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   marginContainer: {
-    marginTop: 40,
-    marginHorizontal: '10%',
+    marginTop: 120,
+    marginHorizontal: '4%',
   },
   songsContainer: {
     marginVertical: 10,
