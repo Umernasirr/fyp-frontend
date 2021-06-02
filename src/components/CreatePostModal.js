@@ -13,10 +13,13 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import Feather from 'react-native-vector-icons/Feather';
 import DocumentPicker from 'react-native-document-picker';
 
+import {service} from '../services/service';
+
 const CreatePostModal = ({visible, setVisible}) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [image, setImage] = useState(null);
   const [songSelected, setSongSelected] = useState('');
+  const [mediaSelected, setMediaSelected] = useState(null);
 
   const [caption, setCaption] = useState('');
 
@@ -36,14 +39,16 @@ const CreatePostModal = ({visible, setVisible}) => {
   const handleDocumentPicker = async () => {
     try {
       const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.audio],
+        type: [DocumentPicker.types.audio, DocumentPicker.types.images],
       });
+      console.log(res.type);
       console.log(
         res.uri,
         res.type, // mime type
         res.name,
         res.size,
       );
+      setMediaSelected(res);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         // User cancelled the picker, exit any dialogs or menus and move on
@@ -53,7 +58,27 @@ const CreatePostModal = ({visible, setVisible}) => {
     }
   };
 
-  const handleCreatePost = () => {};
+  const handleCreatePost = () => {
+    let mediaData = {uri: mediaSelected.uri};
+
+    const formdata = new FormData();
+    console.log(caption, 'vcadas');
+    formdata.append('caption', caption);
+
+    formdata.append('media', {
+      uri: mediaData.uri,
+      name: mediaSelected.name,
+      type: mediaSelected.type,
+    });
+    // console.log(res.u/)
+
+    service
+      .createVibe(formdata)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <Portal>

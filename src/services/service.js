@@ -50,4 +50,8 @@ export const service = {
       data,
     );
   },
+  createVibe: (data) => {
+    console.log(data, 'data');
+    return api.uploadFormData('vibe/create-vibe', data);
+  },
 };
