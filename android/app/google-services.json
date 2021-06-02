@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "32766145648",
+    "project_id": "moosik-816e4",
+    "storage_bucket": "moosik-816e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32766145648:android:3c02f29e37c98327fc70b5",
+        "android_client_info": {
+          "package_name": "com.moosik"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "32766145648-eklo2bmecgjhcm0hqju6pb5456be095i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNHdzUWPu5CAaq3X2B8jrfDYLGMakXa3k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "32766145648-eklo2bmecgjhcm0hqju6pb5456be095i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

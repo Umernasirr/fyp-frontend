@@ -19,6 +19,7 @@ import Feed from '../screens/feed/feed';
 import NotificationSettings from '../screens/notificationSettings/notificationSettings';
 import Help from '../screens/help/help';
 import About from '../screens/about/about';
+import Chat from '../screens/chat/chat';
 const Stack = createStackNavigator();
 const BottomTab = createMaterialBottomTabNavigator();
 const MusicStack = createStackNavigator();
@@ -87,7 +88,7 @@ const SettingsStackScreens = () => (
 
 const BottomTabStack = () => (
   <BottomTab.Navigator
-    initialRouteName="Settings"
+    initialRouteName="Chat"
     activeColor={Color.primary}
     inactiveColor="black"
     barStyle={{backgroundColor: 'white', color: 'black'}}>
@@ -134,6 +135,16 @@ const BottomTabStack = () => (
     <BottomTab.Screen
       name="Settings"
       component={SettingsStackScreens}
+      options={{
+        tabBarIcon: ({color, size}) => (
+          <Feather name="settings" color={color} size={20} />
+        ),
+      }}
+    />
+
+    <BottomTab.Screen
+      name="Chat"
+      component={Chat}
       options={{
         tabBarIcon: ({color, size}) => (
           <Feather name="settings" color={color} size={20} />
