@@ -39,10 +39,27 @@ export default (state = initialState, action = {}) => {
     case Vibe.REMOVE_COMMENT:
       return {
         vibes: state.vibes.map((vibe) =>
-          vibe._id === payload.postId
+          vibe._id === payload.vibeId
             ? vibe.comments.filter(
                 (comment) => comment._id !== payload.commentId,
               )
+            : vibe,
+        ),
+      };
+    case Vibe.REMOVE_VIBE:
+      return {
+        vibes: state.vibes.filter((vibe) => vibe._id !== payload.vibeId),
+      };
+    case Vibe.UPDATE_LIKES:
+      return {
+        vibes: state.vibes.map((vibe) =>
+          vibe._id === payload.vibeId
+            ? vibe.likes.contain(payload.userId.toString())
+              ? vibe.likes.filter(
+                  (like) =>
+                    like.userId.toString() !== payload.userId.toString(),
+                )
+              : {...vibe, likes: [...vibe.likes, payload.userId]}
             : vibe,
         ),
       };

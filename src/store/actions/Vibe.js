@@ -1,6 +1,6 @@
-import {Songs} from '../../constants';
+import Vibe from '../constants/Vibe';
 
-export const login = (payload) => (dispatch) => {
-  dispatch({type: Songs.GET_SONGS, songList: payload});
+export const createVibe = (payload) => (dispatch) => {
+  dispatch({type: Vibe.CREATE_VIBE, payload});
   // dispatch(showWelComeSetting(payload));
 };
