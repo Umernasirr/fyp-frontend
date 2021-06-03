@@ -1,70 +1,183 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import {GiftedChat} from 'react-native-gifted-chat';
+import {GiftedChat, Send} from 'react-native-gifted-chat';
 import {useSelector} from 'react-redux';
-const chat = () => {
+import {IconButton} from 'react-native-paper';
+
+import Color from '../../constants/Color';
+const Chat = ({route}) => {
   const [messages, setMessages] = useState([]);
   const chatsRef = firestore().collection('chats');
-
+  const [roomTitle, setRoomTitle] = useState('');
   const user = useSelector((state) => state.auth.user);
 
-  console.log(user);
+  const thread = route.params.thread;
+
   const appendMessages = useCallback(
-    (msgs) => {
-      if (msgs.length > 0) {
-        console.log(msgs);
-        console.log('----');
-        setMessages((previousMessages) => {
-          return GiftedChat.append(previousMessages, msgs[0]);
-        });
-      }
+    (messages) => {
+      setMessages((previousMessages) =>
+        GiftedChat.append(previousMessages, messages),
+      );
     },
     [messages],
   );
 
-  const handleAddMessage = async (messages = []) => {
-    const writes = messages.map((m) => chatsRef.add(m));
-    await Promise.all(writes);
-  };
+  async function handleSend(messages) {
+    const text = messages[0].text;
+
+    firestore()
+      .collection('threads')
+      .doc(thread._id)
+      .collection('messages')
+      .add({
+        text,
+        createdAt: new Date().getTime(),
+        user: {
+          _id: user._id,
+          email: user.email,
+          name: user.name,
+        },
+      });
+
+    await firestore()
+      .collection('THREADS')
+      .doc(thread._id)
+      .set(
+        {
+          latestMessage: {
+            text,
+            createdAt: new Date().getTime(),
+          },
+        },
+        {merge: true},
+      );
+  }
+
+  //   const writes = messages.map((m) => chatsRef.add(m));
+  //   await Promise.all(writes);
+  // }
 
   useEffect(() => {
-    const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
-      const firestoreMessages = querySnapshot
-        .docChanges()
-        .filter(({type}) => type === 'added')
-        .map(({doc}) => {
-          const msg = {...doc.data()};
-          return {...msg, createdAt: msg.createdAt.toDate()};
-        })
-        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-      appendMessages(firestoreMessages);
-    });
+    const messagesListener = firestore()
+      .collection('threads')
+      .doc(thread._id)
+      .collection('messages')
+      .orderBy('createdAt', 'desc')
+      .onSnapshot((querySnapshot) => {
+        const messages = querySnapshot.docs.map((doc) => {
+          const firebaseData = doc.data();
 
-    return () => unsubscribe();
+          const data = {
+            _id: doc.id,
+            text: '',
+            createdAt: new Date().getTime(),
+            ...firebaseData,
+          };
+
+          if (!firebaseData.system) {
+            data.user = {
+              ...firebaseData.user,
+              name: firebaseData.user.email,
+            };
+          }
+
+          return data;
+        });
+
+        setMessages(messages);
+      });
+
+    return () => messagesListener();
   }, []);
 
   return (
-    <GiftedChat
-      renderUsernameOnMessage={true}
-      messages={messages}
-      onSend={(messages) => {
-        handleAddMessage(messages);
-      }}
-      user={{
-        _id: user._id,
-        name: user.name,
-      }}
-    />
+    <View style={styles.container}>
+      <Header title={thread.name} />
+      <GiftedChat
+        renderUsernameOnMessage
+        showUserAvatar
+        alwaysShowSend
+        scrollToBottom
+        renderSend={renderSend}
+        scrollToBottomComponent={scrollToBottomComponent}
+        renderLoading={renderLoading}
+        messages={messages}
+        onSend={handleSend}
+        user={{
+          _id: user._id,
+          name: user.name,
+        }}
+      />
+    </View>
   );
 };
 
-export default chat;
+const Header = ({title}) => {
+  return (
+    <View style={styles.headerContainer}>
+      <Text style={styles.headerTxt}>{title}</Text>
+    </View>
+  );
+};
+
+const renderSend = (props) => {
+  return (
+    <Send {...props}>
+      <View style={styles.sendingContainer}>
+        <IconButton icon="send-circle" size={32} color={Color.primary} />
+      </View>
+    </Send>
+  );
+};
+
+const scrollToBottomComponent = () => {
+  return (
+    <View style={styles.bottomComponentContainer}>
+      <IconButton icon="chevron-double-down" size={36} color={Color.primary} />
+    </View>
+  );
+};
+
+const renderLoading = () => {
+  return (
+    <View style={styles.loadingContainer}>
+      <ActivityIndicator size="large" color={Color.primary} />
+    </View>
+  );
+};
+
+export default Chat;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  headerContainer: {
+    flex: 0.09,
     justifyContent: 'center',
     alignItems: 'center',
+    alignContent: 'center',
+    backgroundColor: Color.light,
+    opacity: 0.7,
+    elevation: 2,
+  },
+  headerTxt: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    color: Color.dark,
+  },
+  sendingContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bottomComponentContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

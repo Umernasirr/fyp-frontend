@@ -30,8 +30,6 @@ const CreatePostModal = ({visible, setVisible}) => {
 
   const handleImagePicker = () => {
     launchImageLibrary({}, (data) => {
-      console.log(data);
-
       setImage(data.assets[0].uri);
     });
   };
@@ -41,13 +39,7 @@ const CreatePostModal = ({visible, setVisible}) => {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.audio, DocumentPicker.types.images],
       });
-      console.log(res.type);
-      console.log(
-        res.uri,
-        res.type, // mime type
-        res.name,
-        res.size,
-      );
+
       setMediaSelected(res);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
@@ -62,7 +54,6 @@ const CreatePostModal = ({visible, setVisible}) => {
     let mediaData = {uri: mediaSelected.uri};
 
     const formdata = new FormData();
-    console.log(caption, 'vcadas');
     formdata.append('caption', caption);
 
     formdata.append('media', {
@@ -70,13 +61,10 @@ const CreatePostModal = ({visible, setVisible}) => {
       name: mediaSelected.name,
       type: mediaSelected.type,
     });
-    // console.log(res.u/)
 
     service
       .createVibe(formdata)
-      .then((data) => {
-        console.log(data);
-      })
+      .then((data) => {})
       .catch((err) => console.log(err));
   };
 
@@ -98,7 +86,7 @@ const CreatePostModal = ({visible, setVisible}) => {
           mode="outlined"
         />
         {/* {image && <Image source={{uri: image}} style={styles.img} />} */}
-        {/* 
+        {/*
         <Button
           style={styles.button}
           color={Color.primary}
@@ -137,7 +125,7 @@ const CreatePostModal = ({visible, setVisible}) => {
               title="Item 2"
             />
           </Menu>
-        </View> 
+        </View>
         {songSelected !== '' && (
           <View style={styles.songContainer}>
             <Feather name="music" size={24} color={Color.primary} />

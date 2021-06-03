@@ -31,7 +31,6 @@ const VerifyInputs = ({
 
   const resendCodeHandler = () => {
     if (type === 'resetpassword') {
-      console.log(email);
       service
         .resendForgetPasswordVerificationCode({email})
         .then((data) => {

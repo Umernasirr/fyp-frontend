@@ -376,13 +376,7 @@ const Signup = ({
                       // title={sub.name}
                     />
                     <TouchableOpacity>
-                      <Text
-                        style={{
-                          color: '#fff',
-                          marginHorizontal: 0,
-                          marginVertical: 10,
-                          fontSize: 12,
-                        }}>
+                      <Text style={styles.terms}>
                         I have read and agree with terms and conditions
                       </Text>
                     </TouchableOpacity>
@@ -544,5 +538,11 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     justifyContent: 'center',
     opacity: 1,
+  },
+  terms: {
+    color: '#fff',
+    marginHorizontal: 0,
+    marginVertical: 10,
+    fontSize: 12,
   },
 });
