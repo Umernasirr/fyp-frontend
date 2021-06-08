@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   marginContainer: {
     marginTop: 120,
-    marginHorizontal: '4%',
+    marginHorizontal: '2%',
   },
   songsContainer: {
     marginVertical: 10,

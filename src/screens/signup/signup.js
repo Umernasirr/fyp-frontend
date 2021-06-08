@@ -15,7 +15,6 @@ import {useDispatch} from 'react-redux';
 import CountryPicker from 'react-native-country-picker-modal';
 import PhoneInput from 'react-native-phone-input';
 import {CheckBox} from 'react-native-elements';
-import {connect} from 'react-redux';
 // import {register, clearError} from '../../redux/actions/AuthActions';
 
 import Color from '../../constants/Color';

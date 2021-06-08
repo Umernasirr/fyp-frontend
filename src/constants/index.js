@@ -1,4 +1,4 @@
-const Songs = [
+const SONGS = [
   {
     id: 1,
     title: 'Take on Me',
@@ -103,4 +103,39 @@ const COMMENTS = [
   },
 ];
 
-export {POSTS, Songs, COMMENTS};
+const FRIENDS = [
+  {
+    id: 1,
+    name: 'Talal Abbas',
+  },
+  {
+    id: 2,
+    name: 'Umer Nasir',
+  },
+  {
+    id: 3,
+    name: 'Adeela Meer',
+  },
+  {
+    id: 4,
+    name: 'Asbah Jaffri',
+  },
+  {
+    id: 5,
+    name: 'Eliza John',
+  },
+  {
+    id: 6,
+    name: 'Zahara Quresh',
+  },
+  {
+    id: 7,
+    name: 'Hassan Mujtaba',
+  },
+  {
+    id: 8,
+    name: 'Hamza Sheryar',
+  },
+];
+
+export {POSTS, SONGS, COMMENTS, FRIENDS};

@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import Color from '../constants/Color';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import CommentModal from './CommentModal';
 
 const PostItem = ({caption, createdAt, user}) => {
@@ -35,7 +37,13 @@ const PostItem = ({caption, createdAt, user}) => {
         />
         <View style={styles.topContainer}>
           <Text style={styles.title}>{user.name} </Text>
-          <Text style={styles.title}>Add Friend </Text>
+          <TouchableOpacity>
+            <Ionicons
+              color={Color.whiteColor}
+              name="add-circle-outline"
+              size={24}
+            />
+          </TouchableOpacity>
         </View>
       </View>
       <Text style={styles.caption}>{caption}</Text>
