@@ -53,10 +53,6 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
   const handleCreatePost = () => {
     let mediaData = {uri: mediaSelected.uri};
     const formdata = new FormData();
-<<<<<<< HEAD
-
-=======
->>>>>>> 3e4e195d23aff347615e80dc0439a41f9dc61e97
     formdata.append('caption', caption);
 
     formdata.append('media', {
@@ -67,16 +63,12 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
 
     service
       .createVibe(formdata)
-<<<<<<< HEAD
       .then((data) => {
         if (data.data.success) {
           createVibe(data.data.data);
           hideModal();
         }
       })
-=======
-      .then((data) => {})
->>>>>>> 3e4e195d23aff347615e80dc0439a41f9dc61e97
       .catch((err) => console.log(err));
   };
 
