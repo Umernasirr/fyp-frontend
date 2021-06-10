@@ -11,6 +11,8 @@ const initialState = {
 };
 
 export default (state = initialState, action = {}) => {
+  // console.log()
+  const {payload} = action;
   switch (action.type) {
     case Vibe.CREATE_VIBE:
       return {
@@ -20,7 +22,7 @@ export default (state = initialState, action = {}) => {
     case Vibe.GET_VIBES:
       return {
         ...state,
-        vibes: payload,
+        vibes: action.payload,
         loading: false,
       };
     case Vibe.GET_VIBE:
@@ -54,13 +56,13 @@ export default (state = initialState, action = {}) => {
       return {
         vibes: state.vibes.map((vibe) =>
           vibe._id === payload.vibeId
-            ? vibe.likes.contain(payload.userId.toString())
-              ? vibe.likes.filter(
-                  (like) =>
-                    like.userId.toString() !== payload.userId.toString(),
-                )
-              : {...vibe, likes: [...vibe.likes, payload.userId]}
-            : vibe,
+            ? {...vibe, likes: payload.likes}
+            : // ? vibe.likes.includes(payload.user.toString())
+              //   ? vibe.likes.filter(
+              //       (like) => like.user.toString() !== payload.user.toString(),
+              //     )
+              //   : {...vibe, likes: [...vibe.likes, payload.user]}
+              vibe,
         ),
       };
     default:

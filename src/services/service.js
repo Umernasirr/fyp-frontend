@@ -54,4 +54,10 @@ export const service = {
     console.log(data, 'data');
     return api.uploadFormData('vibe/create-vibe', data);
   },
+  getVibes: () => {
+    return api.invoke('GET', 'vibe');
+  },
+  likeUnlike: (id) => {
+    return api.invoke('GET', `vibe/like/${id}`);
+  },
 };

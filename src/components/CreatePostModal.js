@@ -10,17 +10,18 @@ import {
 } from 'react-native-paper';
 import Color from '../constants/Color';
 import {launchImageLibrary} from 'react-native-image-picker';
+import {connect} from 'react-redux';
 import Feather from 'react-native-vector-icons/Feather';
 import DocumentPicker from 'react-native-document-picker';
 
 import {service} from '../services/service';
+import {createVibe} from '../store/actions/Vibe';
 
-const CreatePostModal = ({visible, setVisible}) => {
+const CreatePostModal = ({visible, setVisible, createVibe}) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [image, setImage] = useState(null);
   const [songSelected, setSongSelected] = useState('');
   const [mediaSelected, setMediaSelected] = useState(null);
-
   const [caption, setCaption] = useState('');
 
   const openMenu = () => setMenuVisible(true);
@@ -41,17 +42,10 @@ const CreatePostModal = ({visible, setVisible}) => {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.audio, DocumentPicker.types.images],
       });
-      console.log(res.type);
-      console.log(
-        res.uri,
-        res.type, // mime type
-        res.name,
-        res.size,
-      );
+
       setMediaSelected(res);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
-        // User cancelled the picker, exit any dialogs or menus and move on
       } else {
         throw err;
       }
@@ -60,9 +54,8 @@ const CreatePostModal = ({visible, setVisible}) => {
 
   const handleCreatePost = () => {
     let mediaData = {uri: mediaSelected.uri};
-
     const formdata = new FormData();
-    console.log(caption, 'vcadas');
+
     formdata.append('caption', caption);
 
     formdata.append('media', {
@@ -70,12 +63,14 @@ const CreatePostModal = ({visible, setVisible}) => {
       name: mediaSelected.name,
       type: mediaSelected.type,
     });
-    // console.log(res.u/)
 
     service
       .createVibe(formdata)
       .then((data) => {
-        console.log(data);
+        if (data.data.success) {
+          createVibe(data.data.data);
+          hideModal();
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -156,7 +151,7 @@ const CreatePostModal = ({visible, setVisible}) => {
   );
 };
 
-export default CreatePostModal;
+export default connect(null, {createVibe})(CreatePostModal);
 
 const styles = StyleSheet.create({
   containerStyle: {

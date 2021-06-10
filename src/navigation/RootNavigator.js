@@ -88,7 +88,7 @@ const SettingsStackScreens = () => (
 
 const BottomTabStack = () => (
   <BottomTab.Navigator
-    initialRouteName="Chat"
+    initialRouteName="Home"
     activeColor={Color.primary}
     inactiveColor="black"
     barStyle={{backgroundColor: 'white', color: 'black'}}>

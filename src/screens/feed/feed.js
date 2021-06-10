@@ -8,16 +8,21 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native';
+import {connect} from 'react-redux';
 import {Button, Searchbar} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import {POSTS} from '../../constants/';
 import Color from '../../constants/Color';
 import PostItem from '../../components/PostItem';
 import CreatePostModal from '../../components/CreatePostModal';
-const feed = () => {
+import {service} from '../../services/service';
+import {getVibes} from '../../store/actions/Vibe';
+const feed = ({vibes, getVibes}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [postsList, setPostsList] = useState([]);
   const [openPostModal, setOpenPostModal] = useState(false);
+  const [posts, setposts] = useState([]);
+
   const onChangeSearch = (query) => {
     setSearchQuery(query);
 
@@ -32,7 +37,17 @@ const feed = () => {
   };
 
   useEffect(() => {
-    setPostsList(POSTS);
+    service
+      .getVibes()
+      .then((data) => {
+        if (data.data.success) {
+          getVibes(data.data.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err, 'err imp');
+      });
+    setPostsList(vibes);
   }, []);
 
   return (
@@ -70,7 +85,7 @@ const feed = () => {
                     />
                   ))
                 }
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item._id.toString()}
                 data={postsList}
                 renderItem={({item}) => (
                   <PostItem
@@ -78,6 +93,8 @@ const feed = () => {
                     caption={item.caption}
                     createdAt={item.createdAt}
                     user={item.user}
+                    vibeId={item._id}
+                    likes={item.likes}
                   />
                 )}
               />
@@ -96,7 +113,11 @@ const feed = () => {
   );
 };
 
-export default feed;
+const mapStateToProps = (state) => ({
+  vibes: state.vibe.vibes,
+});
+
+export default connect(mapStateToProps, {getVibes})(feed);
 
 const styles = StyleSheet.create({
   container: {

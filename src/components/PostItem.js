@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,21 +9,56 @@ import {
   Keyboard,
 } from 'react-native';
 import Color from '../constants/Color';
+import {connect} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CommentModal from './CommentModal';
+import {service} from '../services/service';
+import {updateLikesUnlikes} from '../store/actions/Vibe';
 
-const PostItem = ({caption, createdAt, user}) => {
+const PostItem = ({
+  caption,
+  createdAt,
+  user,
+  vibeId,
+  likes,
+  updateLikesUnlikes,
+}) => {
   const [showCommentModal, setShowCommentModal] = useState(false);
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(null);
   const [favourited, setFavourited] = useState(false);
   const [comment, setComment] = useState('');
 
-  const handleKeyDown = (e) => {
-    // TODO: HANDLE ADD COMMENT
+  useEffect(() => {
+    console.log(likes, 'likes');
+    // if(likes)
+    if (likes) {
+      likes.map((like) => {
+        console.log(user._id, 'uses');
+        if (like.user.toString() === user._id.toString()) {
+          console.log('let see');
+          setLiked(true);
+        }
+      });
+    }
+  }, []);
 
+  const handleKeyDown = (e) => {
     Keyboard.dismiss();
 
     setComment('');
+  };
+
+  const updateLikes = () => {
+    service
+      .likeUnlike(vibeId)
+      .then((data) => {
+        if (data.data.success) {
+          console.log(data.data);
+          setLiked(!liked);
+          updateLikesUnlikes({vibeId, likes: data.data.data});
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -45,7 +80,7 @@ const PostItem = ({caption, createdAt, user}) => {
       />
 
       <View style={styles.actionButtons}>
-        <TouchableOpacity style={styles.icon} onPress={() => setLiked(!liked)}>
+        <TouchableOpacity style={styles.icon} onPress={updateLikes}>
           <AntDesign
             name={liked ? 'like1' : 'like2'}
             color={liked ? Color.primary : Color.whiteColor}
@@ -91,7 +126,7 @@ const PostItem = ({caption, createdAt, user}) => {
   );
 };
 
-export default PostItem;
+export default connect(null, {updateLikesUnlikes})(PostItem);
 
 const styles = StyleSheet.create({
   container: {
