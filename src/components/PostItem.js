@@ -24,6 +24,7 @@ const PostItem = ({
   vibeId,
   likes,
   updateLikesUnlikes,
+  comments,
 }) => {
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [liked, setLiked] = useState(null);
@@ -129,6 +130,8 @@ const PostItem = ({
       <CommentModal
         visible={showCommentModal}
         setVisible={setShowCommentModal}
+        comments={comments}
+        vibeId={vibeId}
       />
     </View>
   );

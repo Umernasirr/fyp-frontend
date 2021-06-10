@@ -34,7 +34,7 @@ export default (state = initialState, action = {}) => {
       return {
         vibes: state.vibes.map((vibe) =>
           vibe._id === payload.postId
-            ? {...vibe, comments: [...vibe.comments, payload.comment]}
+            ? {...vibe, comments: payload.comments}
             : vibe,
         ),
       };
@@ -42,9 +42,7 @@ export default (state = initialState, action = {}) => {
       return {
         vibes: state.vibes.map((vibe) =>
           vibe._id === payload.vibeId
-            ? vibe.comments.filter(
-                (comment) => comment._id !== payload.commentId,
-              )
+            ? {...vibe, comments: payload.comments}
             : vibe,
         ),
       };

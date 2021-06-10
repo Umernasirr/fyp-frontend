@@ -60,4 +60,12 @@ export const service = {
   likeUnlike: (id) => {
     return api.invoke('GET', `vibe/like/${id}`);
   },
+  addComment: (data, id) => {
+    return api.invoke('POST', `vibe/comment/${id}`, data);
+  },
+  deleteComment: (id, commentId) => {
+    console.log(id);
+    console.log(commentId);
+    return api.invoke('DELETE', `vibe/comment/${id}/${commentId}`);
+  },
 };

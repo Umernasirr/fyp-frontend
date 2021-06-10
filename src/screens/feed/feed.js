@@ -95,6 +95,7 @@ const feed = ({vibes, getVibes}) => {
                     user={item.user}
                     vibeId={item._id}
                     likes={item.likes}
+                    comments={item.comments}
                   />
                 )}
               />

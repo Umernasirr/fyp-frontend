@@ -3,11 +3,30 @@ import {StyleSheet, Image, View, Text, TouchableOpacity} from 'react-native';
 import Color from '../constants/Color';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useLinkBuilder} from '@react-navigation/native';
+import {service} from '../services/service';
 
-const CommentItem = ({id, text, user, liked, likes, createdAt}) => {
+const CommentItem = ({
+  id,
+  text,
+  name,
+  liked,
+  likes,
+  createdAt,
+  vibeId,
+  setvibeComments,
+}) => {
   const [isLiked, setIsLiked] = useState(liked);
-  const onHeartClick = () => {
-    setIsLiked(!isLiked);
+  // const onHeartClick = () => {
+  //   setIsLiked(!isLiked);
+  // };
+  const onCommentDelete = () => {
+    service
+      .deleteComment(vibeId, id)
+      .then((data) => {
+        console.log(data.data);
+        setvibeComments(data.data.data);
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <View style={styles.commentContainer}>
@@ -20,10 +39,12 @@ const CommentItem = ({id, text, user, liked, likes, createdAt}) => {
         <View>
           <Text>{text}</Text>
           <Text style={styles.userName}>
-            {user.name} - {createdAt}
+            {name} - {createdAt}
           </Text>
         </View>
-        <TouchableOpacity style={styles.likeContainer} onPress={onHeartClick}>
+        <TouchableOpacity
+          style={styles.likeContainer}
+          onPress={onCommentDelete}>
           <AntDesign
             name={isLiked ? 'heart' : 'hearto'}
             color={Color.primary}

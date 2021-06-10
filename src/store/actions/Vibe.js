@@ -12,3 +12,12 @@ export const updateLikesUnlikes = (payload) => (dispatch) => {
   console.log(payload);
   dispatch({type: Vibe.UPDATE_LIKES, payload});
 };
+
+export const addComment = (payload) => (dispatch) => {
+  dispatch({type: Vibe.ADD_COMMENT, payload});
+};
+
+export const deleteCommentHandler = (payload) => (dispatch) => {
+  console.log('comign here');
+  dispatch({type: Vibe.REMOVE_COMMENT, payload});
+};

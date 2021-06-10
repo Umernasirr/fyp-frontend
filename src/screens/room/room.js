@@ -17,7 +17,7 @@ import {useSelector} from 'react-redux';
 import CreateChatModal from '../../components/CreateChatModal';
 import LinearGradient from 'react-native-linear-gradient';
 
-export default function HomeScreen({navigation}) {
+export default function Room({navigation}) {
   const [threads, setThreads] = useState([]);
   const [filteredThreads, setFilteredThreads] = useState([]);
   const [loading, setLoading] = useState(true);
