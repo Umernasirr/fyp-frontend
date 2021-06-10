@@ -15,7 +15,6 @@ import {useDispatch} from 'react-redux';
 import CountryPicker from 'react-native-country-picker-modal';
 import PhoneInput from 'react-native-phone-input';
 import {CheckBox} from 'react-native-elements';
-import {connect} from 'react-redux';
 // import {register, clearError} from '../../redux/actions/AuthActions';
 
 import Color from '../../constants/Color';
@@ -376,13 +375,7 @@ const Signup = ({
                       // title={sub.name}
                     />
                     <TouchableOpacity>
-                      <Text
-                        style={{
-                          color: '#fff',
-                          marginHorizontal: 0,
-                          marginVertical: 10,
-                          fontSize: 12,
-                        }}>
+                      <Text style={styles.terms}>
                         I have read and agree with terms and conditions
                       </Text>
                     </TouchableOpacity>
@@ -544,5 +537,11 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     justifyContent: 'center',
     opacity: 1,
+  },
+  terms: {
+    color: '#fff',
+    marginHorizontal: 0,
+    marginVertical: 10,
+    fontSize: 12,
   },
 });

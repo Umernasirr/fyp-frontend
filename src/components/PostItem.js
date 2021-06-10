@@ -11,6 +11,8 @@ import {
 import Color from '../constants/Color';
 import {connect} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import CommentModal from './CommentModal';
 import {service} from '../services/service';
 import {updateLikesUnlikes} from '../store/actions/Vibe';
@@ -70,7 +72,13 @@ const PostItem = ({
         />
         <View style={styles.topContainer}>
           <Text style={styles.title}>{user.name} </Text>
-          <Text style={styles.title}>Add Friend </Text>
+          <TouchableOpacity>
+            <Ionicons
+              color={Color.whiteColor}
+              name="add-circle-outline"
+              size={24}
+            />
+          </TouchableOpacity>
         </View>
       </View>
       <Text style={styles.caption}>{caption}</Text>

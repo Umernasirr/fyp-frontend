@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {FlatList, StyleSheet, Text, View, TextInput} from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Platform,
+} from 'react-native';
 import {Portal, Modal} from 'react-native-paper';
 import {COMMENTS} from '../constants';
 import Color from '../constants/Color';
@@ -9,8 +16,6 @@ const CommentModal = ({visible, setVisible}) => {
 
   const handleKeyDown = (e) => {
     // TODO: HANDLE ADD COMMENT
-
-    Keyboard.dismiss();
 
     setComment('');
   };
@@ -27,7 +32,6 @@ const CommentModal = ({visible, setVisible}) => {
 
         <View>
           <FlatList
-            style={styles.userList}
             ItemSeparatorComponent={
               Platform.OS !== 'android' &&
               (({highlighted}) => (
@@ -39,8 +43,6 @@ const CommentModal = ({visible, setVisible}) => {
             keyExtractor={(item) => item.id.toString()}
             data={COMMENTS}
             renderItem={({item}) => {
-              console.log(item);
-
               return (
                 <CommentItem
                   id={item.id}

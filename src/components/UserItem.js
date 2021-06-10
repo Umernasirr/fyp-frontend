@@ -19,7 +19,7 @@ const UserItem = ({name, createdAt, gender}) => {
       <View style={styles.txtContainer}>
         <Text style={styles.txtTitle}>{name?.toUpperCase()}</Text>
         <Text style={styles.txtDetails}>{createdAt}</Text>
-        <Text style={styles.txtDetails}>{gender}</Text>
+        <Text style={styles.txtDetails}>{gender?.toUpperCase()}</Text>
       </View>
 
       <View

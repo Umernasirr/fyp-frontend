@@ -2,6 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import SplashScreen from '../screens/splashScreen/splashScreen';
 import LoginScreen from '../screens/login/login';
@@ -20,10 +21,13 @@ import NotificationSettings from '../screens/notificationSettings/notificationSe
 import Help from '../screens/help/help';
 import About from '../screens/about/about';
 import Chat from '../screens/chat/chat';
+import Room from '../screens/room/room';
 const Stack = createStackNavigator();
 const BottomTab = createMaterialBottomTabNavigator();
 const MusicStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
+const ChatStack = createStackNavigator();
+
 const MusicStackScreens = () => (
   <MusicStack.Navigator>
     <MusicStack.Screen
@@ -86,6 +90,25 @@ const SettingsStackScreens = () => (
   </SettingsStack.Navigator>
 );
 
+const ChatStackScreens = () => (
+  <ChatStack.Navigator>
+    <ChatStack.Screen
+      options={{
+        headerShown: false,
+      }}
+      name="Room"
+      component={Room}
+    />
+    <ChatStack.Screen
+      options={{
+        headerShown: false,
+      }}
+      name="Chat"
+      component={Chat}
+    />
+  </ChatStack.Navigator>
+);
+
 const BottomTabStack = () => (
   <BottomTab.Navigator
     initialRouteName="Home"
@@ -96,7 +119,7 @@ const BottomTabStack = () => (
       name="Generate"
       options={{
         tabBarIcon: ({color, size}) => (
-          <Feather name="music" color={color} size={20} />
+          <Ionicons name="add-outline" color={color} size={20} />
         ),
       }}
       component={Generate}
@@ -144,10 +167,10 @@ const BottomTabStack = () => (
 
     <BottomTab.Screen
       name="Chat"
-      component={Chat}
+      component={ChatStackScreens}
       options={{
         tabBarIcon: ({color, size}) => (
-          <Feather name="settings" color={color} size={20} />
+          <Ionicons name="chatbox-outline" color={color} size={20} />
         ),
       }}
     />

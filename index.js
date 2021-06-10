@@ -12,7 +12,7 @@ const Root = () => {
     initializeStorage();
   }, []);
   const initializeStorage = async () => {
-    const data = await syncStorage.init();
+    await syncStorage.init();
   };
   return (
     <Provider store={store}>

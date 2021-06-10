@@ -31,8 +31,6 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
 
   const handleImagePicker = () => {
     launchImageLibrary({}, (data) => {
-      console.log(data);
-
       setImage(data.assets[0].uri);
     });
   };
@@ -55,7 +53,10 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
   const handleCreatePost = () => {
     let mediaData = {uri: mediaSelected.uri};
     const formdata = new FormData();
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3e4e195d23aff347615e80dc0439a41f9dc61e97
     formdata.append('caption', caption);
 
     formdata.append('media', {
@@ -66,12 +67,16 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
 
     service
       .createVibe(formdata)
+<<<<<<< HEAD
       .then((data) => {
         if (data.data.success) {
           createVibe(data.data.data);
           hideModal();
         }
       })
+=======
+      .then((data) => {})
+>>>>>>> 3e4e195d23aff347615e80dc0439a41f9dc61e97
       .catch((err) => console.log(err));
   };
 
@@ -93,7 +98,7 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
           mode="outlined"
         />
         {/* {image && <Image source={{uri: image}} style={styles.img} />} */}
-        {/* 
+        {/*
         <Button
           style={styles.button}
           color={Color.primary}
@@ -132,7 +137,7 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
               title="Item 2"
             />
           </Menu>
-        </View> 
+        </View>
         {songSelected !== '' && (
           <View style={styles.songContainer}>
             <Feather name="music" size={24} color={Color.primary} />
