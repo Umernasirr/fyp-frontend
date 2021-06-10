@@ -23,16 +23,14 @@ const CommentModal = ({
   vibeId,
   addComment,
   deleteCommentHandler,
+  handleChangeCommentCount,
 }) => {
   const [comment, setComment] = useState('');
   const [vibeComments, setvibeComments] = useState([]);
 
   useEffect(() => {
-    console.log(comments, 'this is comment console log');
-    // setComments(comments);
-    console.log(comments, 'commmememem');
     setvibeComments(comments);
-  }, []);
+  }, [comments]);
 
   const handleKeyDown = (e) => {
     // TODO: HANDLE ADD COMMENT
@@ -43,6 +41,7 @@ const CommentModal = ({
     console.log(data);
     deleteCommentHandler({comments: data, vibeId: vibeId});
     setvibeComments(data);
+    handleChangeCommentCount(-1);
   };
 
   const addCommentHandler = () => {
@@ -54,6 +53,7 @@ const CommentModal = ({
           addComment({postId: vibeId, comments: data.data.data});
           setvibeComments(data.data.data);
           setComment('');
+          handleChangeCommentCount(1);
         })
         .catch((err) => console.log(err));
     } else {
@@ -71,7 +71,7 @@ const CommentModal = ({
         style={styles.modal}>
         <Text>Comments: </Text>
 
-        <View>
+        <View style={{maxHeight: '80%'}}>
           <FlatList
             ItemSeparatorComponent={
               Platform.OS !== 'android' &&
@@ -99,7 +99,7 @@ const CommentModal = ({
             }}
           />
         </View>
-        <View>
+        <View style={styles.commentRow}>
           <TextInput
             placeholder="Add a Comment"
             style={styles.input}
@@ -109,7 +109,7 @@ const CommentModal = ({
           />
           <AntDesign
             onPress={addCommentHandler}
-            name="heart"
+            name="message1"
             color={Color.primary}
             size={24}
           />
@@ -131,5 +131,10 @@ const styles = StyleSheet.create({
   modal: {
     position: 'absolute',
     top: 200,
+  },
+  commentRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });

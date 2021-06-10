@@ -34,8 +34,6 @@ const VerifyInputs = ({
       service
         .resendForgetPasswordVerificationCode({email})
         .then((data) => {
-          console.log(data.data, 'dsds');
-
           if (!data.data.error) {
             alert('Verification Code sent Successfully');
           } else {
@@ -50,7 +48,6 @@ const VerifyInputs = ({
         if (data.data.error) {
           alert(data.data.error);
         } else {
-          console.log(data.data);
           alert('Verification Code sent successfully');
         }
       });

@@ -15,7 +15,6 @@ const CommentItem = ({
   vibeId,
   setvibeComments,
 }) => {
-  const [isLiked, setIsLiked] = useState(liked);
   // const onHeartClick = () => {
   //   setIsLiked(!isLiked);
   // };
@@ -23,7 +22,6 @@ const CommentItem = ({
     service
       .deleteComment(vibeId, id)
       .then((data) => {
-        console.log(data.data);
         setvibeComments(data.data.data);
       })
       .catch((err) => console.log(err));
@@ -39,17 +37,11 @@ const CommentItem = ({
         <View>
           <Text>{text}</Text>
           <Text style={styles.userName}>
-            {name} - {createdAt}
+            {name} - {createdAt.slice(0, 10)}
           </Text>
         </View>
-        <TouchableOpacity
-          style={styles.likeContainer}
-          onPress={onCommentDelete}>
-          <AntDesign
-            name={isLiked ? 'heart' : 'hearto'}
-            color={Color.primary}
-            size={24}
-          />
+        <TouchableOpacity onPress={onCommentDelete}>
+          <AntDesign name="delete" color={Color.primary} size={24} />
           <Text> {likes}</Text>
         </TouchableOpacity>
       </View>
@@ -73,8 +65,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  likeContainer: {alignItems: 'center'},
   imgUser: {
     width: 30,
     height: 30,

@@ -27,28 +27,43 @@ const PostItem = ({
   comments,
 }) => {
   const [showCommentModal, setShowCommentModal] = useState(false);
-  const [liked, setLiked] = useState(null);
+  const [liked, setLiked] = useState(false);
   const [favourited, setFavourited] = useState(false);
   const [comment, setComment] = useState('');
+  const [likesCount, setLikesCount] = useState(0);
+  const [commentCount, setCommentCount] = useState(0);
 
+  console.log(comments);
   useEffect(() => {
-    console.log(likes, 'likes');
-    // if(likes)
+    let tempLikeCount = 0;
+    let tempCommentCount = 0;
+
     if (likes) {
+      console.log(user._id);
       likes.map((like) => {
-        console.log(user._id, 'uses');
+        tempLikeCount += 1;
+
         if (like.user.toString() === user._id.toString()) {
-          console.log('let see');
           setLiked(true);
         }
       });
     }
+
+    if (comments) {
+      comments.forEach((comment) => (tempCommentCount += 1));
+    }
+
+    setLikesCount(tempLikeCount);
+    setCommentCount(tempCommentCount);
   }, []);
 
   const handleKeyDown = (e) => {
     Keyboard.dismiss();
-
     setComment('');
+  };
+
+  const handleChangeCommentCount = (value) => {
+    setCommentCount(commentCount + value);
   };
 
   const updateLikes = () => {
@@ -59,6 +74,11 @@ const PostItem = ({
           console.log(data.data);
           setLiked(!liked);
           updateLikesUnlikes({vibeId, likes: data.data.data});
+        }
+        if (!liked) {
+          setLikesCount(likesCount + 1);
+        } else {
+          setLikesCount(likesCount - 1);
         }
       })
       .catch((err) => console.log(err));
@@ -91,18 +111,18 @@ const PostItem = ({
       <View style={styles.actionButtons}>
         <TouchableOpacity style={styles.icon} onPress={updateLikes}>
           <AntDesign
-            name={liked ? 'like1' : 'like2'}
+            name={liked ? 'like2' : 'like2'}
             color={liked ? Color.primary : Color.whiteColor}
             size={24}
           />
-          <Text style={styles.iconTxt}>Like</Text>
+          <Text style={styles.iconTxt}>{likesCount}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.icon}
           onPress={() => setShowCommentModal(true)}>
           <AntDesign name="message1" color={Color.whiteColor} size={24} />
-          <Text style={styles.iconTxt}>Comments</Text>
+          <Text style={styles.iconTxt}>{commentCount}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -132,6 +152,7 @@ const PostItem = ({
         setVisible={setShowCommentModal}
         comments={comments}
         vibeId={vibeId}
+        handleChangeCommentCount={handleChangeCommentCount}
       />
     </View>
   );
