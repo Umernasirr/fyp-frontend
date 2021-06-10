@@ -33,13 +33,11 @@ const PostItem = ({
   const [likesCount, setLikesCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
 
-  console.log(comments);
   useEffect(() => {
     let tempLikeCount = 0;
     let tempCommentCount = 0;
 
     if (likes) {
-      console.log(user._id);
       likes.map((like) => {
         tempLikeCount += 1;
 
@@ -71,7 +69,6 @@ const PostItem = ({
       .likeUnlike(vibeId)
       .then((data) => {
         if (data.data.success) {
-          console.log(data.data);
           setLiked(!liked);
           updateLikesUnlikes({vibeId, likes: data.data.data});
         }
@@ -137,7 +134,7 @@ const PostItem = ({
         </TouchableOpacity>
       </View>
 
-      <View>
+      <View style={styles.commentRow}>
         <TextInput
           placeholder="Add a Comment"
           style={styles.input}
@@ -145,6 +142,10 @@ const PostItem = ({
           onChangeText={setComment}
           onSubmitEditing={handleKeyDown}
         />
+        <TouchableOpacity style={styles.submit} onPress={handleKeyDown}>
+          <AntDesign name="enter" color={Color.primary} size={20} />
+          <Text style={styles.txtSubmit}>Submit</Text>
+        </TouchableOpacity>
       </View>
 
       <CommentModal
@@ -162,7 +163,7 @@ export default connect(null, {updateLikesUnlikes})(PostItem);
 
 const styles = StyleSheet.create({
   container: {
-    height: 500,
+    height: 460,
     margin: 10,
     borderRadius: 24,
     padding: 24,
@@ -211,9 +212,25 @@ const styles = StyleSheet.create({
     color: Color.whiteColor,
   },
 
+  commentRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+
   input: {
     backgroundColor: Color.whiteColor,
     padding: 10,
     borderRadius: 20,
+    flex: 1,
+    marginRight: 10,
+  },
+  txtSubmit: {
+    color: Color.primary,
+    fontSize: 12,
+  },
+  submit: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

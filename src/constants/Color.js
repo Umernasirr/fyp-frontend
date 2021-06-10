@@ -13,5 +13,5 @@ export default {
 
   primary: '#FF296D',
   background: '#01012A',
-  dark: '#191D42',
+  dark: '#141432',
 };

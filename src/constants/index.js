@@ -124,6 +124,9 @@ const FRIENDS = [
     id: 5,
     name: 'Eliza John',
   },
+];
+
+const PENDING = [
   {
     id: 6,
     name: 'Zahara Quresh',
@@ -138,4 +141,4 @@ const FRIENDS = [
   },
 ];
 
-export {POSTS, SONGS, COMMENTS, FRIENDS};
+export {POSTS, SONGS, COMMENTS, FRIENDS, PENDING};

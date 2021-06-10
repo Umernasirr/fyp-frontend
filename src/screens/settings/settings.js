@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,22 +6,36 @@ import {
   ImageBackground,
   ScrollView,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {Button, Divider} from 'react-native-paper';
 import {connect} from 'react-redux';
 import Color from '../../constants/Color';
 import LinearGradient from 'react-native-linear-gradient';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {reset} from '../../store/actions/Auth';
 import {useDispatch} from 'react-redux';
+
 const Settings = ({navigation, user}) => {
   const dispatch = useDispatch();
+  const [image, setImage] = useState('');
+
   const handleLogout = () => {
     dispatch(reset(navigation));
     // navigation.navigate('Login');
   };
+  const handleImagePicker = () => {
+    launchImageLibrary({}, (data) => {
+      if (data.assets) {
+        setImage(data.assets[0].uri);
+
+        //  MAKEA REQUEST PLS
+      }
+    });
+  };
+
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -33,14 +47,21 @@ const Settings = ({navigation, user}) => {
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.containerMargin}>
               <View style={styles.topRow}>
-                <View>
+                <TouchableOpacity onPress={handleImagePicker}>
                   <Image
-                    source={require('../../assets/images/person.png')}
+                    source={{
+                      uri:
+                        image !== ''
+                          ? image
+                          : 'https://via.placeholder.com/200',
+                    }}
                     style={styles.profileImage}
                   />
-                </View>
+                </TouchableOpacity>
                 <Text style={styles.profileTxt}>{user && user.name}</Text>
-                <Button color={Color.primary}>Change Photo</Button>
+                <Button onPress={handleImagePicker} color={Color.primary}>
+                  Change Photo
+                </Button>
               </View>
 
               <View style={styles.card}>
@@ -55,6 +76,13 @@ const Settings = ({navigation, user}) => {
                   style={styles.cardItem}
                   onPress={() => navigation.navigate('NotificationSettings')}>
                   <Text>Notification Settings</Text>
+                </TouchableOpacity>
+                <Divider />
+
+                <TouchableOpacity
+                  style={styles.cardItem}
+                  onPress={() => navigation.navigate('ManageFriends')}>
+                  <Text>Manage Friends</Text>
                 </TouchableOpacity>
                 <Divider />
 
@@ -126,8 +154,8 @@ const styles = StyleSheet.create({
   },
 
   profileImage: {
-    height: 60,
-    width: 60,
+    height: 80,
+    width: 80,
     backgroundColor: 'white',
     padding: 30,
     borderRadius: 50,

@@ -6,34 +6,22 @@ import {
   ImageBackground,
   Platform,
   FlatList,
-  ActivityIndicator,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {Button, Searchbar} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
-import {POSTS} from '../../constants/';
 import Color from '../../constants/Color';
 import PostItem from '../../components/PostItem';
 import CreatePostModal from '../../components/CreatePostModal';
 import {service} from '../../services/service';
 import {getVibes} from '../../store/actions/Vibe';
-const feed = ({vibes, getVibes}) => {
+const Feed = ({vibes, getVibes}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [postsList, setPostsList] = useState([]);
   const [openPostModal, setOpenPostModal] = useState(false);
-  const [posts, setposts] = useState([]);
 
   const onChangeSearch = (query) => {
     setSearchQuery(query);
-
-    //   const tempSongs = allSongs.filter((song) => {
-    //     return song.description
-    //       .toLowerCase()
-    //       .trim()
-    //       .includes(query.toLowerCase().trim());
-    //   });
-
-    //   setSongList(tempSongs);
   };
 
   useEffect(() => {
@@ -118,7 +106,7 @@ const mapStateToProps = (state) => ({
   vibes: state.vibe.vibes,
 });
 
-export default connect(mapStateToProps, {getVibes})(feed);
+export default connect(mapStateToProps, {getVibes})(Feed);
 
 const styles = StyleSheet.create({
   container: {
@@ -135,7 +123,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   marginContainer: {
-    marginTop: 100,
+    flex: 1,
+    marginTop: 20,
     marginHorizontal: '2%',
   },
   heading: {

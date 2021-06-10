@@ -21,15 +21,18 @@ const Home = ({navigation, route}) => {
   const [title, setTitle] = useState('');
   const onChangeSearch = (query) => {
     setSearchQuery(query);
+    if (query === '') {
+      getSongs();
+    } else {
+      const tempSongs = allSongs.filter((song) => {
+        return song.description
+          .toLowerCase()
+          .trim()
+          .includes(query.toLowerCase().trim());
+      });
 
-    const tempSongs = allSongs.filter((song) => {
-      return song.description
-        .toLowerCase()
-        .trim()
-        .includes(query.toLowerCase().trim());
-    });
-
-    setSongList(tempSongs);
+      setSongList(tempSongs);
+    }
   };
 
   const getSongs = () => {
@@ -57,8 +60,8 @@ const Home = ({navigation, route}) => {
         <ImageBackground
           source={require('../../assets/images/background_texture.png')}
           style={styles.image}>
-          {songList && songList.length > 0 ? (
-            <View>
+          {allSongs && allSongs.length > 0 ? (
+            <View style={{flex: 1}}>
               <View style={styles.marginContainer}>
                 <Text style={styles.txtHeading}>{title}</Text>
                 <Searchbar
@@ -134,7 +137,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 30,
     fontWeight: 'bold',
-    marginVertical: 20,
   },
 
   txtSubheading: {
@@ -145,11 +147,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   marginContainer: {
-    marginTop: 100,
-    marginHorizontal: '10%',
+    marginHorizontal: '2%',
   },
-  songsContainer: {
-    marginVertical: 10,
-    marginHorizontal: '0%',
-  },
+  songsContainer: {},
 });

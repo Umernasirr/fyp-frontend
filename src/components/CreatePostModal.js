@@ -1,17 +1,9 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
-import {
-  Portal,
-  Modal,
-  TextInput,
-  Button,
-  Menu,
-  Divider,
-} from 'react-native-paper';
+import {StyleSheet, Text} from 'react-native';
+import {Portal, Modal, TextInput, Button} from 'react-native-paper';
 import Color from '../constants/Color';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {connect} from 'react-redux';
-import Feather from 'react-native-vector-icons/Feather';
 import DocumentPicker from 'react-native-document-picker';
 
 import {service} from '../services/service';

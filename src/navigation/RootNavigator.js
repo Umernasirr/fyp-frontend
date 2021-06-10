@@ -22,12 +22,14 @@ import Help from '../screens/help/help';
 import About from '../screens/about/about';
 import Chat from '../screens/chat/chat';
 import Room from '../screens/room/room';
+import ManageFriends from '../screens/manageFriends/manageFriends';
+import UserDetails from '../screens/userDetails/userDetails';
 const Stack = createStackNavigator();
 const BottomTab = createMaterialBottomTabNavigator();
 const MusicStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
 const ChatStack = createStackNavigator();
-
+const UserStack = createStackNavigator();
 const MusicStackScreens = () => (
   <MusicStack.Navigator>
     <MusicStack.Screen
@@ -48,7 +50,7 @@ const MusicStackScreens = () => (
 );
 
 const SettingsStackScreens = () => (
-  <SettingsStack.Navigator initialRouteName="SettingsMain">
+  <SettingsStack.Navigator initialRouteName="ManageFriends">
     <SettingsStack.Screen
       options={{
         headerShown: false,
@@ -84,6 +86,14 @@ const SettingsStackScreens = () => (
       options={{
         headerShown: false,
       }}
+      name="ManageFriends"
+      component={ManageFriends}
+    />
+
+    <SettingsStack.Screen
+      options={{
+        headerShown: false,
+      }}
       name="About"
       component={About}
     />
@@ -109,9 +119,28 @@ const ChatStackScreens = () => (
   </ChatStack.Navigator>
 );
 
+const UserStackScreens = () => (
+  <UserStack.Navigator>
+    <UserStack.Screen
+      options={{
+        headerShown: false,
+      }}
+      name="UserListMain"
+      component={UserList}
+    />
+    <UserStack.Screen
+      options={{
+        headerShown: false,
+      }}
+      name="UserDetails"
+      component={UserDetails}
+    />
+  </UserStack.Navigator>
+);
+
 const BottomTabStack = () => (
   <BottomTab.Navigator
-    initialRouteName="Home"
+    initialRouteName="Settings"
     activeColor={Color.primary}
     inactiveColor="black"
     barStyle={{backgroundColor: 'white', color: 'black'}}>
@@ -152,7 +181,7 @@ const BottomTabStack = () => (
           <Feather name="user" color={color} size={20} />
         ),
       }}
-      component={UserList}
+      component={UserStackScreens}
     />
 
     <BottomTab.Screen

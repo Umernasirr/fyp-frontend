@@ -203,12 +203,12 @@ const styles = StyleSheet.create({
   containerBg: {
     padding: 20,
     borderRadius: 10,
+    margin: 10,
   },
 
   chatBtn: {
-    flex: 1,
     justifyContent: 'center',
-    marginHorizontal: '6%',
+    marginVertical: 20,
   },
   noChatTxt: {
     marginVertical: 10,
@@ -216,6 +216,7 @@ const styles = StyleSheet.create({
   },
   btn: {
     borderRadius: 10,
+    margin: 5,
   },
 
   listTitle: {
@@ -227,6 +228,7 @@ const styles = StyleSheet.create({
   topContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 20,
   },
   topContainerInput: {
     margin: 10,
@@ -239,6 +241,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginVertical: 10,
   },
   topRightContainer: {
     justifyContent: 'center',

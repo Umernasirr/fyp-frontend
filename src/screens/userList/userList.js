@@ -4,7 +4,6 @@ import {
   Text,
   View,
   ImageBackground,
-  ScrollView,
   Platform,
   FlatList,
 } from 'react-native';
@@ -50,14 +49,6 @@ const Home = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {/* {error !== '' && (
-        <ErrorModal
-          errorVisible={true}
-          error={error}
-          handleErrorClose={handleErrorClose}
-        />
-      )} */}
-
       <LinearGradient
         colors={[Color.linearColor1, Color.linearColor2]}
         style={styles.Linear}>
@@ -94,8 +85,8 @@ const Home = ({navigation}) => {
                   data={userList}
                   renderItem={({item}) => (
                     <UserItem
+                      _id={item._id}
                       name={item.name}
-                      createdAt={item.createdAt.slice(0, 10)}
                       gender={item.gender}
                     />
                   )}
@@ -148,7 +139,6 @@ const styles = StyleSheet.create({
     marginHorizontal: '2%',
   },
   songsContainer: {
-    marginVertical: 10,
-    marginHorizontal: '2%',
+    marginVertical: 20,
   },
 });

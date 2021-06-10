@@ -8,7 +8,6 @@ import {
   Platform,
 } from 'react-native';
 import {Portal, Modal} from 'react-native-paper';
-import {COMMENTS} from '../constants';
 import Color from '../constants/Color';
 import CommentItem from './CommentItem';
 import {connect} from 'react-redux';
@@ -38,7 +37,6 @@ const CommentModal = ({
     setComment('');
   };
   const deleteComment = (data) => {
-    console.log(data);
     deleteCommentHandler({comments: data, vibeId: vibeId});
     setvibeComments(data);
     handleChangeCommentCount(-1);
@@ -49,7 +47,6 @@ const CommentModal = ({
       service
         .addComment({text: comment}, vibeId)
         .then((data) => {
-          console.log(data.data.data);
           addComment({postId: vibeId, comments: data.data.data});
           setvibeComments(data.data.data);
           setComment('');
