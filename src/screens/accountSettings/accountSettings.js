@@ -10,9 +10,14 @@ import {
 import {Button} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Color from '../../constants/Color';
+import {useSelector} from 'react-redux';
+
 const AccountSettings = ({navigation}) => {
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
+  const user = useSelector((state) => state.auth.user);
+
+  console.log(user);
+  const [fullName, setFullName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -53,6 +58,8 @@ const AccountSettings = ({navigation}) => {
                 <View style={styles.cardItem}>
                   <Text>Password:</Text>
                   <TextInput
+                    secureTextEntry
+                    placeholder="Enter Password"
                     style={styles.input}
                     value={password}
                     onChangeText={setPassword}
@@ -62,6 +69,8 @@ const AccountSettings = ({navigation}) => {
                 <View style={styles.cardItem}>
                   <Text>Confirm Password:</Text>
                   <TextInput
+                    secureTextEntry
+                    placeholder="Confirm Password"
                     style={styles.input}
                     value={confirmPassword}
                     onChangeText={setConfirmPassword}

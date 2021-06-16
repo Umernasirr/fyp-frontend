@@ -30,6 +30,7 @@ const Feed = ({vibes, getVibes}) => {
       .then((data) => {
         if (data.data.success) {
           getVibes(data.data.data);
+          console.log(data.data.data[0]);
         }
       })
       .catch((err) => {
@@ -84,11 +85,22 @@ const Feed = ({vibes, getVibes}) => {
                     vibeId={item._id}
                     likes={item.likes}
                     comments={item.comments}
+                    format={item.format}
                   />
                 )}
               />
             </View>
-          ) : null}
+          ) : (
+            <View style={styles.actionButtons}>
+              <Button
+                mode="contained"
+                color={Color.whiteColor}
+                onPress={() => setOpenPostModal(true)}>
+                Create New Post
+              </Button>
+              <Button color={Color.whiteColor}>TODO Something</Button>
+            </View>
+          )}
         </ImageBackground>
       </LinearGradient>
 

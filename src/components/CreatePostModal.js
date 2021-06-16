@@ -1,17 +1,20 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 import {Portal, Modal, TextInput, Button} from 'react-native-paper';
 import Color from '../constants/Color';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {connect} from 'react-redux';
 import DocumentPicker from 'react-native-document-picker';
+import Feather from 'react-native-vector-icons/Feather';
 
 import {service} from '../services/service';
 import {createVibe} from '../store/actions/Vibe';
-
+import {useNavigation} from '@react-navigation/native';
 const CreatePostModal = ({visible, setVisible, createVibe}) => {
+  const navigation = useNavigation();
   const [menuVisible, setMenuVisible] = useState(false);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState({});
+  const [imageSelected, setImageSelected] = useState(false);
   const [songSelected, setSongSelected] = useState('');
   const [mediaSelected, setMediaSelected] = useState(null);
   const [caption, setCaption] = useState('');
@@ -23,7 +26,7 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
 
   const handleImagePicker = () => {
     launchImageLibrary({}, (data) => {
-      setImage(data.assets[0].uri);
+      setImage(data.assets[0]);
     });
   };
 
@@ -34,6 +37,7 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
       });
 
       setMediaSelected(res);
+      setSongSelected(res.name);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
       } else {
@@ -43,22 +47,26 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
   };
 
   const handleCreatePost = () => {
-    let mediaData = {uri: mediaSelected.uri};
+    let mediaData = {uri: mediaSelected ? mediaSelected.uri : ''};
     const formdata = new FormData();
     formdata.append('caption', caption);
 
-    formdata.append('media', {
-      uri: mediaData.uri,
-      name: mediaSelected.name,
-      type: mediaSelected.type,
-    });
+    if (mediaSelected) {
+      formdata.append('media', {
+        uri: mediaData.uri,
+        name: mediaSelected.name,
+        type: mediaSelected.type,
+      });
+    }
 
     service
       .createVibe(formdata)
       .then((data) => {
+        console.log(data.data);
         if (data.data.success) {
           createVibe(data.data.data);
           hideModal();
+          navigation.navigate('Feed');
         }
       })
       .catch((err) => console.log(err));
@@ -75,21 +83,29 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
 
         <TextInput
           value={caption}
-          multiline
           onChangeText={(text) => setCaption(text)}
           label="Caption"
           placeholde="Describe your Post"
           mode="outlined"
         />
-        {/* {image && <Image source={{uri: image}} style={styles.img} />} */}
-        {/*
+        {image && (
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Image source={{uri: image.uri}} style={styles.img} />
+            <Text>{image.fileName.slice(0, 30)} </Text>
+          </View>
+        )}
+        <View style={{marginTop: 20}} />
         <Button
           style={styles.button}
           color={Color.primary}
           onPress={handleImagePicker}>
           Choose an Image
-        </Button> */}
+        </Button>
+
+        <Button style={styles.button}>Or</Button>
         <Button
+          disabled={image ? true : false}
           style={styles.button}
           color={Color.primary}
           onPress={handleDocumentPicker}>
@@ -122,13 +138,13 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
             />
           </Menu>
         </View>
+      */}
         {songSelected !== '' && (
           <View style={styles.songContainer}>
             <Feather name="music" size={24} color={Color.primary} />
             <Text style={styles.songTxt}>{songSelected}</Text>
           </View>
         )}
-        */}
         <Button
           mode="contained"
           style={styles.button}
@@ -160,7 +176,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     position: 'absolute',
-    top: 200,
+    top: 100,
   },
   heading: {
     fontSize: 20,
@@ -169,14 +185,17 @@ const styles = StyleSheet.create({
   },
 
   img: {
-    width: 40,
-    height: 40,
+    flex: 1,
+    width: 100,
+    margin: 10,
   },
   button: {
-    margin: 20,
+    padding: 10,
+    margin: 10,
   },
 
   songTxt: {
     marginHorizontal: 10,
+    color: Color.dark,
   },
 });

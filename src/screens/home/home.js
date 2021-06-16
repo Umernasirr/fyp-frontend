@@ -73,7 +73,7 @@ const Home = ({navigation, route}) => {
               </View>
 
               <View style={styles.songsContainer}>
-                <Text style={styles.txtSubheading}>Latest Releases</Text>
+                <Text style={styles.txtSubheading}>AI Generated Music</Text>
 
                 <FlatList
                   style={styles.songsList}

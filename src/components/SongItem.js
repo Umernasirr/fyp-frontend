@@ -12,10 +12,13 @@ const SongItem = ({description, createdAt, url}) => {
         navigation.navigate('SongPlayer', {description, createdAt, url});
       }}
       style={styles.container}>
-      <Image
-        style={styles.img}
-        source={{uri: 'https://via.placeholder.com/150'}}
+      <Feather
+        style={styles.icon}
+        name="music"
+        size={25}
+        color={Color.whiteColor}
       />
+
       <View style={styles.txtContainer}>
         <Text style={styles.txtTitle}>{description.toUpperCase()}</Text>
         <Text style={styles.txtAuthor}>{createdAt}</Text>

@@ -12,10 +12,13 @@ import Color from '../constants/Color';
 import {connect} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import TrackPlayer from 'react-native-track-player';
+import {useTrackPlayerProgress} from 'react-native-track-player/lib/hooks';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CommentModal from './CommentModal';
 import {service} from '../services/service';
 import {updateLikesUnlikes} from '../store/actions/Vibe';
+import Slider from 'react-native-slider';
 
 const PostItem = ({
   caption,
@@ -25,6 +28,7 @@ const PostItem = ({
   likes,
   updateLikesUnlikes,
   comments,
+  format,
 }) => {
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -32,6 +36,30 @@ const PostItem = ({
   const [comment, setComment] = useState('');
   const [likesCount, setLikesCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
+  const {position, duration} = useTrackPlayerProgress(250);
+  const [sliderValue, setSliderValue] = useState(0);
+  const [isTrackPlayerInit, setIsTrackPlayerInit] = useState(false);
+
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const onButtonPressed = () => {
+    if (!isPlaying) {
+      TrackPlayer.play();
+      setIsPlaying(true);
+    } else {
+      TrackPlayer.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  const slidingStarted = () => {
+    setIsSeeking(true);
+  };
+  const slidingCompleted = async (value) => {
+    await TrackPlayer.seekTo(0);
+    setSliderValue(value);
+    setIsSeeking(false);
+  };
 
   useEffect(() => {
     let tempLikeCount = 0;
@@ -53,6 +81,12 @@ const PostItem = ({
 
     setLikesCount(tempLikeCount);
     setCommentCount(tempCommentCount);
+
+    // const startPlayer = async () => {
+    //   let isInit = await trackPlayerInit('');
+    //   setIsTrackPlayerInit(isInit);
+    // };
+    // startPlayer();
   }, []);
 
   const handleKeyDown = (e) => {
@@ -84,12 +118,15 @@ const PostItem = ({
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Image
-          style={styles.imgUser}
-          source={{uri: 'https://via.placeholder.com/150'}}
-        />
         <View style={styles.topContainer}>
-          <Text style={styles.title}>{user.name} </Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Image
+              style={styles.imgUser}
+              source={{uri: 'https://via.placeholder.com/150'}}
+            />
+            <Text style={styles.title}>{user.name} </Text>
+          </View>
+
           <TouchableOpacity>
             <Ionicons
               color={Color.whiteColor}
@@ -100,10 +137,40 @@ const PostItem = ({
         </View>
       </View>
       <Text style={styles.caption}>{caption}</Text>
-      <Image
-        style={styles.img}
-        source={{uri: 'https://via.placeholder.com/300'}}
-      />
+
+      {format === 'jpeg' ||
+        format === 'jpg' ||
+        (format === 'png' && (
+          <Image
+            style={styles.img}
+            source={{uri: 'https://via.placeholder.com/300'}}
+          />
+        ))}
+
+      {format === 'mp3' && (
+        <View style={styles.musicPlayer}>
+          <View style={styles.audioContainer}>
+            <FontAwesome
+              onPress={onButtonPressed}
+              style={styles.fontAudio}
+              name={isPlaying ? 'pause' : 'play'}
+              color="white"
+              size={20}
+            />
+            <Slider
+              style={{width: '90%', height: 20, color: Color.primary}}
+              minimumValue={0}
+              maximumValue={1}
+              value={sliderValue}
+              minimumTrackTintColor="#A159E9"
+              maximumTrackTintColor="gray"
+              onSlidingStart={slidingStarted}
+              onSlidingComplete={slidingCompleted}
+              thumbTintColor="white"
+            />
+          </View>
+        </View>
+      )}
 
       <View style={styles.actionButtons}>
         <TouchableOpacity style={styles.icon} onPress={updateLikes}>
@@ -163,7 +230,6 @@ export default connect(null, {updateLikesUnlikes})(PostItem);
 
 const styles = StyleSheet.create({
   container: {
-    height: 460,
     margin: 10,
     borderRadius: 24,
     padding: 24,
@@ -171,8 +237,9 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
-    fontSize: 14,
-    marginHorizontal: 5,
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginHorizontal: 6,
   },
 
   caption: {color: 'white', margin: 5, marginTop: 10},
@@ -226,11 +293,36 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   txtSubmit: {
-    color: Color.primary,
+    color: Color.whiteColor,
     fontSize: 12,
   },
   submit: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  musicPlayer: {
+    padding: 10,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  audioContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    padding: 20,
+    // flex: 0.45,
+    marginVertical: 10,
+    borderColor: Color.primary,
+    borderWidth: 2,
+    borderRadius: 10,
+  },
+
+  fontAudio: {
+    display: 'flex',
+    flexDirection: 'column',
+    textAlignVertical: 'center',
+    color: Color.whiteColor,
+    marginHorizontal: 10,
   },
 });

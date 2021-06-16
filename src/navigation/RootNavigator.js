@@ -50,7 +50,7 @@ const MusicStackScreens = () => (
 );
 
 const SettingsStackScreens = () => (
-  <SettingsStack.Navigator initialRouteName="ManageFriends">
+  <SettingsStack.Navigator initialRouteName="SettingsMain">
     <SettingsStack.Screen
       options={{
         headerShown: false,

@@ -75,7 +75,7 @@ const Settings = ({navigation, user}) => {
                 <TouchableOpacity
                   style={styles.cardItem}
                   onPress={() => navigation.navigate('NotificationSettings')}>
-                  <Text>Notification Settings</Text>
+                  <Text>Manage Posts</Text>
                 </TouchableOpacity>
                 <Divider />
 

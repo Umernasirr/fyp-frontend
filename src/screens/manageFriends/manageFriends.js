@@ -4,7 +4,7 @@ import {
   Text,
   View,
   ImageBackground,
-  ScrollView,
+  Image,
   FlatList,
   Platform,
   TouchableOpacity,
@@ -79,54 +79,64 @@ const ManageFriends = ({navigation, requests, getRequests, deleteRequests}) => {
           source={require('../../assets/images/background_texture.png')}
           style={styles.image}>
           <View style={styles.marginContainer}>
-            <View style={styles.dividerContainer}>
-              <Text style={styles.dividerTxt}>New Friend Requests</Text>
-            </View>
-            <View style={styles.divider} />
-            <View style={{maxHeight: '30%'}}>
-              <FlatList
-                style={styles.songsList}
-                ItemSeparatorComponent={
-                  Platform.OS !== 'android' &&
-                  (({highlighted}) => (
-                    <View
-                      style={[styles.separator, highlighted && {marginLeft: 0}]}
-                    />
-                  ))
-                }
-                keyExtractor={(item) => item._id.toString()}
-                data={requestsToShow}
-                renderItem={({item}) => (
-                  <View style={styles.friendsList}>
-                    <View style={styles.friendsLeft}>
-                      <Text>{item.requestBy.name}</Text>
-                    </View>
-
-                    <View style={styles.friendsRight}>
-                      <TouchableOpacity
-                        onPress={() => addFriendHandler(item._id)}>
-                        <Ionicons
-                          name="add-circle-outline"
-                          color={Color.primary}
-                          size={28}
+            {requestsToShow && requestsToShow.length > 0 && (
+              <View>
+                <View style={styles.dividerContainer}>
+                  <Text style={styles.dividerTxt}>New Friend Requests</Text>
+                </View>
+                <View style={styles.divider} />
+                <View style={{maxHeight: '30%'}}>
+                  <FlatList
+                    style={styles.songsList}
+                    ItemSeparatorComponent={
+                      Platform.OS !== 'android' &&
+                      (({highlighted}) => (
+                        <View
+                          style={[
+                            styles.separator,
+                            highlighted && {marginLeft: 0},
+                          ]}
                         />
-                      </TouchableOpacity>
+                      ))
+                    }
+                    keyExtractor={(item) => item._id.toString()}
+                    data={requestsToShow}
+                    renderItem={({item}) => (
+                      <View style={styles.friendsList}>
+                        <View style={styles.friendsLeft}>
+                          <Image
+                            style={styles.imgUser}
+                            source={{uri: 'https://via.placeholder.com/150'}}
+                          />
+                          <Text>{item.requestBy.name}</Text>
+                        </View>
 
-                      <View style={{margin: 10}} />
-                      <TouchableOpacity
-                        onPress={() => removeFriendHandler(item._id)}>
-                        <Ionicons
-                          name="remove-circle-outline"
-                          color={Color.primary}
-                          size={28}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                )}
-              />
-            </View>
+                        <View style={styles.friendsRight}>
+                          <TouchableOpacity
+                            onPress={() => addFriendHandler(item._id)}>
+                            <Ionicons
+                              name="add-circle-outline"
+                              color={Color.primary}
+                              size={28}
+                            />
+                          </TouchableOpacity>
 
+                          <View style={{margin: 10}} />
+                          <TouchableOpacity
+                            onPress={() => removeFriendHandler(item._id)}>
+                            <Ionicons
+                              name="remove-circle-outline"
+                              color={Color.primary}
+                              size={28}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    )}
+                  />
+                </View>
+              </View>
+            )}
             <View style={styles.dividerContainer}>
               <Text style={styles.dividerTxt}>Manage Friends</Text>
             </View>
@@ -147,6 +157,11 @@ const ManageFriends = ({navigation, requests, getRequests, deleteRequests}) => {
                 renderItem={({item}) => (
                   <View style={styles.friendsList}>
                     <View style={styles.friendsLeft}>
+                      <Image
+                        style={styles.imgUser}
+                        source={{uri: 'https://via.placeholder.com/150'}}
+                      />
+
                       <Text>{item.name}</Text>
                     </View>
                     <TouchableOpacity style={styles.friendsRight}>
@@ -190,6 +205,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   marginContainer: {
+    flex: 1,
     marginHorizontal: '4%',
   },
 
@@ -202,8 +218,7 @@ const styles = StyleSheet.create({
   },
 
   dividerContainer: {
-    flex: 1,
-    marginTop: 10,
+    marginTop: 40,
     alignItems: 'center',
   },
 
@@ -220,7 +235,8 @@ const styles = StyleSheet.create({
   },
 
   friendsLeft: {
-    alignItems: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
   },
   friendsRight: {
@@ -228,5 +244,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
 
     flexDirection: 'row',
+  },
+
+  imgUser: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginRight: 10,
   },
 });

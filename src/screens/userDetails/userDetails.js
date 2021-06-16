@@ -8,6 +8,7 @@ import {
   Image,
   FlatList,
   Platform,
+  TouchableOpacity,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Color from '../../constants/Color';
@@ -15,7 +16,7 @@ import {service} from '../../services/service';
 import {getVibes} from '../../store/actions/Vibe';
 import {connect} from 'react-redux';
 import PostItem from '../../components/PostItem';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 const UserDetails = ({vibes, getVibes, route}) => {
   const [postsList, setPostsList] = useState([]);
   const [name, setName] = useState('');
@@ -90,10 +91,19 @@ const UserDetails = ({vibes, getVibes, route}) => {
                   <Text style={styles.txtNormal}>Favourites</Text>
                 </View>
               </View>
-              <Text>
-                Hey! I am a geek geek geek geek this is my bestest friend post
-                lol
-              </Text>
+              <View style={styles.itemRowBtm}>
+                <Text style={{marginRight: 40}}>
+                  Hey! I am a geek geek geek geek this is
+                  myqsdqweqweqweqweqweqweqweqwewqewqewqeqwewqeqwwqewqeq
+                </Text>
+                <TouchableOpacity>
+                  <Ionicons
+                    color={Color.primary}
+                    name="add-circle-outline"
+                    size={30}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
 
             <View style={styles.divider} />
@@ -161,7 +171,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemContainer: {
-    marginTop: '20%',
+    marginTop: '10%',
     backgroundColor: Color.whiteColor,
     padding: 20,
     flexDirection: 'column',
@@ -170,6 +180,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
+  },
+
+  itemRowBtm: {
+    flexDirection: 'row',
+    marginTop: 10,
+    flex: 1,
+    marginRight: 20,
+    alignItems: 'center',
   },
   itemCol: {
     flex: 1,
