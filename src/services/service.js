@@ -68,4 +68,13 @@ export const service = {
     console.log(commentId);
     return api.invoke('DELETE', `vibe/comment/${id}/${commentId}`);
   },
+  getRequests: () => {
+    return api.invoke('GET', `request`);
+  },
+  acceptRequest: () => {
+    return api.invoke('POST', 'request/accept', data);
+  },
+  deleteRequest: (data) => {
+    return api.invoke('POST', 'request/delete', data);
+  },
 };

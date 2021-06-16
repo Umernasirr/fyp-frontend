@@ -18,6 +18,5 @@ export const addComment = (payload) => (dispatch) => {
 };
 
 export const deleteCommentHandler = (payload) => (dispatch) => {
-  console.log('comign here');
   dispatch({type: Vibe.REMOVE_COMMENT, payload});
 };

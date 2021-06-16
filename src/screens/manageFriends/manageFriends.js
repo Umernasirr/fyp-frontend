@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -14,9 +14,62 @@ import LinearGradient from 'react-native-linear-gradient';
 import Color from '../../constants/Color';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import {connect} from 'react-redux';
 import {FRIENDS, PENDING} from '../../constants/index';
-const ManageFriends = ({navigation}) => {
+import {service} from '../../services/service';
+import {Store} from '../../services/store';
+import {deleteRequests, getRequests} from '../../store/actions/Request';
+const ManageFriends = ({navigation, requests, getRequests, deleteRequests}) => {
+  const [requestsToShow, setrequestsToShow] = useState(requests);
+  useEffect(() => {
+    service
+      .getRequests()
+      .then((data) => {
+        if (!data.data.success) {
+          service.getRequests().then((data) => {
+            // console.log(data.data.data, 'sencons ');
+            setrequestsToShow(data.data.data);
+          });
+        }
+        if (data.data.success) {
+          setrequestsToShow(data.data.data);
+          getRequests(data.data.data);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
+  const addFriendHandler = (id) => {
+    console.log(id);
+    service
+      .acceptRequest({requestId: id})
+      .then((data) => {
+        console.log(data.data);
+      })
+      .catch((err) => console.log(err));
+  };
+  const removeFriendHandler = (id) => {
+    console.log(id);
+
+    service
+      .deleteRequest({requestId: id})
+      .then((data) => {
+        console.log(data.data);
+        if (data.data.success) {
+          deleteRequests({requestId: id});
+          setrequestsToShow((prev) =>
+            prev.filter((request) => {
+              if (request._id.toString() !== id.toString()) {
+                console.log(true);
+                return request;
+              }
+            }),
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -41,16 +94,17 @@ const ManageFriends = ({navigation}) => {
                     />
                   ))
                 }
-                keyExtractor={(item) => item.id.toString()}
-                data={PENDING}
+                keyExtractor={(item) => item._id.toString()}
+                data={requestsToShow}
                 renderItem={({item}) => (
                   <View style={styles.friendsList}>
                     <View style={styles.friendsLeft}>
-                      <Text>{item.name}</Text>
+                      <Text>{item.requestBy.name}</Text>
                     </View>
 
                     <View style={styles.friendsRight}>
-                      <TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => addFriendHandler(item._id)}>
                         <Ionicons
                           name="add-circle-outline"
                           color={Color.primary}
@@ -59,7 +113,8 @@ const ManageFriends = ({navigation}) => {
                       </TouchableOpacity>
 
                       <View style={{margin: 10}} />
-                      <TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => removeFriendHandler(item._id)}>
                         <Ionicons
                           name="remove-circle-outline"
                           color={Color.primary}
@@ -112,7 +167,13 @@ const ManageFriends = ({navigation}) => {
   );
 };
 
-export default ManageFriends;
+const mapStateToProps = (state) => ({
+  requests: state.request.requests,
+});
+
+export default connect(mapStateToProps, {getRequests, deleteRequests})(
+  ManageFriends,
+);
 
 const styles = StyleSheet.create({
   container: {

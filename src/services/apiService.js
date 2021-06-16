@@ -62,6 +62,7 @@ export const api = {
       data = null;
     }
 
+    // console.log(Store.ge);
     return Axios({
       url: url,
       progress: progress,
@@ -73,6 +74,7 @@ export const api = {
       params: param,
       data: data,
     }).catch((error) => {
+      console.log('error ehrere');
       return error.response;
     });
   },
