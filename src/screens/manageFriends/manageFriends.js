@@ -19,8 +19,15 @@ import {FRIENDS, PENDING} from '../../constants/index';
 import {service} from '../../services/service';
 import {Store} from '../../services/store';
 import {deleteRequests, getRequests} from '../../store/actions/Request';
-const ManageFriends = ({navigation, requests, getRequests, deleteRequests}) => {
+const ManageFriends = ({
+  navigation,
+  requests,
+  getRequests,
+  deleteRequests,
+  user,
+}) => {
   const [requestsToShow, setrequestsToShow] = useState(requests);
+  const [friendsToShow, setFriendsToShow] = useState([]);
   useEffect(() => {
     service
       .getRequests()
@@ -38,12 +45,31 @@ const ManageFriends = ({navigation, requests, getRequests, deleteRequests}) => {
       })
       .catch((err) => console.log(err));
   }, []);
+  useEffect(() => {
+    service
+      .getFriendsByID(user._id)
+      .then((data) => {
+        setFriendsToShow(data.data.data.friends);
+      })
+      .catch((err) => console.log(err));
+  }, [requestsToShow]);
   const addFriendHandler = (id) => {
     console.log(id);
     service
       .acceptRequest({requestId: id})
       .then((data) => {
-        console.log(data.data);
+        if (data.data.success) {
+          deleteRequests({requestId: id});
+
+          setrequestsToShow((prev) =>
+            prev.filter((request) => {
+              if (request._id.toString() !== id.toString()) {
+                console.log(true);
+                return request;
+              }
+            }),
+          );
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -79,13 +105,13 @@ const ManageFriends = ({navigation, requests, getRequests, deleteRequests}) => {
           source={require('../../assets/images/background_texture.png')}
           style={styles.image}>
           <View style={styles.marginContainer}>
-            {requestsToShow && requestsToShow.length > 0 && (
+            <View>
+              <View style={styles.dividerContainer}>
+                <Text style={styles.dividerTxt}>New Friend Requests</Text>
+              </View>
+              <View style={styles.divider} />
               <View>
-                <View style={styles.dividerContainer}>
-                  <Text style={styles.dividerTxt}>New Friend Requests</Text>
-                </View>
-                <View style={styles.divider} />
-                <View style={{maxHeight: '30%'}}>
+                {requestsToShow && requestsToShow.length > 0 && (
                   <FlatList
                     style={styles.songsList}
                     ItemSeparatorComponent={
@@ -134,9 +160,9 @@ const ManageFriends = ({navigation, requests, getRequests, deleteRequests}) => {
                       </View>
                     )}
                   />
-                </View>
+                )}
               </View>
-            )}
+            </View>
             <View style={styles.dividerContainer}>
               <Text style={styles.dividerTxt}>Manage Friends</Text>
             </View>
@@ -153,8 +179,8 @@ const ManageFriends = ({navigation, requests, getRequests, deleteRequests}) => {
                     />
                   ))
                 }
-                keyExtractor={(item) => item.id.toString()}
-                data={FRIENDS}
+                keyExtractor={(item) => item._id.toString()}
+                data={friendsToShow}
                 renderItem={({item}) => (
                   <View style={styles.friendsList}>
                     <View style={styles.friendsLeft}>
@@ -185,6 +211,7 @@ const ManageFriends = ({navigation, requests, getRequests, deleteRequests}) => {
 
 const mapStateToProps = (state) => ({
   requests: state.request.requests,
+  user: state.auth.user,
 });
 
 export default connect(mapStateToProps, {getRequests, deleteRequests})(

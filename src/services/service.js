@@ -77,4 +77,7 @@ export const service = {
   deleteRequest: (data) => {
     return api.invoke('POST', 'request/delete', data);
   },
+  getFriendsByID: (id) => {
+    return api.invoke('GET', `request/friends/${id}`);
+  },
 };
