@@ -140,6 +140,7 @@ const ManageFriends = ({navigation, requests, getRequests, deleteRequests}) => {
             <View style={styles.dividerContainer}>
               <Text style={styles.dividerTxt}>Manage Friends</Text>
             </View>
+
             <View style={styles.divider} />
             <View style={{maxHeight: '50%'}}>
               <FlatList
