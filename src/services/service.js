@@ -71,7 +71,7 @@ export const service = {
   getRequests: () => {
     return api.invoke('GET', `request`);
   },
-  acceptRequest: () => {
+  acceptRequest: (data) => {
     return api.invoke('POST', 'request/accept', data);
   },
   deleteRequest: (data) => {
