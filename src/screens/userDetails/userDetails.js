@@ -14,14 +14,15 @@ import LinearGradient from 'react-native-linear-gradient';
 import Color from '../../constants/Color';
 import {service} from '../../services/service';
 import {getVibes} from '../../store/actions/Vibe';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import PostItem from '../../components/PostItem';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 const UserDetails = ({vibes, getVibes, route}) => {
   const [postsList, setPostsList] = useState([]);
   const [name, setName] = useState('');
   const [desc, setDesc] = useState('');
-
+  const user = useSelector((state) => state.auth.user);
   const [postsCount, setPostsCount] = useState(0);
   const [friendsCount, setFriendsCount] = useState(0);
   const [favouritesCount, setFavouritesCount] = useState(0);
@@ -50,7 +51,7 @@ const UserDetails = ({vibes, getVibes, route}) => {
     const tempVibes = vibes.filter(
       (vibe) => vibe.user._id === route.params.user._id,
     );
-
+    setPostsCount(tempVibes.length);
     setPostsList(tempVibes);
   }, []);
 
@@ -73,11 +74,11 @@ const UserDetails = ({vibes, getVibes, route}) => {
                     }}
                   />
 
-                  <Text style={styles.txtUser}>{name.toUpperCase()}</Text>
+                  <Text style={styles.txtUser}>{name}</Text>
                 </View>
 
                 <View style={styles.itemCol}>
-                  <Text style={styles.txtNumber}>5</Text>
+                  <Text style={styles.txtNumber}>{postsCount}</Text>
                   <Text style={styles.txtNormal}>Posts</Text>
                 </View>
 
@@ -93,16 +94,17 @@ const UserDetails = ({vibes, getVibes, route}) => {
               </View>
               <View style={styles.itemRowBtm}>
                 <Text style={{marginRight: 40}}>
-                  Hey! I am a geek geek geek geek this is
-                  myqsdqweqweqweqweqweqweqweqwewqewqewqeqwewqeqwwqewqeq
+                  Hey! I am a geek geek geek geek !!
                 </Text>
-                <TouchableOpacity>
-                  <Ionicons
-                    color={Color.primary}
-                    name="add-circle-outline"
-                    size={30}
-                  />
-                </TouchableOpacity>
+                {user._id !== route.params.user._id && (
+                  <TouchableOpacity>
+                    <Ionicons
+                      color={Color.primary}
+                      name="add-circle-outline"
+                      size={30}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
 
@@ -133,6 +135,7 @@ const UserDetails = ({vibes, getVibes, route}) => {
                       vibeId={item._id}
                       likes={item.likes}
                       comments={item.comments}
+                      format={item.format}
                     />
                   )}
                 />

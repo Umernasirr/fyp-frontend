@@ -37,6 +37,7 @@ export default function Room({navigation}) {
         .add({
           name: roomName,
           private: false,
+          support: true,
           createdBy: user,
         })
         .then(() => {
@@ -73,13 +74,16 @@ export default function Room({navigation}) {
 
         // Check if user exists and
         // Check if Private Chat
+
         if (isSwitchOn) {
           const tempThreads = threads.filter(
             (thread) => thread.private && thread.createdBy._id === user._id,
           );
           setFilteredThreads(tempThreads);
         } else {
-          const tempThreads = threads.filter((thread) => !thread.private);
+          const tempThreads = threads.filter(
+            (thread) => !thread.private && !thread.support,
+          );
           setFilteredThreads(tempThreads);
         }
 

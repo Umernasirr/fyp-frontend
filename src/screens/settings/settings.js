@@ -24,7 +24,7 @@ const Settings = ({navigation, user}) => {
 
   const handleLogout = () => {
     dispatch(reset(navigation));
-    // navigation.navigate('Login');
+    navigation.navigate('Login');
   };
   const handleImagePicker = () => {
     launchImageLibrary({}, (data) => {
@@ -74,7 +74,12 @@ const Settings = ({navigation, user}) => {
                 <Divider />
                 <TouchableOpacity
                   style={styles.cardItem}
-                  onPress={() => navigation.navigate('NotificationSettings')}>
+                  onPress={() =>
+                    navigation.navigate('UserList', {
+                      screen: 'UserDetails',
+                      params: {user},
+                    })
+                  }>
                   <Text>Manage Posts</Text>
                 </TouchableOpacity>
                 <Divider />

@@ -53,6 +53,7 @@ const CreateChatModal = ({visible, setVisible}) => {
         name: selectedFriend.name,
         private: true,
         createdBy: user,
+        support: false,
       })
       .then(() => {
         setVisible(false);

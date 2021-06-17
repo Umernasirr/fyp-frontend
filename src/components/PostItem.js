@@ -9,7 +9,7 @@ import {
   Keyboard,
 } from 'react-native';
 import Color from '../constants/Color';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TrackPlayer from 'react-native-track-player';
@@ -39,9 +39,9 @@ const PostItem = ({
   const {position, duration} = useTrackPlayerProgress(250);
   const [sliderValue, setSliderValue] = useState(0);
   const [isTrackPlayerInit, setIsTrackPlayerInit] = useState(false);
-
+  const [isSeeking, setIsSeeking] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-
+  const currUser = useSelector((state) => state.auth.user);
   const onButtonPressed = () => {
     if (!isPlaying) {
       TrackPlayer.play();
@@ -126,14 +126,19 @@ const PostItem = ({
             />
             <Text style={styles.title}>{user.name} </Text>
           </View>
-
-          <TouchableOpacity>
-            <Ionicons
-              color={Color.whiteColor}
-              name="add-circle-outline"
-              size={24}
-            />
-          </TouchableOpacity>
+          {currUser._id !== user._id ? (
+            <TouchableOpacity>
+              <Ionicons
+                color={Color.whiteColor}
+                name="add-circle-outline"
+                size={24}
+              />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity>
+              <AntDesign name="delete" color={Color.whiteColor} size={24} />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
       <Text style={styles.caption}>{caption}</Text>
@@ -234,6 +239,8 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     padding: 24,
     backgroundColor: Color.dark,
+    borderWidth: 1,
+    borderColor: Color.whiteColor,
   },
   title: {
     color: 'white',
