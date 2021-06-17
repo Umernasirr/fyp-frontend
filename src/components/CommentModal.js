@@ -47,6 +47,7 @@ const CommentModal = ({
       service
         .addComment({text: comment}, vibeId)
         .then((data) => {
+          console.log(data.data.data);
           addComment({postId: vibeId, comments: data.data.data});
           setvibeComments(data.data.data);
           setComment('');

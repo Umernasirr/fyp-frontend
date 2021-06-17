@@ -88,7 +88,7 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
           placeholde="Describe your Post"
           mode="outlined"
         />
-        {image && (
+        {image && image.fileName && (
           <View
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Image source={{uri: image.uri}} style={styles.img} />
