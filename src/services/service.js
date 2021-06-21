@@ -80,4 +80,10 @@ export const service = {
   getFriendsByID: (id) => {
     return api.invoke('GET', `request/friends/${id}`);
   },
+  deleteVibe: (vibeId) => {
+    return api.invoke('DELETE', `vibe/${vibeId}`);
+  },
+  updateAvatar: (data) => {
+    return api.uploadFormData('auth/avatar', data);
+  }
 };

@@ -63,7 +63,6 @@ const VerifyInputs = ({
 
   const verificationHandler = () => {
     // callBackHandler();
-    // console.log(type, ' type');
     if (validationHandler()) {
       if (type === 'resetpassword') {
         service
@@ -76,20 +75,16 @@ const VerifyInputs = ({
               alert(data.data.error);
             } else {
               showUpdatePasswordComponent();
-              console.log(data.data);
             }
           })
           .catch((err) => console.log(err));
-        console.log('resetpass');
       } else {
         service
           .verifyEmail({emailVerificationCode: value})
           .then((data) => {
-            console.log(data.data);
             if (data.data.error) {
               alert(data.data.error);
             } else {
-              console.log(data.data);
               dispatch(emailVerification);
               navigation.navigate('Login');
             }

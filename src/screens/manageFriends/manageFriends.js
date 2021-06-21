@@ -54,7 +54,6 @@ const ManageFriends = ({
       .catch((err) => console.log(err));
   }, [requestsToShow]);
   const addFriendHandler = (id) => {
-    console.log(id);
     service
       .acceptRequest({requestId: id})
       .then((data) => {
@@ -64,7 +63,6 @@ const ManageFriends = ({
           setrequestsToShow((prev) =>
             prev.filter((request) => {
               if (request._id.toString() !== id.toString()) {
-                console.log(true);
                 return request;
               }
             }),
@@ -74,18 +72,15 @@ const ManageFriends = ({
       .catch((err) => console.log(err));
   };
   const removeFriendHandler = (id) => {
-    console.log(id);
 
     service
       .deleteRequest({requestId: id})
       .then((data) => {
-        console.log(data.data);
         if (data.data.success) {
           deleteRequests({requestId: id});
           setrequestsToShow((prev) =>
             prev.filter((request) => {
               if (request._id.toString() !== id.toString()) {
-                console.log(true);
                 return request;
               }
             }),

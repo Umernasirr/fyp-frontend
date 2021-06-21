@@ -50,7 +50,6 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
     let mediaData = {uri: mediaSelected ? mediaSelected.uri : ''};
     const formdata = new FormData();
     formdata.append('caption', caption);
-
     if (mediaSelected) {
       formdata.append('media', {
         uri: mediaData.uri,
@@ -62,11 +61,15 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
     service
       .createVibe(formdata)
       .then((data) => {
-        console.log(data.data);
+        
         if (data.data.success) {
           createVibe(data.data.data);
+          
+
           hideModal();
-          navigation.navigate('Feed');
+          navigation.navigate('Feed', {
+            vibe: data.data.data
+          });
         }
       })
       .catch((err) => console.log(err));
@@ -99,7 +102,7 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
         <Button
           style={styles.button}
           color={Color.primary}
-          onPress={handleImagePicker}>
+          onPress={handleDocumentPicker}>
           Choose an Image
         </Button>
 
