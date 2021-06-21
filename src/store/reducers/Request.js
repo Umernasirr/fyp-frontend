@@ -10,7 +10,6 @@ const initialState = {
 
 export default (state = initialState, action = {}) => {
   const {payload} = action;
-  console.log(payload, 'payyyyy');
   switch (action.type) {
     case Request.GET_REQUESTS:
       return {

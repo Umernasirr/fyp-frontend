@@ -30,7 +30,6 @@ const Settings = ({navigation, user, updateAvatar}) => {
   const handleImagePicker = () => {
     launchImageLibrary({}, (data) => {
       if (data.assets) {
-        console.log(data.assets, 'kskskskskksksks')
         
         const formdata = new FormData();        
           formdata.append('media', {
@@ -39,7 +38,6 @@ const Settings = ({navigation, user, updateAvatar}) => {
             type: data.assets[0].type,
           });
         service.updateAvatar(formdata).then(data => {
-          console.log(data.data.url, 'datdasdas')
           setImage(data.data.url); 
           updateAvatar(data.data.data)
         }).catch(err => console.log(err))

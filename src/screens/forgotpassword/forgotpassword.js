@@ -63,7 +63,6 @@ const ResetPassword = ({navigation}) => {
         .updatePasswordAfterVerificationCode({email, newPassword: pass1})
         .then((data) => {
           if (data.data.error) {
-            // console.log(data)
             alert(data.data.error);
           } else {
             alert('Password updated  successfully. Please Log in your account');
@@ -88,7 +87,6 @@ const ResetPassword = ({navigation}) => {
         .then((data) => {
           if (data.data.success) {
             setValidation(false);
-            console.log(data.data);
           } else {
             alert(data.data.error);
           }

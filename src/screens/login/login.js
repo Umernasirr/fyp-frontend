@@ -65,7 +65,6 @@ const Login = ({
           if (data.data.error) {
             alert(data.data.error);
           } else {
-            console.log(data.data);
             dispatch(login(data.data));
             navigation.navigate('Home');
           }

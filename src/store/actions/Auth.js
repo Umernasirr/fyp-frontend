@@ -37,6 +37,5 @@ export const reset = (navigation) => (disptach) => {
 // }
 
 export const updateAvatar = (payload) => (dispatch) => {
-  console.log(payload, 'this is here')
   dispatch({type: Auth.UPDATE_AVATAR, payload});
 };

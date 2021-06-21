@@ -13,7 +13,6 @@ export const deleteVibes = (payload) => (dispatch) => {
 }
 
 export const updateLikesUnlikes = (payload) => (dispatch) => {
-  console.log(payload);
   dispatch({type: Vibe.UPDATE_LIKES, payload});
 };
 

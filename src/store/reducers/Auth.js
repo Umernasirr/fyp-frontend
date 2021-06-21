@@ -18,8 +18,6 @@ export default (state = initialState, action = {}) => {
   switch (action.type) {
     case Auth.LOGIN_SUCCESS:
       Store.setUserToken(action.value.token);
-      console.log('red', Store.getUserToken());
-      console.log(action.value.token, 'reducer');
       return {
         ...state,
         loading: false,

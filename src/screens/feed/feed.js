@@ -25,27 +25,23 @@ const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
     setSearchQuery(query);
   };
   const deleteVibe = (id) => {
-    console.log('dsadsadsads')
    service.deleteVibe(id).then(data =>{
 
-     console.log(data.data.data);
      deleteVibes({vibeId: id});
      setisDeleted(!isDeleted);
    }).catch(err => console.log(err))
   }
 
   useEffect(() => {
-    console.log(route, 'routeereerre')
     service
       .getVibes()
       .then((data) => {
         if (data.data.success) {
           getVibes(data.data.data);
-          console.log(data.data.data[0]);
         }
       })
       .catch((err) => {
-        console.log(err, 'err imp');
+        console.log(err)
       });
     setPostsList(vibes);
   }, [route, navigation, isDeleted]);

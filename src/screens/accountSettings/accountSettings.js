@@ -15,7 +15,6 @@ import {useSelector} from 'react-redux';
 const AccountSettings = ({navigation}) => {
   const user = useSelector((state) => state.auth.user);
 
-  console.log(user);
   const [fullName, setFullName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState('');
