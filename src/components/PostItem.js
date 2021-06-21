@@ -174,12 +174,11 @@ const PostItem = ({
         format === 'jpg' ||
         (format === 'png' && (
           <Image
-            resizeMode={'cover'} // cover or contain its upto you view look
             style={styles.img}
             source={{
               // FIX ME
               uri:
-                'http://res.cloudinary.com/dkmctcivw/image/upload/v1624306071/imagefiles/hleszqqgd8ieknfnrorx.png',
+                'https://res.cloudinary.com/dkmctcivw/image/upload/v1623260903/imagefiles/bssc3iqbjtlqiapwpuvu.jpg',
             }}
           />
         ))}
@@ -288,8 +287,9 @@ const styles = StyleSheet.create({
   },
   imgUser: {width: 40, height: 40, borderRadius: 20},
   img: {
-    width: '90%',
-    height: '100%',
+    width: '95%',
+    height: 300,
+    resizeMode: 'cover',
     borderRadius: 10,
     alignSelf: 'center',
     justifyContent: 'center',
