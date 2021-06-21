@@ -149,7 +149,7 @@ const PostItem = ({
         (format === 'png' && (
           <Image
             style={styles.img}
-            source={{uri: 'https://via.placeholder.com/300'}}
+            source={{uri: 'https://res.cloudinary.com/dkmctcivw/image/upload/v1623260903/imagefiles/bssc3iqbjtlqiapwpuvu.jpg'}}
           />
         ))}
 
@@ -265,6 +265,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderColor: Color.primary,
     borderWidth: 2,
+    
   },
   topContainer: {
     flex: 1,
