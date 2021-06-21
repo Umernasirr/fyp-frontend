@@ -30,7 +30,6 @@ const Feed = ({vibes, getVibes}) => {
       .then((data) => {
         if (data.data.success) {
           getVibes(data.data.data);
-          console.log(data.data.data[0]);
         }
       })
       .catch((err) => {
@@ -86,6 +85,7 @@ const Feed = ({vibes, getVibes}) => {
                     likes={item.likes}
                     comments={item.comments}
                     format={item.format}
+                    url={item.url}
                   />
                 )}
               />

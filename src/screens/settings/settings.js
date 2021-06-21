@@ -30,8 +30,6 @@ const Settings = ({navigation, user}) => {
     launchImageLibrary({}, (data) => {
       if (data.assets) {
         setImage(data.assets[0].uri);
-
-        //  MAKEA REQUEST PLS
       }
     });
   };

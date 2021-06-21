@@ -29,7 +29,9 @@ const PostItem = ({
   updateLikesUnlikes,
   comments,
   format,
+  url,
 }) => {
+  console.log(format, url);
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [liked, setLiked] = useState(false);
   const [favourited, setFavourited] = useState(false);
@@ -42,6 +44,7 @@ const PostItem = ({
   const [isSeeking, setIsSeeking] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const currUser = useSelector((state) => state.auth.user);
+
   const onButtonPressed = () => {
     if (!isPlaying) {
       TrackPlayer.play();
@@ -51,6 +54,27 @@ const PostItem = ({
       setIsPlaying(false);
     }
   };
+
+  // const startPlayer = async (url) => {
+  //   // Set up the player
+  //   await TrackPlayer.setupPlayer();
+
+  //   // Add a track to the queue
+  //   const tempUrl =
+  //     url !== ''
+  //       ? url
+  //       : 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3';
+
+  //   await TrackPlayer.add({
+  //     id: '1',
+  //     url: tempUrl,
+  //     type: 'default',
+
+  //     artist: createdAt,
+  //   });
+
+  //   await TrackPlayer.play();
+  // };
 
   const slidingStarted = () => {
     setIsSeeking(true);
@@ -147,8 +171,13 @@ const PostItem = ({
         format === 'jpg' ||
         (format === 'png' && (
           <Image
+            resizeMode={'cover'} // cover or contain its upto you view look
             style={styles.img}
-            source={{uri: 'https://via.placeholder.com/300'}}
+            source={{
+              // FIX ME
+              uri:
+                'http://res.cloudinary.com/dkmctcivw/image/upload/v1624306071/imagefiles/hleszqqgd8ieknfnrorx.png',
+            }}
           />
         ))}
 
@@ -163,7 +192,7 @@ const PostItem = ({
               size={20}
             />
             <Slider
-              style={{width: '90%', height: 20, color: Color.primary}}
+              style={{width: '90%', height: 20}}
               minimumValue={0}
               maximumValue={1}
               value={sliderValue}
@@ -257,7 +286,7 @@ const styles = StyleSheet.create({
   imgUser: {width: 40, height: 40, borderRadius: 20},
   img: {
     width: '90%',
-    height: '45%',
+    height: '100%',
     borderRadius: 10,
     alignSelf: 'center',
     justifyContent: 'center',
