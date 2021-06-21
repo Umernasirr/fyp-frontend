@@ -14,17 +14,28 @@ import Color from '../../constants/Color';
 import PostItem from '../../components/PostItem';
 import CreatePostModal from '../../components/CreatePostModal';
 import {service} from '../../services/service';
-import {getVibes} from '../../store/actions/Vibe';
-const Feed = ({vibes, getVibes}) => {
+import {deleteVibes, getVibes} from '../../store/actions/Vibe';
+const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [postsList, setPostsList] = useState([]);
   const [openPostModal, setOpenPostModal] = useState(false);
-
+  const [isDeleted, setisDeleted] = useState(false);
+  
   const onChangeSearch = (query) => {
     setSearchQuery(query);
   };
+  const deleteVibe = (id) => {
+    console.log('dsadsadsads')
+   service.deleteVibe(id).then(data =>{
+
+     console.log(data.data.data);
+     deleteVibes({vibeId: id});
+     setisDeleted(!isDeleted);
+   }).catch(err => console.log(err))
+  }
 
   useEffect(() => {
+    console.log(route, 'routeereerre')
     service
       .getVibes()
       .then((data) => {
@@ -37,7 +48,7 @@ const Feed = ({vibes, getVibes}) => {
         console.log(err, 'err imp');
       });
     setPostsList(vibes);
-  }, []);
+  }, [route, navigation, isDeleted]);
 
   return (
     <View style={styles.container}>
@@ -86,6 +97,8 @@ const Feed = ({vibes, getVibes}) => {
                     likes={item.likes}
                     comments={item.comments}
                     format={item.format}
+                    deleteVibe={deleteVibe}
+                    avatar={item.user.avatar}
                   />
                 )}
               />
@@ -118,7 +131,7 @@ const mapStateToProps = (state) => ({
   vibes: state.vibe.vibes,
 });
 
-export default connect(mapStateToProps, {getVibes})(Feed);
+export default connect(mapStateToProps, {getVibes, deleteVibes})(Feed);
 
 const styles = StyleSheet.create({
   container: {

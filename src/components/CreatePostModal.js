@@ -31,10 +31,12 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
   };
 
   const handleDocumentPicker = async () => {
+    console.log('is it coming hjere')
     try {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.audio, DocumentPicker.types.images],
       });
+      console.log(res, 'ressss')
 
       setMediaSelected(res);
       setSongSelected(res.name);
@@ -50,7 +52,7 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
     let mediaData = {uri: mediaSelected ? mediaSelected.uri : ''};
     const formdata = new FormData();
     formdata.append('caption', caption);
-
+    console.log(mediaSelected, 'mediaaoia')
     if (mediaSelected) {
       formdata.append('media', {
         uri: mediaData.uri,
@@ -65,8 +67,12 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
         console.log(data.data);
         if (data.data.success) {
           createVibe(data.data.data);
+          
+
           hideModal();
-          navigation.navigate('Feed');
+          navigation.navigate('Feed', {
+            vibe: data.data.data
+          });
         }
       })
       .catch((err) => console.log(err));
@@ -99,7 +105,7 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
         <Button
           style={styles.button}
           color={Color.primary}
-          onPress={handleImagePicker}>
+          onPress={handleDocumentPicker}>
           Choose an Image
         </Button>
 

@@ -9,7 +9,6 @@ const initialState = {
 };
 
 export default (state = initialState, action = {}) => {
-  // console.log()
   const {payload} = action;
   console.log(payload, 'payyyyy');
   switch (action.type) {

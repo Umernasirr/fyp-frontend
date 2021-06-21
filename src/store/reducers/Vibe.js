@@ -25,6 +25,7 @@ export default (state = initialState, action = {}) => {
         vibes: action.payload,
         loading: false,
       };
+    
     case Vibe.GET_VIBE:
       return {
         ...state,

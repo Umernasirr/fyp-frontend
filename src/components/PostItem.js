@@ -29,6 +29,8 @@ const PostItem = ({
   updateLikesUnlikes,
   comments,
   format,
+  deleteVibe,
+  avatar
 }) => {
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -64,7 +66,6 @@ const PostItem = ({
   useEffect(() => {
     let tempLikeCount = 0;
     let tempCommentCount = 0;
-
     if (likes) {
       likes.map((like) => {
         tempLikeCount += 1;
@@ -122,7 +123,7 @@ const PostItem = ({
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
               style={styles.imgUser}
-              source={{uri: 'https://via.placeholder.com/150'}}
+              source={{uri: avatar ? avatar : 'https://via.placeholder.com/150'}}
             />
             <Text style={styles.title}>{user.name} </Text>
           </View>
@@ -135,7 +136,7 @@ const PostItem = ({
               />
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => deleteVibe(vibeId)} >
               <AntDesign name="delete" color={Color.whiteColor} size={24} />
             </TouchableOpacity>
           )}

@@ -13,6 +13,7 @@ const initialState = {
   token: '',
 };
 
+
 export default (state = initialState, action = {}) => {
   switch (action.type) {
     case Auth.LOGIN_SUCCESS:
@@ -68,6 +69,11 @@ export default (state = initialState, action = {}) => {
         user: {},
         token: '',
       };
+      case Auth.UPDATE_AVATAR:
+        return{
+          ...state,
+          user: action.payload 
+        }
     default:
       return state;
   }

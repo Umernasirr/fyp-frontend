@@ -15,12 +15,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import {launchImageLibrary} from 'react-native-image-picker';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {reset} from '../../store/actions/Auth';
+import {reset, updateAvatar} from '../../store/actions/Auth';
 import {useDispatch} from 'react-redux';
+import { service } from '../../services/service';
 
-const Settings = ({navigation, user}) => {
+const Settings = ({navigation, user, updateAvatar}) => {
   const dispatch = useDispatch();
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState(user.avatar);
 
   const handleLogout = () => {
     dispatch(reset(navigation));
@@ -29,9 +30,19 @@ const Settings = ({navigation, user}) => {
   const handleImagePicker = () => {
     launchImageLibrary({}, (data) => {
       if (data.assets) {
-        setImage(data.assets[0].uri);
-
-        //  MAKEA REQUEST PLS
+        console.log(data.assets, 'kskskskskksksks')
+        
+        const formdata = new FormData();        
+          formdata.append('media', {
+            uri: data.assets[0].uri,
+            name: data.assets[0].fileName,
+            type: data.assets[0].type,
+          });
+        service.updateAvatar(formdata).then(data => {
+          console.log(data.data.url, 'datdasdas')
+          setImage(data.data.url); 
+          updateAvatar(data.data.data)
+        }).catch(err => console.log(err))
       }
     });
   };
@@ -42,7 +53,7 @@ const Settings = ({navigation, user}) => {
         colors={[Color.linearColor1, Color.linearColor2]}
         style={styles.Linear}>
         <ImageBackground
-          source={require('../../assets/images/background_texture.png')}
+          source={user.avatar ? user.avatar :  require('../../assets/images/background_texture.png')}
           style={styles.image}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.containerMargin}>
@@ -128,7 +139,7 @@ const Settings = ({navigation, user}) => {
 const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
-export default connect(mapStateToProps, {})(Settings);
+export default connect(mapStateToProps, {updateAvatar})(Settings);
 
 const styles = StyleSheet.create({
   container: {

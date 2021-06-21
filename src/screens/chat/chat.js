@@ -54,10 +54,7 @@ const Chat = ({route}) => {
       );
   }
 
-  //   const writes = messages.map((m) => chatsRef.add(m));
-  //   await Promise.all(writes);
-  // }
-
+  
   useEffect(() => {
     const messagesListener = firestore()
       .collection('threads')

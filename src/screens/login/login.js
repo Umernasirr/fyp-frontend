@@ -23,17 +23,10 @@ import {service} from '../../services/service';
 import {login} from '../../store/actions/Auth';
 import {Store} from '../../services/store';
 
-// import ErrorModal from '../../components/ErrorModal';
 
 const Login = ({
-  // user,
-  // loading,
-  // isAuthenticated,
-  // error,
-  // login,
   navigation,
   token,
-  // clearError,
 }) => {
   const [email, setEmail] = useState('');
   const [password, setpassword] = useState('');
@@ -42,31 +35,7 @@ const Login = ({
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(false);
   const [tokens, setToken] = useState('');
-  const dispatch = useDispatch();
-  // const loginHandler = () => {
-  //   // alert('dssda');
-  //   if (email === '' || email === ' ') {
-  //     setemailErr(true);
-  //   } else {
-  //     setemailErr(false);
-  //   }
-  //   if (password === '' || password === ' ') {
-  //     setpasswordErr(true);
-  //   } else {
-  //     setpasswordErr(false);
-  //   }
-  //   if (email !== '' && password !== '') {
-  //     const body = JSON.stringify({
-  //       email: email,
-  //       password: password,
-  //     });
-  //     setLoading(true);
-  //   }
-  //   // if (email !== '' && password !== '') {
-  //   //   navigation.navigate('Home');
-  //   // }
-  //   // alert('dasddsaasddasasddsa');
-  // };
+  const dispatch = useDispatch();   
   const verificationHandler = () => {
     if (email && password) {
       return true;
@@ -77,11 +46,9 @@ const Login = ({
 
   useEffect(() => {
     const userToken = Store.getUserToken();
-    console.log(Store.getUserToken(), 'tokennn');
-    console.log(userToken, 'token');
+    
     setToken(token);
-    console.log(token, 'statee');
-    // alert(userToken);
+    
     if (
       (userToken && userToken !== undefined) ||
       (token && token !== undefined)
@@ -89,10 +56,8 @@ const Login = ({
       navigation.navigate('Home');
     }
   }, []);
-  console.log(Store.getUserToken(), 'tokennn');
 
   const loginHandler = () => {
-    console.log(email, 'email');
     if (verificationHandler()) {
       service
         .login({email, password})
@@ -109,9 +74,9 @@ const Login = ({
           console.log(err);
         });
     }
-    // dispatch(login(true));
-  };
 
+  };
+  
   return (
     <View style={styles.container}>
       {/* {error !== '' && (
@@ -121,7 +86,7 @@ const Login = ({
           handleErrorClose={handleErrorClose}
         />
       )} */}
-
+  
       <StatusBar backgroundColor={Color.linearColor1} />
 
       <LinearGradient

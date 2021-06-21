@@ -48,8 +48,6 @@ const Home = ({navigation, route}) => {
 
   useEffect(() => {
     getSongs();
-
-    // Return the function to unsubscribe from the event so it gets removed on unmount
   }, [navigation]);
 
   return (

@@ -11,6 +11,7 @@ import {Button} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Color from '../../constants/Color';
 const NotificationSettings = ({navigation}) => {
+    
   return (
     <View style={styles.container}>
       <LinearGradient
