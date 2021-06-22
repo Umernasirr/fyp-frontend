@@ -140,7 +140,7 @@ const UserStackScreens = () => (
 
 const BottomTabStack = () => (
   <BottomTab.Navigator
-    initialRouteName="Settings"
+    initialRouteName="Home"
     activeColor={Color.primary}
     inactiveColor="black"
     barStyle={{backgroundColor: 'white', color: 'black'}}>
@@ -213,7 +213,7 @@ function RootNavigator() {
         name="SplashScreen"
         options={{
           headerShown: false,
-        }}
+      }}
         component={SplashScreen}
       />
       {/* <Stack.Screen name="Welcome" component={Welcome} />

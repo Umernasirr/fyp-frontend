@@ -8,7 +8,7 @@ import {
   TextInput,
   Text,
   ImageBackground,
-  ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import {List, Button, Searchbar, Switch} from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
@@ -22,7 +22,7 @@ export default function Room({navigation}) {
   const [filteredThreads, setFilteredThreads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [roomName, setRoomName] = useState('');
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState('');0
   const [showCreateChatModal, setShowCreateChatModal] = useState(false);
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 
@@ -70,6 +70,8 @@ export default function Room({navigation}) {
           };
         });
 
+        console.log(threads); 
+
         setThreads(threads);
 
         // Check if user exists and
@@ -92,9 +94,6 @@ export default function Room({navigation}) {
         }
       });
 
-    /**
-     * unsubscribe listener
-     */
     return () => unsubscribe();
   }, [loading, isSwitchOn]);
 
@@ -103,15 +102,15 @@ export default function Room({navigation}) {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <LinearGradient
         colors={[Color.linearColor1, Color.linearColor2]}
         style={styles.Linear}>
         <ImageBackground
           source={require('../../assets/images/background_texture.png')}
           style={styles.image}>
-          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.topContainer}>
+           
               <Searchbar
                 placeholder="Search"
                 onChangeText={handleQueryChange}
@@ -166,7 +165,7 @@ export default function Room({navigation}) {
                   onChangeText={setRoomName}
                 />
                 <Button
-                  color={Color.primary}
+                  color={Color.whiteColor}
                   style={styles.btn}
                   onPress={handleButtonPress}>
                   Create a New Chat
@@ -180,10 +179,9 @@ export default function Room({navigation}) {
                 setVisible={setShowCreateChatModal}
               />
             )}
-          </ScrollView>
         </ImageBackground>
       </LinearGradient>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -196,7 +194,6 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: 'contain',
-    justifyContent: 'center',
   },
 
   Linear: {
@@ -226,7 +223,7 @@ const styles = StyleSheet.create({
   listTitle: {
     padding: 20,
     backgroundColor: Color.whiteColor,
-    fontSize: 20,
+    fontSize: 18,
     borderRadius: 10,
   },
   topContainer: {
@@ -235,7 +232,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   topContainerInput: {
-    margin: 10,
+    marginTop: 40,
   },
   txtPrivate: {
     color: Color.dark,
