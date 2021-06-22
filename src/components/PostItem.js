@@ -230,14 +230,14 @@ const PostItem = ({
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity           onPress={() => setShowCommentModal(true)}
- style={styles.commentRow}>
+      <TouchableOpacity
+        onPress={() => setShowCommentModal(true)}
+        style={styles.commentRow}>
         <TextInput
           placeholder="Add a Comment"
           style={styles.input}
-          editable={false} 
+          editable={false}
         />
-      
       </TouchableOpacity>
 
       <CommentModal
