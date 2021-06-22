@@ -70,7 +70,7 @@ const UserDetails = ({vibes, getVibes, route}) => {
                   <Image
                     style={styles.imgUser}
                     source={{
-                      uri: 'https://via.placeholder.com/200',
+                      uri: user && user.avatar ? user.avatar :  'https://via.placeholder.com/200',
                     }}
                   />
 
@@ -137,6 +137,7 @@ const UserDetails = ({vibes, getVibes, route}) => {
                       likes={item.likes}
                       comments={item.comments}
                       format={item.format}
+                      avatar={item.user.avatar}
                     />
                   )}
                 />

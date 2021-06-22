@@ -12,7 +12,6 @@ import {
   ImageBackground,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
-
 import Color from '../../constants/Color';
 import {connect} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';

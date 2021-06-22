@@ -94,8 +94,8 @@ const PostItem = ({
     if (likes) {
       likes.map((like) => {
         tempLikeCount += 1;
-
-        if (like.user.toString() === user._id.toString()) {
+      
+        if (like.user.toString() === currUser._id.toString()) {
           setLiked(true);
         }
       });
@@ -171,8 +171,7 @@ const PostItem = ({
             style={styles.img}
             source={{
               // FIX ME
-              uri:
-                'https://res.cloudinary.com/dkmctcivw/image/upload/v1623260903/imagefiles/bssc3iqbjtlqiapwpuvu.jpg',
+              uri: avatar
             }}
           />
         ))}
