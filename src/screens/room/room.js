@@ -138,10 +138,9 @@ export default function Room({navigation}) {
                 renderItem={({item}) => (
                   <TouchableOpacity
                     onPress={() => navigation.navigate('Chat', {thread: item})}>
-                    <List.Item
-                      title={item.name}
-                      titleStyle={styles.listTitle}
-                    />
+                    <View style={styles.listRoom}>
+                      <Text style={styles.listTxt}>{item.name}</Text>
+                    </View>
                   </TouchableOpacity>
                 )}
               />
@@ -246,5 +245,16 @@ const styles = StyleSheet.create({
   },
   inputText: {
     color: Color.whiteColor,
+  },
+  listRoom: {
+    flex: 1,
+    backgroundColor: Color.whiteColor,
+    padding: 20,
+    margin: 10,
+    borderRadius: 10,
+  },
+  listTxt: {
+    fontSize: 16,
+    textTransform: 'capitalize',
   },
 });
