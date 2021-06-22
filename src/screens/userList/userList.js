@@ -140,5 +140,6 @@ const styles = StyleSheet.create({
   },
   songsContainer: {
     marginVertical: 20,
+    paddingBottom: 100,
   },
 });

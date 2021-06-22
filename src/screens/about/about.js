@@ -21,7 +21,19 @@ const About = ({navigation}) => {
           style={styles.image}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.marginContainer}>
-              <Text style={styles.heading}>About Us</Text>
+              <Text style={styles.heading}>Where Music Lives</Text>
+
+              <View style={styles.txtContainer}>
+                <Text style={styles.txt}>
+                  Moosic lets you play the music you just have to hear,
+                  instantly. Jump in and explore over 73 million tracks (and
+                  counting), and discover artists and tracks you'll love with
+                  personalized recommendations from the Moosic Editors. Moosic
+                  works across all your devices, both online and offline, with
+                  no listening limits. It's music at your fingertips for waking
+                  up, getting going, chilling out, living life.
+                </Text>
+              </View>
             </View>
           </ScrollView>
         </ImageBackground>
@@ -54,5 +66,12 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: Color.whiteColor,
     margin: 10,
+  },
+  txt: {fontSize: 18, fontWeight: '100'},
+  txtContainer: {
+    backgroundColor: Color.whiteColor,
+    padding: 30,
+    margin: 20,
+    borderRadius: 10,
   },
 });

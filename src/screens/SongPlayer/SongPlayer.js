@@ -32,7 +32,8 @@ const SongPlayer = ({navigation, route}) => {
   const startPlayer = async (url) => {
     // Set up the player
 
-    if (isInit) {
+    if (!isInit) {
+      console.log('Initiating Track Player');
       await TrackPlayer.setupPlayer();
 
       // Add a track to the queue
@@ -41,6 +42,7 @@ const SongPlayer = ({navigation, route}) => {
           ? url
           : 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3';
 
+      console.log(tempUrl);
       await TrackPlayer.add({
         id: '1',
         url: tempUrl,
@@ -55,16 +57,17 @@ const SongPlayer = ({navigation, route}) => {
   };
 
   const slidingCompleted = async (value) => {
-    await TrackPlayer.seekTo(value);
+    TrackPlayer.seekTo(value);
     setSeek(value);
+
+    console.log(value);
     setIsSeeking(false);
-    await TrackPlayer.play();
   };
 
   const onButtonPressed = () => {
     if (!isPlaying) {
       startPlayer(url);
-
+      console.log('HLLO');
       setIsPlaying(true);
     } else {
       TrackPlayer.pause();
@@ -86,9 +89,8 @@ const SongPlayer = ({navigation, route}) => {
       setCreatedAt(route.params.createdAt);
     }
 
-    console.log(!isSeeking);
     if (!isSeeking && position && duration) {
-      setSeek(position / duration);
+      setSeek(position);
     }
   }, [position, duration]);
 
@@ -116,7 +118,6 @@ const SongPlayer = ({navigation, route}) => {
                   minimumValue={0}
                   maximumValue={duration}
                   value={seek}
-                  value={isSeeking ? seek : position}
                   trackStyle={styles.track}
                   thumbStyle={styles.thumb}
                   onValueChange={audioProgress}
