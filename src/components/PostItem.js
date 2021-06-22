@@ -11,7 +11,6 @@ import {
 import Color from '../constants/Color';
 import {connect, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import TrackPlayer from 'react-native-track-player';
 import {useTrackPlayerProgress} from 'react-native-track-player/lib/hooks';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -48,6 +47,8 @@ const PostItem = ({
   const currUser = useSelector((state) => state.auth.user);
 
   const onButtonPressed = () => {
+    console.log("url is", url)
+    startPlayer(url)
     if (!isPlaying) {
       TrackPlayer.play();
       setIsPlaying(true);
@@ -57,26 +58,26 @@ const PostItem = ({
     }
   };
 
-  // const startPlayer = async (url) => {
-  //   // Set up the player
-  //   await TrackPlayer.setupPlayer();
+  const startPlayer = async (url) => {
+    // Set up the player
+    await TrackPlayer.setupPlayer();
 
-  //   // Add a track to the queue
-  //   const tempUrl =
-  //     url !== ''
-  //       ? url
-  //       : 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3';
+    // Add a track to the queue
+    const tempUrl =
+      url !== ''
+        ? url
+        : 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3';
 
-  //   await TrackPlayer.add({
-  //     id: '1',
-  //     url: tempUrl,
-  //     type: 'default',
+    await TrackPlayer.add({
+      id: '1',
+      url: tempUrl,
+      type: 'default',
 
-  //     artist: createdAt,
-  //   });
+      artist: createdAt,
+    });
 
-  //   await TrackPlayer.play();
-  // };
+    await TrackPlayer.play();
+  };
 
   const slidingStarted = () => {
     setIsSeeking(true);
