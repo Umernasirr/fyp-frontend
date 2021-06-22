@@ -37,6 +37,8 @@ export const reset = (navigation) => (disptach) => {
   navigation.navigate('Login');
 };
 
+
+
 // export const sendForgetPasswordVerificationCode = (payload) => (dispatch) => {
 //   if(payload.success) {
 //     dispatch({
@@ -47,4 +49,8 @@ export const reset = (navigation) => (disptach) => {
 
 export const updateAvatar = (payload) => (dispatch) => {
   dispatch({type: Auth.UPDATE_AVATAR, payload});
+};
+
+export const updateUser = (payload) => (disptach) => {
+  disptach({type: Auth.UPDATE_USER, payload: payload});
 };

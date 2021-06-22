@@ -4,12 +4,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Color from '../constants/Color';
 
 import {useNavigation} from '@react-navigation/native';
-const UserItem = ({name, gender, _id}) => {
+const UserItem = ({name, gender, _id, friends}) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('UserDetails', {user: {_id, name, gender}});
+        navigation.navigate('UserDetails', {user: {_id, name, gender, friends}});
       }}
       style={styles.container}>
       <Image

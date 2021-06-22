@@ -27,6 +27,11 @@ export default (state = initialState, action = {}) => {
         user: action.value.user,
         token: action.value.token,
       };
+    case Auth.UPDATE_USER: 
+    return{
+      ...state,
+      user: action.payload
+    }
     case Auth.REGISTER_SUCCESS:
       Store.setUserToken(action.value.token);
       return {

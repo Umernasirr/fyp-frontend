@@ -88,13 +88,14 @@ const PostItem = ({
   };
 
   useEffect(() => {
+    console.log(url, 'ururjrur')
     let tempLikeCount = 0;
     let tempCommentCount = 0;
     if (likes) {
       likes.map((like) => {
         tempLikeCount += 1;
       
-        if (like.user.toString() === currUser._id.toString()) {
+        if (like.user.toString() === currUser && currUser._id.toString()) {
           setLiked(true);
         }
       });
@@ -154,7 +155,7 @@ const PostItem = ({
             />
             <Text style={styles.title}>{user.name} </Text>
           </TouchableOpacity>
-          {currUser._id === user._id && (
+          {currUser && currUser._id === user &&  user._id && (
             <TouchableOpacity onPress={() => deleteVibe(vibeId)}>
               <AntDesign name="delete" color={Color.whiteColor} size={24} />
             </TouchableOpacity>
@@ -170,7 +171,7 @@ const PostItem = ({
             style={styles.img}
             source={{
               // FIX ME
-              uri: avatar
+              uri: url
             }}
           />
         ))}

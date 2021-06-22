@@ -35,7 +35,7 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.audio, DocumentPicker.types.images],
       });
-
+      console.log(res);
       setMediaSelected(res);
       setSongSelected(res.name);
     } catch (err) {
@@ -61,7 +61,7 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
     service
       .createVibe(formdata)
       .then((data) => {
-        
+        console.log(data.data, 'dskdjs')
         if (data.data.success) {
           createVibe(data.data.data);
           

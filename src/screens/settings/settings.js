@@ -21,7 +21,7 @@ import {service} from '../../services/service';
 
 const Settings = ({navigation, user, updateAvatar}) => {
   const dispatch = useDispatch();
-  const [image, setImage] = useState(user.avatar);
+  const [image, setImage] = useState(user && user.avatar);
 
   const handleLogout = () => {
     dispatch(reset(navigation));
@@ -53,7 +53,7 @@ const Settings = ({navigation, user, updateAvatar}) => {
         colors={[Color.linearColor1, Color.linearColor2]}
         style={styles.Linear}>
         <ImageBackground
-          source={
+          source={ user &&
             user.avatar
               ? user.avatar
               : require('../../assets/images/background_texture.png')

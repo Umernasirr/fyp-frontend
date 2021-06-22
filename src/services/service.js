@@ -85,5 +85,11 @@ export const service = {
   },
   updateAvatar: (data) => {
     return api.uploadFormData('auth/avatar', data);
+  },
+  sendRequest: (data) => {
+    return api.invoke('POST', 'request', data)
+  },
+  getMe: (data) => {
+    return api.invoke('GET', 'auth/me')
   }
 };

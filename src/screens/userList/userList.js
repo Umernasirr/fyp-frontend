@@ -88,6 +88,7 @@ const Home = ({navigation}) => {
                       _id={item._id}
                       name={item.name}
                       gender={item.gender}
+                      friends={item.friends}
                     />
                   )}
                 />
