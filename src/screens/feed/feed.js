@@ -20,17 +20,19 @@ const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
   const [postsList, setPostsList] = useState([]);
   const [openPostModal, setOpenPostModal] = useState(false);
   const [isDeleted, setisDeleted] = useState(false);
-  
+
   const onChangeSearch = (query) => {
     setSearchQuery(query);
   };
   const deleteVibe = (id) => {
-   service.deleteVibe(id).then(data =>{
-
-     deleteVibes({vibeId: id});
-     setisDeleted(!isDeleted);
-   }).catch(err => console.log(err))
-  }
+    service
+      .deleteVibe(id)
+      .then((data) => {
+        deleteVibes({vibeId: id});
+        setisDeleted(!isDeleted);
+      })
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     service
@@ -41,7 +43,7 @@ const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
         }
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
       });
     setPostsList(vibes);
   }, [route, navigation, isDeleted]);
@@ -93,6 +95,7 @@ const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
                     likes={item.likes}
                     comments={item.comments}
                     format={item.format}
+                    url={item.url}
                     deleteVibe={deleteVibe}
                     avatar={item.user.avatar}
                   />

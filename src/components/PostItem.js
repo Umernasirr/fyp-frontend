@@ -29,9 +29,11 @@ const PostItem = ({
   updateLikesUnlikes,
   comments,
   format,
+  url,
   deleteVibe,
-  avatar
+  avatar,
 }) => {
+  console.log(format, url);
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [liked, setLiked] = useState(false);
   const [favourited, setFavourited] = useState(false);
@@ -44,6 +46,7 @@ const PostItem = ({
   const [isSeeking, setIsSeeking] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const currUser = useSelector((state) => state.auth.user);
+
   const onButtonPressed = () => {
     if (!isPlaying) {
       TrackPlayer.play();
@@ -53,6 +56,27 @@ const PostItem = ({
       setIsPlaying(false);
     }
   };
+
+  // const startPlayer = async (url) => {
+  //   // Set up the player
+  //   await TrackPlayer.setupPlayer();
+
+  //   // Add a track to the queue
+  //   const tempUrl =
+  //     url !== ''
+  //       ? url
+  //       : 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3';
+
+  //   await TrackPlayer.add({
+  //     id: '1',
+  //     url: tempUrl,
+  //     type: 'default',
+
+  //     artist: createdAt,
+  //   });
+
+  //   await TrackPlayer.play();
+  // };
 
   const slidingStarted = () => {
     setIsSeeking(true);
@@ -123,7 +147,9 @@ const PostItem = ({
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
               style={styles.imgUser}
-              source={{uri: avatar ? avatar : 'https://via.placeholder.com/150'}}
+              source={{
+                uri: avatar ? avatar : 'https://via.placeholder.com/150',
+              }}
             />
             <Text style={styles.title}>{user.name} </Text>
           </View>
@@ -136,7 +162,7 @@ const PostItem = ({
               />
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={() => deleteVibe(vibeId)} >
+            <TouchableOpacity onPress={() => deleteVibe(vibeId)}>
               <AntDesign name="delete" color={Color.whiteColor} size={24} />
             </TouchableOpacity>
           )}
@@ -149,7 +175,11 @@ const PostItem = ({
         (format === 'png' && (
           <Image
             style={styles.img}
-            source={{uri: 'https://res.cloudinary.com/dkmctcivw/image/upload/v1623260903/imagefiles/bssc3iqbjtlqiapwpuvu.jpg'}}
+            source={{
+              // FIX ME
+              uri:
+                'https://res.cloudinary.com/dkmctcivw/image/upload/v1623260903/imagefiles/bssc3iqbjtlqiapwpuvu.jpg',
+            }}
           />
         ))}
 
@@ -164,7 +194,7 @@ const PostItem = ({
               size={20}
             />
             <Slider
-              style={{width: '90%', height: 20, color: Color.primary}}
+              style={{width: '90%', height: 20}}
               minimumValue={0}
               maximumValue={1}
               value={sliderValue}
@@ -257,8 +287,9 @@ const styles = StyleSheet.create({
   },
   imgUser: {width: 40, height: 40, borderRadius: 20},
   img: {
-    width: '90%',
-    height: '45%',
+    width: '95%',
+    height: 300,
+    resizeMode: 'cover',
     borderRadius: 10,
     alignSelf: 'center',
     justifyContent: 'center',

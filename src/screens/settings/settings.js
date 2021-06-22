@@ -17,7 +17,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {reset, updateAvatar} from '../../store/actions/Auth';
 import {useDispatch} from 'react-redux';
-import { service } from '../../services/service';
+import {service} from '../../services/service';
 
 const Settings = ({navigation, user, updateAvatar}) => {
   const dispatch = useDispatch();
@@ -30,17 +30,19 @@ const Settings = ({navigation, user, updateAvatar}) => {
   const handleImagePicker = () => {
     launchImageLibrary({}, (data) => {
       if (data.assets) {
-        
-        const formdata = new FormData();        
-          formdata.append('media', {
-            uri: data.assets[0].uri,
-            name: data.assets[0].fileName,
-            type: data.assets[0].type,
-          });
-        service.updateAvatar(formdata).then(data => {
-          setImage(data.data.url); 
-          updateAvatar(data.data.data)
-        }).catch(err => console.log(err))
+        const formdata = new FormData();
+        formdata.append('media', {
+          uri: data.assets[0].uri,
+          name: data.assets[0].fileName,
+          type: data.assets[0].type,
+        });
+        service
+          .updateAvatar(formdata)
+          .then((data) => {
+            setImage(data.data.url);
+            updateAvatar(data.data.data);
+          })
+          .catch((err) => console.log(err));
       }
     });
   };
@@ -51,7 +53,11 @@ const Settings = ({navigation, user, updateAvatar}) => {
         colors={[Color.linearColor1, Color.linearColor2]}
         style={styles.Linear}>
         <ImageBackground
-          source={user.avatar ? user.avatar :  require('../../assets/images/background_texture.png')}
+          source={
+            user.avatar
+              ? user.avatar
+              : require('../../assets/images/background_texture.png')
+          }
           style={styles.image}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.containerMargin}>
