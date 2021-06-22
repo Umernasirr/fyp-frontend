@@ -22,7 +22,8 @@ export default function Room({navigation}) {
   const [filteredThreads, setFilteredThreads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [roomName, setRoomName] = useState('');
-  const [query, setQuery] = useState('');0
+  const [query, setQuery] = useState('');
+  0;
   const [showCreateChatModal, setShowCreateChatModal] = useState(false);
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 
@@ -32,17 +33,17 @@ export default function Room({navigation}) {
 
   const handleButtonPress = () => {
     if (roomName.length > 0) {
+      const newRoom = {
+        name: roomName,
+        private: false,
+        support: false,
+        createdBy: user._id,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+      };
       firestore()
         .collection('threads')
-        .add({
-          name: roomName,
-          private: false,
-          support: true,
-          createdBy: user,
-        })
-        .then(() => {
-          navigation.navigate('Room');
-        });
+        .add(newRoom)
+      
     }
   };
 
@@ -70,16 +71,13 @@ export default function Room({navigation}) {
           };
         });
 
-        console.log(threads); 
-
         setThreads(threads);
-
-        // Check if user exists and
-        // Check if Private Chat
 
         if (isSwitchOn) {
           const tempThreads = threads.filter(
-            (thread) => thread.private && thread.createdBy._id === user._id,
+            (thread) =>
+              thread.private &&
+              (thread.createdBy === user._id || thread.createdFor === user._id),
           );
           setFilteredThreads(tempThreads);
         } else {
@@ -109,76 +107,75 @@ export default function Room({navigation}) {
         <ImageBackground
           source={require('../../assets/images/background_texture.png')}
           style={styles.image}>
-            <View style={styles.topContainer}>
-           
-              <Searchbar
-                placeholder="Search"
-                onChangeText={handleQueryChange}
-                value={query}
-                style={styles.topContainerInput}
-              />
-              <View style={styles.toggleBtn}>
-                <Button
-                  color={Color.whiteColor}
-                  style={styles.btn}
-                  onPress={() => setShowCreateChatModal(true)}>
-                  Create a Private Chat
-                </Button>
+          <View style={styles.topContainer}>
+            <Searchbar
+              placeholder="Search"
+              onChangeText={handleQueryChange}
+              value={query}
+              style={styles.topContainerInput}
+            />
+            <View style={styles.toggleBtn}>
+              <Button
+                color={Color.whiteColor}
+                style={styles.btn}
+                onPress={() => setShowCreateChatModal(true)}>
+                Create a Private Chat
+              </Button>
 
-                <View style={styles.topRightContainer}>
-                  <Switch
-                    color={Color.purple}
-                    value={isSwitchOn}
-                    onValueChange={onToggleSwitch}
-                  />
-                  <Text style={styles.txtPrivate}>Private Chats</Text>
-                </View>
+              <View style={styles.topRightContainer}>
+                <Switch
+                  color={Color.purple}
+                  value={isSwitchOn}
+                  onValueChange={onToggleSwitch}
+                />
+                <Text style={styles.txtPrivate}>Private Chats</Text>
               </View>
             </View>
+          </View>
 
-            {threads.length > 0 && (
-              <View style={{minHeight: '60%'}}>
-                <FlatList
-                  data={filteredThreads}
-                  keyExtractor={(item) => item._id}
-                  renderItem={({item}) => (
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('Chat', {thread: item})
-                      }>
-                      <List.Item
-                        title={item.name}
-                        titleStyle={styles.listTitle}
-                      />
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
-            )}
-
-            <View style={styles.chatBtn}>
-              <View style={styles.containerBg}>
-                <TextInput
-                  underlineColor={Color.primary}
-                  underlineColorAndroid={Color.primary}
-                  value={roomName}
-                  onChangeText={setRoomName}
-                />
-                <Button
-                  color={Color.whiteColor}
-                  style={styles.btn}
-                  onPress={handleButtonPress}>
-                  Create a New Chat
-                </Button>
-              </View>
-            </View>
-
-            {showCreateChatModal && (
-              <CreateChatModal
-                visible={showCreateChatModal}
-                setVisible={setShowCreateChatModal}
+          {threads.length > 0 && (
+            <View style={{height: '50%'}}>
+              <FlatList
+                data={filteredThreads}
+                keyExtractor={(item) => item._id}
+                renderItem={({item}) => (
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Chat', {thread: item})}>
+                    <List.Item
+                      title={item.name}
+                      titleStyle={styles.listTitle}
+                    />
+                  </TouchableOpacity>
+                )}
               />
-            )}
+            </View>
+          )}
+
+          <View style={styles.chatBtn}>
+            <View style={styles.containerBg}>
+              <TextInput
+                underlineColor={Color.primary}
+                underlineColorAndroid={Color.primary}
+                value={roomName}
+                onChangeText={setRoomName}
+                style={styles.inputText}
+              />
+              <Button
+                color={Color.whiteColor}
+                style={styles.btn}
+                onPress={handleButtonPress}>
+                Create Global Group
+              </Button>
+            </View>
+          </View>
+
+          {showCreateChatModal && (
+            <CreateChatModal
+              visible={showCreateChatModal}
+              setVisible={setShowCreateChatModal}
+              setIsSwitchOn={setIsSwitchOn}
+            />
+          )}
         </ImageBackground>
       </LinearGradient>
     </SafeAreaView>
@@ -250,5 +247,8 @@ const styles = StyleSheet.create({
     backgroundColor: Color.whiteColor,
     borderRadius: 10,
     paddingHorizontal: 20,
+  },
+  inputText: {
+    color: Color.whiteColor,
   },
 });

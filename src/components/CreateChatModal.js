@@ -9,19 +9,15 @@ import firestore from '@react-native-firebase/firestore';
 import Color from '../constants/Color';
 import {service} from '../services/service';
 
-const CreateChatModal = ({visible, setVisible}) => {
+const CreateChatModal = ({visible, setVisible, setIsSwitchOn}) => {
   const navigation = useNavigation();
-  const [allFriends, setAllFriends] = useState([]);
   const [selectedFriend, setSelectedFriend] = useState({});
   const [filteredFriends, setFilteredFriends] = useState([]);
   const user = useSelector((state) => state.auth.user);
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
     firestore()
       .collection('threads')
-      // .orderBy('latestMessage.createdAt', 'desc')
       .onSnapshot((querySnapshot) => {
         const threads = querySnapshot.docs.map((documentSnapshot) => {
           return {
@@ -32,53 +28,38 @@ const CreateChatModal = ({visible, setVisible}) => {
           };
         });
 
-        //
-        service.getUsers().then((data) => {
-          const users = data.data.users;
+        const tempThreads = [];
+        user.friends.forEach((friend) => {
+          let alreadyExists = false;
 
-          const tempFriends = [];
-          user.friends.forEach((friendId) =>
-            users.map((user) => {
-              if (user._id == friendId) {
-                tempFriends.push(user);
-              }
-            }),
-          );
-
-          console.log(tempFriends)
-
-          const tempThreads = [];
-          tempFriends.forEach((friend) => {
-            let alreadyExists = false;
-
-            threads.forEach((thread) => {
-              if (friend.name === thread.name) {
-                alreadyExists = true;
-              }
-            });
-
-            if (!alreadyExists) {
-              tempThreads.push(friend);
+          threads.forEach((thread) => {
+            if (friend.name === thread.name) {
+              alreadyExists = true;
             }
           });
-          setFilteredFriends(tempThreads);
+
+          if (!alreadyExists) {
+            tempThreads.push(friend);
+          }
         });
+
+        setFilteredFriends(tempThreads);
       });
   }, [navigation]);
   const handleBeginChat = () => {
-    alert('hi');
     firestore()
       .collection('threads')
       .add({
         name: selectedFriend.name,
         private: true,
-        createdBy: user,
-        createdFor: selectedFriend._id , 
+        createdBy: user._id,
+        createdFor: selectedFriend._id,
+        createdAt: firestore.FieldValue.serverTimestamp(),
         support: false,
       })
       .then(() => {
         setVisible(false);
-        // navigation.navigate('Room');
+        setIsSwitchOn(true);
       });
   };
 
@@ -121,6 +102,7 @@ const CreateChatModal = ({visible, setVisible}) => {
 
           <Button
             mode="contained"
+            disabled={filteredFriends.length > 0 ? false : true}
             color={Color.primary}
             style={styles.btn}
             onPress={handleBeginChat}>
