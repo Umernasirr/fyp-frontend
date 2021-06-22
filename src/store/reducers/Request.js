@@ -31,6 +31,11 @@ export default (state = initialState, action = {}) => {
           (request) => request._id.toString() !== payload.requestId.toString(),
         ),
       };
+    case Request.CLEAR_REQUEST:
+      return{
+        loading: false,
+        requests: [],
+      }
     default:
       return state;
   }

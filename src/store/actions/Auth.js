@@ -1,4 +1,6 @@
 import Auth from '../constants/Auth';
+import Vibe from '../constants/Vibe';
+import Request from '../constants/Request';
 
 export const login = (payload) => (dispatch) => {
   dispatch({type: Auth.LOGIN_SUCCESS, value: payload});
@@ -26,6 +28,12 @@ export const reset = (navigation) => (disptach) => {
   disptach({
     type: Auth.RESET,
   });
+  disptach({
+    type: Vibe.CLEAR_VIBE
+  })
+  disptach({
+    type: Request.CLEAR_REQUEST
+  })
   navigation.navigate('Login');
 };
 
