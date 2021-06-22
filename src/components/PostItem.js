@@ -37,53 +37,10 @@ const PostItem = ({
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [liked, setLiked] = useState(false);
   const [favourited, setFavourited] = useState(false);
-  const [comment, setComment] = useState('');
   const [likesCount, setLikesCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
-  const {position, duration} = useTrackPlayerProgress(250);
-  const [sliderValue, setSliderValue] = useState(0);
-  const [isSeeking, setIsSeeking] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+
   const currUser = useSelector((state) => state.auth.user);
-
-  const onButtonPressed = () => {
-    console.log('url is', url);
-    if (!isPlaying) {
-      startPlayer(url);
-      setIsPlaying(true);
-    } else {
-      TrackPlayer.pause();
-      setIsPlaying(false);
-    }
-  };
-
-  const startPlayer = async (url) => {
-    // Set up the player
-    await TrackPlayer.setupPlayer();
-
-    // Add a track to the queue
-    const tempUrl =
-      url !== ''
-        ? url
-        : 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3';
-
-    await TrackPlayer.add({
-      id: '1',
-      url: tempUrl,
-      type: 'default',
-    });
-
-    await TrackPlayer.play();
-  };
-
-  const slidingStarted = () => {
-    setIsSeeking(true);
-  };
-  const slidingCompleted = async (value) => {
-    await TrackPlayer.seekTo(0);
-    setSliderValue(value);
-    setIsSeeking(false);
-  };
 
   useEffect(() => {
     let tempLikeCount = 0;
@@ -106,11 +63,6 @@ const PostItem = ({
     setCommentCount(tempCommentCount);
   }, []);
 
-  const handleKeyDown = (e) => {
-    Keyboard.dismiss();
-    setComment('');
-  };
-
   const handleChangeCommentCount = (value) => {
     setCommentCount(commentCount + value);
   };
@@ -131,6 +83,10 @@ const PostItem = ({
       })
       .catch((err) => console.log(err));
   };
+
+  // TrackPlayer.addEventListener('remote-duck', () => {
+  //   TrackPlayer.destroy();
+  // });
 
   return (
     <View style={styles.container}>
@@ -172,28 +128,26 @@ const PostItem = ({
       )}
 
       {resource_type === 'video' && (
-        <View style={styles.musicPlayer}>
-          <View style={styles.audioContainer}>
-            <FontAwesome
-              onPress={onButtonPressed}
-              style={styles.fontAudio}
-              name={isPlaying ? 'pause' : 'play'}
-              color="white"
-              size={20}
-            />
-            <Slider
-              style={{width: '90%', height: 20}}
-              minimumValue={0}
-              maximumValue={1}
-              value={sliderValue}
-              minimumTrackTintColor="#A159E9"
-              maximumTrackTintColor="gray"
-              onSlidingStart={slidingStarted}
-              onSlidingComplete={slidingCompleted}
-              thumbTintColor="white"
-            />
-          </View>
-        </View>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('SongPlayer', {
+              description: '',
+              createdAt: '',
+              url,
+              caption,
+              user,
+            });
+          }}
+          style={styles.audioContainer}>
+          <Text style={styles.fontTxt}>Listen to Vibe </Text>
+
+          <AntDesign
+            style={styles.fontAudio}
+            name={'playcircleo'}
+            color="white"
+            size={30}
+          />
+        </TouchableOpacity>
       )}
 
       <View style={styles.actionButtons}>
@@ -331,21 +285,28 @@ const styles = StyleSheet.create({
   },
 
   audioContainer: {
+    flex: 1,
     display: 'flex',
     flexDirection: 'row',
-    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    padding: 10,
     // flex: 0.45,
-    marginVertical: 10,
+    borderWidth: 3,
+    borderRadius: 20,
     borderColor: Color.primary,
-    borderWidth: 2,
-    borderRadius: 10,
+    margin: 5,
+    marginTop: 10,
   },
 
   fontAudio: {
-    display: 'flex',
-    flexDirection: 'column',
-    textAlignVertical: 'center',
     color: Color.whiteColor,
     marginHorizontal: 10,
+    padding: 10,
+  },
+
+  fontTxt: {
+    fontSize: 20,
+    color: Color.whiteColor,
   },
 });

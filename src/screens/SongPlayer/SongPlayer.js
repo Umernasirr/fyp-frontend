@@ -20,15 +20,14 @@ const SongPlayer = ({navigation, route}) => {
   const [isSeeking, setIsSeeking] = useState(false);
   const [seek, setSeek] = useState(0);
   const [url, setUrl] = useState('');
-  const [description, setDescription] = useState('');
+  const [caption, setCaption] = useState('');
   const [isInit, setIsInit] = useState(false);
-  const {position, duration} = useTrackPlayerProgress(200);
+  const {position, duration} = useTrackPlayerProgress();
 
-  const [createdAt, setCreatedAt] = useState('');
+  const [user, setUser] = useState({});
 
   const title = 'Take On Me';
   const author = 'Aha - Rick Roll';
-
   const startPlayer = async (url) => {
     // Set up the player
 
@@ -42,14 +41,12 @@ const SongPlayer = ({navigation, route}) => {
           ? url
           : 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3';
 
-      console.log(tempUrl);
       await TrackPlayer.add({
         id: '1',
         url: tempUrl,
         type: 'default',
-        title: description,
-        album: description,
-        artist: createdAt,
+        title: caption,
+        artist: user.name,
       });
       setIsInit(true);
     }
@@ -60,14 +57,12 @@ const SongPlayer = ({navigation, route}) => {
     TrackPlayer.seekTo(value);
     setSeek(value);
 
-    console.log(value);
     setIsSeeking(false);
   };
 
   const onButtonPressed = () => {
     if (!isPlaying) {
       startPlayer(url);
-      console.log('HLLO');
       setIsPlaying(true);
     } else {
       TrackPlayer.pause();
@@ -84,11 +79,13 @@ const SongPlayer = ({navigation, route}) => {
   useEffect(() => {
     if (route.params) {
       setUrl(route.params.url);
-      setDescription(route.params.description);
-
-      setCreatedAt(route.params.createdAt);
+      setCaption(route.params.caption);
+      setUser(route.params.user);
+      // setCreatedAt(route.params.createdAt);
     }
+  }, []);
 
+  useEffect(() => {
     if (!isSeeking && position && duration) {
       setSeek(position);
     }
@@ -109,12 +106,12 @@ const SongPlayer = ({navigation, route}) => {
                 source={{uri: 'https://via.placeholder.com/300'}}
               />
 
-              <Text style={styles.title}>{title}</Text>
-              <Text style={styles.author}>{author}</Text>
+              <Text style={styles.title}>{user.name}</Text>
+              <Text style={styles.author}>{caption}</Text>
 
               <View style={styles.audioContainer}>
                 <Slider
-                  style={{width: '100%', height: 20, color: Color.primary}}
+                  style={{width: '100%', height: 20}}
                   minimumValue={0}
                   maximumValue={duration}
                   value={seek}

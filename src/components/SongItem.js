@@ -4,12 +4,22 @@ import Feather from 'react-native-vector-icons/Feather';
 import Color from '../constants/Color';
 
 import {useNavigation} from '@react-navigation/native';
+
+import {useSelector} from 'react-redux';
+
 const SongItem = ({description, createdAt, url}) => {
   const navigation = useNavigation();
+  const user = useSelector((state) => state.auth.user);
+
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('SongPlayer', {description, createdAt, url});
+        navigation.navigate('SongPlayer', {
+          caption: description,
+          createdAt,
+          url,
+          user,
+        });
       }}
       style={styles.container}>
       <Feather
