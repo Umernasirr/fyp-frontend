@@ -46,7 +46,7 @@ const Login = ({
 
   useEffect(() => {
     const userToken = Store.getUserToken();
-    
+      console.log(userToken, 'userr')
     setToken(token);
     
     if (

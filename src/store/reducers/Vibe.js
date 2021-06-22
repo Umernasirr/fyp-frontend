@@ -64,6 +64,13 @@ export default (state = initialState, action = {}) => {
               vibe,
         ),
       };
+      case Vibe.CLEAR_VIBE:
+        return {
+          loading: false,
+          vibes: [],
+          myvibes: [],
+          vibe: null,
+        }
     default:
       return state;
   }
