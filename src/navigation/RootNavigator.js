@@ -140,7 +140,7 @@ const UserStackScreens = () => (
 
 const BottomTabStack = () => (
   <BottomTab.Navigator
-    initialRouteName="Settings"
+    initialRouteName="Home"
     activeColor={Color.primary}
     inactiveColor="black"
     barStyle={{backgroundColor: 'white', color: 'black'}}>
@@ -208,7 +208,7 @@ const BottomTabStack = () => (
 
 function RootNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator initialRouteName="SplashScreen">
       <Stack.Screen
         name="SplashScreen"
         options={{

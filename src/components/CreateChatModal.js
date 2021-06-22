@@ -14,6 +14,8 @@ const CreateChatModal = ({visible, setVisible}) => {
   const [filteredFriends, setFilteredFriends] = useState([]);
   const user = useSelector((state) => state.auth.user);
 
+  console.log(user); 
+
   useEffect(() => {
     firestore()
       .collection('threads')
