@@ -73,36 +73,38 @@ const Home = ({navigation, route}) => {
               <View style={styles.songsContainer}>
                 <Text style={styles.txtSubheading}>AI Generated Music</Text>
 
-                <FlatList
-                  style={styles.songsList}
-                  ItemSeparatorComponent={
-                    Platform.OS !== 'android' &&
-                    (({highlighted}) => (
-                      <View
-                        style={[
-                          styles.separator,
-                          highlighted && {marginLeft: 0},
-                        ]}
-                      />
-                    ))
-                  }
-                  keyExtractor={(item) => item._id.toString()}
-                  data={songList}
-                  renderItem={({item}) => {
-                    const desc =
-                      item.description && item.description.length > 20
-                        ? item.description.slice(0, 20) + '...'
-                        : item.description;
+                <View style={{paddingBottom: 20}}>
+                  <FlatList
+                    style={styles.songsList}
+                    ItemSeparatorComponent={
+                      Platform.OS !== 'android' &&
+                      (({highlighted}) => (
+                        <View
+                          style={[
+                            styles.separator,
+                            highlighted && {marginLeft: 0},
+                          ]}
+                        />
+                      ))
+                    }
+                    keyExtractor={(item) => item._id.toString()}
+                    data={songList}
+                    renderItem={({item}) => {
+                      const desc =
+                        item.description && item.description.length > 20
+                          ? item.description.slice(0, 20) + '...'
+                          : item.description;
 
-                    return (
-                      <SongItem
-                        description={item.description?.slice(0, 20)}
-                        createdAt={item.createdAt?.slice(0, 10)}
-                        url={item.url}
-                      />
-                    );
-                  }}
-                />
+                      return (
+                        <SongItem
+                          description={item.description?.slice(0, 20)}
+                          createdAt={item.createdAt?.slice(0, 10)}
+                          url={item.url}
+                        />
+                      );
+                    }}
+                  />
+                </View>
               </View>
             </View>
           ) : (
