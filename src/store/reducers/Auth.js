@@ -58,6 +58,7 @@ export default (state = initialState, action = {}) => {
         token: '',
       };
     case Auth.RESET:
+      Store.remove('accessToken');
       return {
         logoutLoading: false,
         loading: false,

@@ -25,7 +25,7 @@ const Settings = ({navigation, user, updateAvatar}) => {
 
   const handleLogout = () => {
     dispatch(reset(navigation));
-    navigation.navigate('Login');
+    // navigation.navigate('Login');
   };
   const handleImagePicker = () => {
     launchImageLibrary({}, (data) => {

@@ -22,6 +22,7 @@ export const emailVerification = (payload) => (disptach) => {
 };
 
 export const reset = (navigation) => (disptach) => {
+  console.log(navigation, 'navvv')
   disptach({
     type: Auth.RESET,
   });
