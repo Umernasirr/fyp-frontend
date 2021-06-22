@@ -47,6 +47,8 @@ const UserDetails = ({vibes, getVibes, deleteVibes,updateUser, route}) => {
     console.log(route.params.user, 'count')
     if (route.params) {
       setName(route.params.user.name);
+      console.log(route.params.user.description, 'desssc');  
+      setDesc(route.params.user.description)
       // setDesc(route.params.user.desc);
       service.getMe().then(data => {
         // console.log(data.data, 'datata');
@@ -56,9 +58,10 @@ const UserDetails = ({vibes, getVibes, deleteVibes,updateUser, route}) => {
         }
       }).catch(err => console.log(err))
     }
-    if(user && route.params){
+    if(user && route.params && user.friends){
       user.friends.map(friend => {
-        if(friend._id.toString() === route.params.user._id.toString() ){
+        console.log(friend, 'frenenenne')
+        if(friend && friend._id.toString() === route.params.user._id.toString() ){
           setisFriends(true);
         }
       })
@@ -139,7 +142,7 @@ const UserDetails = ({vibes, getVibes, deleteVibes,updateUser, route}) => {
                 </View>
               </View>
               <View style={styles.itemRowBtm}>
-                <Text style={{marginRight: 40}}>{user && user.desc}</Text>
+                <Text style={{marginRight: 40}}>{user && user.description}</Text>
                 {user && user._id !== route.params.user._id && (
                   <TouchableOpacity onPress={sendRequestHandler} style={styles.itemRowBtmRight}>
                     <Ionicons

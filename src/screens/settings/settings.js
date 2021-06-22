@@ -22,7 +22,7 @@ import {service} from '../../services/service';
 const Settings = ({navigation, user, updateAvatar}) => {
   const dispatch = useDispatch();
   const [image, setImage] = useState(user && user.avatar);
-
+  
   const handleLogout = () => {
     dispatch(reset(navigation));
     // navigation.navigate('Login');

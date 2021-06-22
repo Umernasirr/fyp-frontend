@@ -19,15 +19,20 @@ import {FRIENDS, PENDING} from '../../constants/index';
 import {service} from '../../services/service';
 import {Store} from '../../services/store';
 import {deleteRequests, getRequests} from '../../store/actions/Request';
+import { updateUser } from '../../store/actions/Auth';
 const ManageFriends = ({
   navigation,
   requests,
   getRequests,
   deleteRequests,
   user,
+  updateUser
 }) => {
   const [requestsToShow, setrequestsToShow] = useState(requests);
   const [friendsToShow, setFriendsToShow] = useState([]);
+  const [isDeletedFriend, setIsDeletedFriend] = useState(false);
+  
+  
   useEffect(() => {
     service
       .getRequests()
@@ -52,7 +57,19 @@ const ManageFriends = ({
         setFriendsToShow(data.data.data.friends);
       })
       .catch((err) => console.log(err));
-  }, [requestsToShow]);
+  }, [requestsToShow, isDeletedFriend]);
+
+  const deleteFriendHandler = (id) => {
+    console.log(id, 'id of the user');
+    service.deleteFriend(id).then(data => {
+      console.log(data.data);
+      if(data.data.success){
+        updateUser(data.data.data);
+        setIsDeletedFriend(!isDeletedFriend);
+      }
+    }).catch(err =>  console.log(err))
+  }
+
   const addFriendHandler = (id) => {
     service
       .acceptRequest({requestId: id})
@@ -186,7 +203,7 @@ const ManageFriends = ({
 
                       <Text>{item.name}</Text>
                     </View>
-                    <TouchableOpacity style={styles.friendsRight}>
+                    <TouchableOpacity onPress={() => deleteFriendHandler(item._id)} style={styles.friendsRight}>
                       <AntDesign
                         name="delete"
                         color={Color.primary}
@@ -209,7 +226,7 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps, {getRequests, deleteRequests})(
+export default connect(mapStateToProps, {getRequests, deleteRequests, updateUser})(
   ManageFriends,
 );
 

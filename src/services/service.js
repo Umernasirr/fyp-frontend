@@ -91,5 +91,14 @@ export const service = {
   },
   getMe: (data) => {
     return api.invoke('GET', 'auth/me')
+  },
+  deleteFriend: (friendId) => {
+    return api.invoke('DELETE', `request/friends/${friendId}`);
+  },
+  updatePassword: (data) => {
+    return api.invoke('PUT', `auth/reset-password`, data)
+  },
+  updateUser: (data) => {
+    return api.invoke('PUT', 'auth/users', data);
   }
 };

@@ -74,7 +74,7 @@ export const api = {
       params: param,
       data: data,
     }).catch((error) => {
-      console.log('error ehrere');
+      console.log(error.response);
       return error.response;
     });
   },

@@ -10,20 +10,56 @@ import {
 import {Button} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Color from '../../constants/Color';
-import {useSelector} from 'react-redux';
+import {useSelector, connect} from 'react-redux';
+import { service } from '../../services/service';
+import { updateUser } from '../../store/actions/Auth';
 
-const AccountSettings = ({navigation}) => {
+const AccountSettings = ({navigation, updateUser}) => {
   const user = useSelector((state) => state.auth.user);
 
   const [fullName, setFullName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
-  const [desc, setDesc] = useState(user.desc || '');
+  const [desc, setDesc] = useState(user.description || '');
 
+  
   const [password, setPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleUpdateHandler = () => {
+    const user1 = {...user, name: fullName, description: desc}
+    console.log(user1, 'userrrr')
+
+    service.updateUser(user1).then(data =>{
+      if(data.data.success){
+        alert('data updated successfully')
+        updateUser(data.data.data);
+      }
+    }).catch(err => console.log(err))
+  }
 
   const handleSaveChanges = () => {
     //   Handle Save Changes
+    if(confirmPassword !== password){
+      alert('Password and confirm password dont match')
+    }
+    else if(confirmPassword.length < 7 ){
+      alert('please type in password')
+    }
+    else {
+      service.updatePassword({currentPassword, newPassword: password}).then(data => {
+        console.log(data.data)
+        if(data.data.success){
+          alert('Password changed successfully');
+          setCurrentPassword('');
+          setPassword('');
+          setConfirmPassword('')
+        }
+        else {
+          alert(data.data.error)
+        }
+      }).catch(err => console.log(err));
+    }
   };
   return (
     <View style={styles.container}>
@@ -70,7 +106,7 @@ const AccountSettings = ({navigation}) => {
               </View>
 
               <Button
-                onPress={handleSaveChanges}
+                onPress={handleUpdateHandler}
                 color={Color.primary}
                 style={styles.btn}>
                 Save Changes
@@ -84,8 +120,8 @@ const AccountSettings = ({navigation}) => {
                     secureTextEntry
                     placeholder="Enter Password"
                     style={styles.input}
-                    value={password}
-                    onChangeText={setPassword}
+                    value={currentPassword}
+                    onChangeText={setCurrentPassword}
                   />
                 </View>
 
@@ -133,7 +169,7 @@ const AccountSettings = ({navigation}) => {
   );
 };
 
-export default AccountSettings;
+export default connect(null, {updateUser})(AccountSettings);
 
 const styles = StyleSheet.create({
   container: {
