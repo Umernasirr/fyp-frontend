@@ -22,6 +22,7 @@ export default class SplashScreen extends Component {
   //   this.spring();
   // }
   componentDidMount() {
+    
     this.spring();
     setTimeout(() => {
       this.props.navigation.dispatch(
