@@ -22,7 +22,7 @@ export default function Room({navigation}) {
   const [filteredThreads, setFilteredThreads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [roomName, setRoomName] = useState('');
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState('');0
   const [showCreateChatModal, setShowCreateChatModal] = useState(false);
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 
@@ -70,6 +70,8 @@ export default function Room({navigation}) {
           };
         });
 
+        console.log(threads); 
+
         setThreads(threads);
 
         // Check if user exists and
@@ -92,9 +94,6 @@ export default function Room({navigation}) {
         }
       });
 
-    /**
-     * unsubscribe listener
-     */
     return () => unsubscribe();
   }, [loading, isSwitchOn]);
 
@@ -195,7 +194,6 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: 'contain',
-    justifyContent: 'center',
   },
 
   Linear: {

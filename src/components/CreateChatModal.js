@@ -7,14 +7,16 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 import Color from '../constants/Color';
+import {service} from '../services/service';
 
 const CreateChatModal = ({visible, setVisible}) => {
   const navigation = useNavigation();
+  const [allFriends, setAllFriends] = useState([]);
   const [selectedFriend, setSelectedFriend] = useState({});
   const [filteredFriends, setFilteredFriends] = useState([]);
   const user = useSelector((state) => state.auth.user);
 
-  console.log(user); 
+  useEffect(() => {}, []);
 
   useEffect(() => {
     firestore()
@@ -30,31 +32,48 @@ const CreateChatModal = ({visible, setVisible}) => {
           };
         });
 
-        const tempThreads = [];
-        FRIENDS.forEach((friend) => {
-          let alreadyExists = false;
+        //
+        service.getUsers().then((data) => {
+          const users = data.data.users;
 
-          threads.forEach((thread) => {
-            if (friend.name === thread.name) {
-              alreadyExists = true;
+          const tempFriends = [];
+          user.friends.forEach((friendId) =>
+            users.map((user) => {
+              if (user._id == friendId) {
+                tempFriends.push(user);
+              }
+            }),
+          );
+
+          console.log(tempFriends)
+
+          const tempThreads = [];
+          tempFriends.forEach((friend) => {
+            let alreadyExists = false;
+
+            threads.forEach((thread) => {
+              if (friend.name === thread.name) {
+                alreadyExists = true;
+              }
+            });
+
+            if (!alreadyExists) {
+              tempThreads.push(friend);
             }
           });
-
-          if (!alreadyExists) {
-            tempThreads.push(friend);
-          }
+          setFilteredFriends(tempThreads);
         });
-
-        setFilteredFriends(tempThreads);
       });
   }, [navigation]);
   const handleBeginChat = () => {
+    alert('hi');
     firestore()
       .collection('threads')
       .add({
         name: selectedFriend.name,
         private: true,
         createdBy: user,
+        createdFor: selectedFriend._id , 
         support: false,
       })
       .then(() => {

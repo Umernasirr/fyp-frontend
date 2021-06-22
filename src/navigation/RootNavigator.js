@@ -208,12 +208,12 @@ const BottomTabStack = () => (
 
 function RootNavigator() {
   return (
-    <Stack.Navigator initialRouteName="SplashScreen">
+    <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
         name="SplashScreen"
         options={{
           headerShown: false,
-        }}
+      }}
         component={SplashScreen}
       />
       {/* <Stack.Screen name="Welcome" component={Welcome} />
