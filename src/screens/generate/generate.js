@@ -40,7 +40,6 @@ const Generate = ({navigation}) => {
   const [sliderValue, setSliderValue] = useState(0);
   const [isSeeking, setIsSeeking] = useState(false);
   const {position, duration} = useTrackPlayerProgress(250);
-  const [musicData, setMusicData] = useState([]);
   const [songDuration, setSongDuration] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -196,6 +195,13 @@ const Generate = ({navigation}) => {
               <Text style={styles.dontHave}>
                 Thank you for using our AI Model for Music Generation
               </Text>
+
+              <TouchableOpacity
+                style={styles.btnGenerate}
+                onPress={lyricsHandler}
+                disabled={lyrics.length <= 0 ? true : false}>
+                <Text style={styles.btnGenerateTxt}>Generate Music</Text>
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </ImageBackground>
