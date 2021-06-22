@@ -13,12 +13,12 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Color from '../../constants/Color';
 import {service} from '../../services/service';
-import {getVibes} from '../../store/actions/Vibe';
 import {connect, useSelector} from 'react-redux';
 import PostItem from '../../components/PostItem';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {deleteVibes, getVibes} from '../../store/actions/Vibe';
 
-const UserDetails = ({vibes, getVibes, route}) => {
+const UserDetails = ({vibes, getVibes, deleteVibes, route}) => {
   const [postsList, setPostsList] = useState([]);
   const [name, setName] = useState('');
   const [desc, setDesc] = useState('');
@@ -26,6 +26,16 @@ const UserDetails = ({vibes, getVibes, route}) => {
   const [postsCount, setPostsCount] = useState(0);
   const [friendsCount, setFriendsCount] = useState(0);
   const [favouritesCount, setFavouritesCount] = useState(0);
+
+  const deleteVibe = (id) => {
+    service
+      .deleteVibe(id)
+      .then((data) => {
+        deleteVibes({vibeId: id});
+        setisDeleted(!isDeleted);
+      })
+      .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     // Get user details from route
@@ -70,7 +80,10 @@ const UserDetails = ({vibes, getVibes, route}) => {
                   <Image
                     style={styles.imgUser}
                     source={{
-                      uri: user && user.avatar ? user.avatar :  'https://via.placeholder.com/200',
+                      uri:
+                        user && user.avatar
+                          ? user.avatar
+                          : 'https://via.placeholder.com/200',
                     }}
                   />
 
@@ -138,6 +151,7 @@ const UserDetails = ({vibes, getVibes, route}) => {
                       comments={item.comments}
                       format={item.format}
                       avatar={item.user.avatar}
+                      deleteVibe={deleteVibe}
                     />
                   )}
                 />
@@ -159,7 +173,7 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps, {getVibes})(UserDetails);
+export default connect(mapStateToProps, {getVibes, deleteVibes})(UserDetails);
 
 const styles = StyleSheet.create({
   container: {

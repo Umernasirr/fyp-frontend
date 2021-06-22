@@ -13,13 +13,16 @@ import LinearGradient from 'react-native-linear-gradient';
 import Color from '../../constants/Color';
 import TrackPlayer from 'react-native-track-player';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {useTrackPlayerProgress} from 'react-native-track-player/lib/hooks';
 
 const SongPlayer = ({navigation, route}) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [sliderValue, setSliderValue] = useState(0);
   const [isSeeking, setIsSeeking] = useState(false);
+  const [seek, setSeek] = useState(0);
   const [url, setUrl] = useState('');
   const [description, setDescription] = useState('');
+  const [isInit, setIsInit] = useState(false);
+  const {position, duration} = useTrackPlayerProgress(200);
 
   const [createdAt, setCreatedAt] = useState('');
 
@@ -28,33 +31,34 @@ const SongPlayer = ({navigation, route}) => {
 
   const startPlayer = async (url) => {
     // Set up the player
-    await TrackPlayer.setupPlayer();
 
-    // Add a track to the queue
-    const tempUrl =
-      url !== ''
-        ? url
-        : 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3';
+    if (isInit) {
+      await TrackPlayer.setupPlayer();
 
-    await TrackPlayer.add({
-      id: '1',
-      url: tempUrl,
-      type: 'default',
-      title: description,
-      album: description,
-      artist: createdAt,
-    });
+      // Add a track to the queue
+      const tempUrl =
+        url !== ''
+          ? url
+          : 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3';
 
+      await TrackPlayer.add({
+        id: '1',
+        url: tempUrl,
+        type: 'default',
+        title: description,
+        album: description,
+        artist: createdAt,
+      });
+      setIsInit(true);
+    }
     await TrackPlayer.play();
   };
 
-  const slidingStarted = () => {
-    setIsSeeking(true);
-  };
   const slidingCompleted = async (value) => {
-    await TrackPlayer.seekTo(0);
-    setSliderValue(value);
+    await TrackPlayer.seekTo(value);
+    setSeek(value);
     setIsSeeking(false);
+    await TrackPlayer.play();
   };
 
   const onButtonPressed = () => {
@@ -69,22 +73,24 @@ const SongPlayer = ({navigation, route}) => {
   };
 
   const audioProgress = (value) => {
-    setSliderValue(value);
+    TrackPlayer.pause();
+    setIsSeeking(true);
+    setSeek(value);
   };
 
   useEffect(() => {
-    const duration = TrackPlayer.getDuration();
-    const position = TrackPlayer.getPosition();
-
-    console.log(`${duration - position} seconds left.`);
-
     if (route.params) {
       setUrl(route.params.url);
       setDescription(route.params.description);
 
       setCreatedAt(route.params.createdAt);
     }
-  });
+
+    console.log(!isSeeking);
+    if (!isSeeking && position && duration) {
+      setSeek(position / duration);
+    }
+  }, [position, duration]);
 
   return (
     <View style={styles.container}>
@@ -108,11 +114,11 @@ const SongPlayer = ({navigation, route}) => {
                 <Slider
                   style={{width: '100%', height: 20, color: Color.primary}}
                   minimumValue={0}
-                  maximumValue={1}
-                  value={sliderValue}
+                  maximumValue={duration}
+                  value={seek}
+                  value={isSeeking ? seek : position}
                   trackStyle={styles.track}
                   thumbStyle={styles.thumb}
-                  onSlidingStart={slidingStarted}
                   onValueChange={audioProgress}
                   onSlidingComplete={slidingCompleted}
                   minimumTrackTintColor="#A159E9"
@@ -120,7 +126,7 @@ const SongPlayer = ({navigation, route}) => {
               </View>
 
               <View style={styles.musicBtns}>
-                <Text style={styles.txtDuration}>0.00</Text>
+                <Text style={styles.txtDuration}>{position.toFixed(2)}</Text>
                 <FontAwesome
                   onPress={onButtonPressed}
                   style={styles.fontAudio}
@@ -142,7 +148,7 @@ const SongPlayer = ({navigation, route}) => {
                   size={25}
                 />
 
-                <Text style={styles.txtDuration}>0.20</Text>
+                <Text style={styles.txtDuration}>{duration.toFixed(2)}</Text>
               </View>
             </View>
           </ScrollView>

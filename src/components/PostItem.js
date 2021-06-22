@@ -31,6 +31,7 @@ const PostItem = ({
   url,
   deleteVibe,
   avatar,
+  resource_type,
 }) => {
   const navigation = useNavigation();
   const [showCommentModal, setShowCommentModal] = useState(false);
@@ -41,16 +42,14 @@ const PostItem = ({
   const [commentCount, setCommentCount] = useState(0);
   const {position, duration} = useTrackPlayerProgress(250);
   const [sliderValue, setSliderValue] = useState(0);
-  const [isTrackPlayerInit, setIsTrackPlayerInit] = useState(false);
   const [isSeeking, setIsSeeking] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const currUser = useSelector((state) => state.auth.user);
 
   const onButtonPressed = () => {
-    console.log("url is", url)
-    startPlayer(url)
+    console.log('url is', url);
     if (!isPlaying) {
-      TrackPlayer.play();
+      startPlayer(url);
       setIsPlaying(true);
     } else {
       TrackPlayer.pause();
@@ -72,8 +71,6 @@ const PostItem = ({
       id: '1',
       url: tempUrl,
       type: 'default',
-
-      artist: createdAt,
     });
 
     await TrackPlayer.play();
@@ -94,7 +91,7 @@ const PostItem = ({
     if (likes) {
       likes.map((like) => {
         tempLikeCount += 1;
-      
+
         if (like.user.toString() === currUser._id.toString()) {
           setLiked(true);
         }
@@ -164,19 +161,17 @@ const PostItem = ({
       </View>
       <Text style={styles.caption}>{caption}</Text>
 
-      {format === 'jpeg' ||
-        format === 'jpg' ||
-        (format === 'png' && (
-          <Image
-            style={styles.img}
-            source={{
-              // FIX ME
-              uri: avatar
-            }}
-          />
-        ))}
+      {resource_type === 'image' && (
+        <Image
+          style={styles.img}
+          source={{
+            // FIX ME
+            uri: avatar,
+          }}
+        />
+      )}
 
-      {format === 'mp3' && (
+      {resource_type === 'video' && (
         <View style={styles.musicPlayer}>
           <View style={styles.audioContainer}>
             <FontAwesome
