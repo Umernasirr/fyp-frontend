@@ -17,6 +17,8 @@ const AccountSettings = ({navigation}) => {
 
   const [fullName, setFullName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
+  const [desc, setDesc] = useState(user.desc || '');
+
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -45,12 +47,45 @@ const AccountSettings = ({navigation}) => {
                   />
                 </View>
 
+           
+
+                <View style={styles.cardItem}>
+                  <Text>Description:</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={desc}
+                    onChangeText={setDesc}
+                  />
+                </View>
+
                 <View style={styles.cardItem}>
                   <Text>Email:</Text>
                   <TextInput
                     style={styles.input}
                     value={email}
                     onChangeText={setEmail}
+                    editable={false}
+                  />
+                </View>
+              </View>
+
+              <Button
+                onPress={handleSaveChanges}
+                color={Color.primary}
+                style={styles.btn}>
+                Save Changes
+              </Button>
+
+              <View style={styles.card}>
+
+              <View style={styles.cardItem}>
+                  <Text>Current Password:</Text>
+                  <TextInput
+                    secureTextEntry
+                    placeholder="Enter Password"
+                    style={styles.input}
+                    value={password}
+                    onChangeText={setPassword}
                   />
                 </View>
 
@@ -76,12 +111,13 @@ const AccountSettings = ({navigation}) => {
                   />
                 </View>
               </View>
+
+         
               <Button
                 onPress={handleSaveChanges}
                 color={Color.primary}
-                mode="contained"
                 style={styles.btn}>
-                Save Changes
+                Reset Password
               </Button>
 
               <Button
@@ -118,7 +154,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   heading: {
-    fontSize: 30,
+    fontSize: 26,
     color: Color.whiteColor,
     margin: 10,
   },
@@ -142,8 +178,8 @@ const styles = StyleSheet.create({
     backgroundColor: Color.bgLinear1,
   },
   btn: {
-    padding: 15,
-    margin: 20,
+    marginHorizontal:40 ,
+    marginVertical:10, 
     borderRadius: 10,
   },
 });

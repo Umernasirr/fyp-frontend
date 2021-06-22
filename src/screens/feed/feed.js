@@ -111,7 +111,6 @@ const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
                 onPress={() => setOpenPostModal(true)}>
                 Create New Post
               </Button>
-              <Button color={Color.whiteColor}>TODO Something</Button>
             </View>
           )}
         </ImageBackground>

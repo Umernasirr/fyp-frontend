@@ -18,9 +18,7 @@ export default class SplashScreen extends Component {
     super(props);
     this.springValue = new Animated.Value(0.7);
   }
-  // componentWillMount() {
-  //   this.spring();
-  // }
+  
   componentDidMount() {
     
     this.spring();
@@ -37,6 +35,7 @@ export default class SplashScreen extends Component {
     Animated.spring(this.springValue, {
       toValue: 1,
       friction: 1,
+      useNativeDriver: true
     }).start();
   }
 

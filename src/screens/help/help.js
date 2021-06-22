@@ -19,7 +19,9 @@ const Help = ({navigation}) => {
       name: `Support#${Math.round(Math.random() * 1000)}`,
       private: true,
       support: true,
-      createdBy: user,
+      createdBy: user._id,
+      createdAt: firestore.FieldValue.serverTimestamp(),
+
     };
 
     firestore()
