@@ -122,8 +122,8 @@ const Settings = ({navigation, user, updateAvatar}) => {
               </View>
             </View>
 
-            <TouchableOpacity style={styles.btnLogin}>
-              <Text style={styles.btnLoginTxt} onPress={handleLogout}>
+            <TouchableOpacity style={styles.btnLogin} onPress={handleLogout}>
+              <Text style={styles.btnLoginTxt} >
                 LOGOUT
               </Text>
               <AntDesign

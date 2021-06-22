@@ -40,12 +40,13 @@ const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
       .then((data) => {
         if (data.data.success) {
           getVibes(data.data.data);
+          setPostsList(data.data.data);
         }
       })
       .catch((err) => {
         console.log(err);
       });
-    setPostsList(vibes);
+      setPostsList(vibes)
   }, [route, navigation, isDeleted]);
 
   return (
