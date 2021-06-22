@@ -83,26 +83,27 @@ const UserDetails = ({vibes, getVibes, route}) => {
                 </View>
 
                 <View style={styles.itemCol}>
-                  <Text style={styles.txtNumber}>12</Text>
+                  <Text style={styles.txtNumber}>{user.friends.length}</Text>
                   <Text style={styles.txtNormal}>Friends</Text>
                 </View>
 
                 <View style={styles.itemCol}>
-                  <Text style={styles.txtNumber}>67</Text>
+                  <Text style={styles.txtNumber}>
+                    {user.favourites ? user.favourites.length : 0}
+                  </Text>
                   <Text style={styles.txtNormal}>Favourites</Text>
                 </View>
               </View>
               <View style={styles.itemRowBtm}>
-                <Text style={{marginRight: 40}}>
-                  Hey! I am a geek geek geek geek !!
-                </Text>
+                <Text style={{marginRight: 40}}>{user.desc}</Text>
                 {user._id !== route.params.user._id && (
-                  <TouchableOpacity>
+                  <TouchableOpacity style={styles.itemRowBtmRight}>
                     <Ionicons
                       color={Color.primary}
                       name="add-circle-outline"
                       size={30}
                     />
+                    <Text style={{fontSize: 12}}>Add Friend</Text>
                   </TouchableOpacity>
                 )}
               </View>
@@ -191,6 +192,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 20,
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   itemCol: {
     flex: 1,
@@ -218,5 +220,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     padding: 2,
     borderRadius: 20,
+  },
+  itemRowBtmRight: {
+    alignItems: 'center',
   },
 });

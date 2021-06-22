@@ -19,7 +19,7 @@ import CommentModal from './CommentModal';
 import {service} from '../services/service';
 import {updateLikesUnlikes} from '../store/actions/Vibe';
 import Slider from 'react-native-slider';
-
+import {useNavigation} from '@react-navigation/native';
 const PostItem = ({
   caption,
   createdAt,
@@ -33,7 +33,7 @@ const PostItem = ({
   deleteVibe,
   avatar,
 }) => {
-  console.log(format, url);
+  const navigation = useNavigation();
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [liked, setLiked] = useState(false);
   const [favourited, setFavourited] = useState(false);
@@ -106,12 +106,6 @@ const PostItem = ({
 
     setLikesCount(tempLikeCount);
     setCommentCount(tempCommentCount);
-
-    // const startPlayer = async () => {
-    //   let isInit = await trackPlayerInit('');
-    //   setIsTrackPlayerInit(isInit);
-    // };
-    // startPlayer();
   }, []);
 
   const handleKeyDown = (e) => {
@@ -144,7 +138,14 @@ const PostItem = ({
     <View style={styles.container}>
       <View style={styles.top}>
         <View style={styles.topContainer}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('UserList', {
+                screen: 'UserDetails',
+                params: {user},
+              })
+            }
+            style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
               style={styles.imgUser}
               source={{
@@ -152,16 +153,8 @@ const PostItem = ({
               }}
             />
             <Text style={styles.title}>{user.name} </Text>
-          </View>
-          {currUser._id !== user._id ? (
-            <TouchableOpacity>
-              <Ionicons
-                color={Color.whiteColor}
-                name="add-circle-outline"
-                size={24}
-              />
-            </TouchableOpacity>
-          ) : (
+          </TouchableOpacity>
+          {currUser._id === user._id && (
             <TouchableOpacity onPress={() => deleteVibe(vibeId)}>
               <AntDesign name="delete" color={Color.whiteColor} size={24} />
             </TouchableOpacity>
@@ -237,19 +230,15 @@ const PostItem = ({
         </TouchableOpacity>
       </View>
 
-      <View style={styles.commentRow}>
+      <TouchableOpacity           onPress={() => setShowCommentModal(true)}
+ style={styles.commentRow}>
         <TextInput
           placeholder="Add a Comment"
           style={styles.input}
-          value={comment}
-          onChangeText={setComment}
-          onSubmitEditing={handleKeyDown}
+          editable={false} 
         />
-        <TouchableOpacity style={styles.submit} onPress={handleKeyDown}>
-          <AntDesign name="enter" color={Color.primary} size={20} />
-          <Text style={styles.txtSubmit}>Submit</Text>
-        </TouchableOpacity>
-      </View>
+      
+      </TouchableOpacity>
 
       <CommentModal
         visible={showCommentModal}
@@ -296,7 +285,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderColor: Color.primary,
     borderWidth: 2,
-    
   },
   topContainer: {
     flex: 1,

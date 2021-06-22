@@ -40,10 +40,7 @@ export default function Room({navigation}) {
         createdBy: user._id,
         createdAt: firestore.FieldValue.serverTimestamp(),
       };
-      firestore()
-        .collection('threads')
-        .add(newRoom)
-      
+      firestore().collection('threads').add(newRoom);
     }
   };
 
