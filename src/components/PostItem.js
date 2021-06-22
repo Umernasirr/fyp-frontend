@@ -11,7 +11,6 @@ import {
 import Color from '../constants/Color';
 import {connect, useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import TrackPlayer from 'react-native-track-player';
 import {useTrackPlayerProgress} from 'react-native-track-player/lib/hooks';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -32,6 +31,7 @@ const PostItem = ({
   url,
   deleteVibe,
   avatar,
+  resource_type,
 }) => {
   const navigation = useNavigation();
   const [showCommentModal, setShowCommentModal] = useState(false);
@@ -42,14 +42,14 @@ const PostItem = ({
   const [commentCount, setCommentCount] = useState(0);
   const {position, duration} = useTrackPlayerProgress(250);
   const [sliderValue, setSliderValue] = useState(0);
-  const [isTrackPlayerInit, setIsTrackPlayerInit] = useState(false);
   const [isSeeking, setIsSeeking] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const currUser = useSelector((state) => state.auth.user);
 
   const onButtonPressed = () => {
+    console.log('url is', url);
     if (!isPlaying) {
-      TrackPlayer.play();
+      startPlayer(url);
       setIsPlaying(true);
     } else {
       TrackPlayer.pause();
@@ -57,26 +57,24 @@ const PostItem = ({
     }
   };
 
-  // const startPlayer = async (url) => {
-  //   // Set up the player
-  //   await TrackPlayer.setupPlayer();
+  const startPlayer = async (url) => {
+    // Set up the player
+    await TrackPlayer.setupPlayer();
 
-  //   // Add a track to the queue
-  //   const tempUrl =
-  //     url !== ''
-  //       ? url
-  //       : 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3';
+    // Add a track to the queue
+    const tempUrl =
+      url !== ''
+        ? url
+        : 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3';
 
-  //   await TrackPlayer.add({
-  //     id: '1',
-  //     url: tempUrl,
-  //     type: 'default',
+    await TrackPlayer.add({
+      id: '1',
+      url: tempUrl,
+      type: 'default',
+    });
 
-  //     artist: createdAt,
-  //   });
-
-  //   await TrackPlayer.play();
-  // };
+    await TrackPlayer.play();
+  };
 
   const slidingStarted = () => {
     setIsSeeking(true);
@@ -164,19 +162,17 @@ const PostItem = ({
       </View>
       <Text style={styles.caption}>{caption}</Text>
 
-      {format === 'jpeg' ||
-        format === 'jpg' ||
-        (format === 'png' && (
-          <Image
-            style={styles.img}
-            source={{
-              // FIX ME
-              uri: url
-            }}
-          />
-        ))}
+      {resource_type === 'image' && (
+        <Image
+          style={styles.img}
+          source={{
+            // FIX ME
+            uri: url,
+          }}
+        />
+      )}
 
-      {format === 'mp3' && (
+      {resource_type === 'video' && (
         <View style={styles.musicPlayer}>
           <View style={styles.audioContainer}>
             <FontAwesome

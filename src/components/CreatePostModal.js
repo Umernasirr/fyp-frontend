@@ -61,14 +61,12 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
     service
       .createVibe(formdata)
       .then((data) => {
-        console.log(data.data, 'dskdjs')
         if (data.data.success) {
           createVibe(data.data.data);
-          
 
           hideModal();
           navigation.navigate('Feed', {
-            vibe: data.data.data
+            vibe: data.data.data,
           });
         }
       })
@@ -98,21 +96,12 @@ const CreatePostModal = ({visible, setVisible, createVibe}) => {
             <Text>{image.fileName.slice(0, 30)} </Text>
           </View>
         )}
-        <View style={{marginTop: 20}} />
-        <Button
-          style={styles.button}
-          color={Color.primary}
-          onPress={handleDocumentPicker}>
-          Choose an Image
-        </Button>
 
-        <Button style={styles.button}>Or</Button>
         <Button
-          disabled={image ? true : false}
           style={styles.button}
           color={Color.primary}
           onPress={handleDocumentPicker}>
-          Pick a Song
+          Pick a Song or Image
         </Button>
         {/* <View
           style={{
@@ -179,7 +168,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     position: 'absolute',
-    top: 100,
+    top: 200,
   },
   heading: {
     fontSize: 20,

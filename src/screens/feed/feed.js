@@ -21,6 +21,8 @@ const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
   const [openPostModal, setOpenPostModal] = useState(false);
   const [isDeleted, setisDeleted] = useState(false);
 
+  console.log(vibes[0]);
+
   const onChangeSearch = (query) => {
     setSearchQuery(query);
   };
@@ -46,7 +48,7 @@ const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
       .catch((err) => {
         console.log(err);
       });
-      setPostsList(vibes)
+    setPostsList(vibes);
   }, [route, navigation, isDeleted]);
 
   return (
@@ -99,6 +101,7 @@ const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
                     url={item.url}
                     deleteVibe={deleteVibe}
                     avatar={item.user.avatar}
+                    resource_type={item.resource_type}
                   />
                 )}
               />
