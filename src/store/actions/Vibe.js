@@ -16,6 +16,10 @@ export const updateLikesUnlikes = (payload) => (dispatch) => {
   dispatch({type: Vibe.UPDATE_LIKES, payload});
 };
 
+export const updateFavUnFav = (payload) => (dispatch) => {
+  dispatch({type: Vibe.UPDATE_FAV, payload});
+};
+
 export const addComment = (payload) => (dispatch) => {
   dispatch({type: Vibe.ADD_COMMENT, payload});
 };

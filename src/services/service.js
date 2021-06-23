@@ -60,6 +60,9 @@ export const service = {
   likeUnlike: (id) => {
     return api.invoke('GET', `vibe/like/${id}`);
   },
+  favUnfav: (id) => {
+    return api.invoke('GET', `vibe/fav/${id}`);
+  },
   addComment: (data, id) => {
     return api.invoke('POST', `vibe/comment/${id}`, data);
   },
@@ -100,5 +103,9 @@ export const service = {
   },
   updateUser: (data) => {
     return api.invoke('PUT', 'auth/users', data);
+  },
+  getFav: () => {
+    return api.invoke('GET', 'vibe/fav')
   }
+  
 };

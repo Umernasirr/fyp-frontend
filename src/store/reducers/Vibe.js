@@ -64,6 +64,19 @@ export default (state = initialState, action = {}) => {
               vibe,
         ),
       };
+      case Vibe.UPDATE_FAV:
+        return {
+          vibes: state.vibes.map((vibe) =>
+            vibe._id === payload.vibeId
+              ? {...vibe, favorites: payload.favorites}
+              : // ? vibe.likes.includes(payload.user.toString())
+                //   ? vibe.likes.filter(
+                //       (like) => like.user.toString() !== payload.user.toString(),
+                //     )
+                //   : {...vibe, likes: [...vibe.likes, payload.user]}
+                vibe,
+          ),
+        };
       case Vibe.CLEAR_VIBE:
         return {
           loading: false,

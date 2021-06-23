@@ -20,6 +20,8 @@ const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
   const [postsList, setPostsList] = useState([]);
   const [openPostModal, setOpenPostModal] = useState(false);
   const [isDeleted, setisDeleted] = useState(false);
+  const [isFav, setisFav] = useState(false);
+
 
   console.log(vibes[0]);
 
@@ -51,6 +53,34 @@ const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
     setPostsList(vibes);
   }, [route, navigation, isDeleted]);
 
+  const AllPostHandler = () => {
+    service
+      .getVibes()
+      .then((data) => {
+        if (data.data.success) {
+          setisFav(false)
+          getVibes(data.data.data);
+          setPostsList(data.data.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  const FavHandler = () => {
+    service
+    .getFav()
+    .then((data) => {
+      if (data.data.success) {
+        setisFav(true);
+        getVibes(data.data.data);
+        setPostsList(data.data.data);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -74,7 +104,17 @@ const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
                   onPress={() => setOpenPostModal(true)}>
                   Create New Post
                 </Button>
-                <Button color={Color.whiteColor}>TODO Something</Button>
+                
+              </View>
+              <View style={styles.actionButtons}>
+                <Button
+                  mode="contained"
+                  color={!isFav ? Color.bgLinear2 : Color.whiteColor}
+                  onPress={AllPostHandler}>
+                 All Post
+                </Button>
+                <Button mode="contained" color={isFav ? Color.bgLinear2 : Color.whiteColor} onPress={FavHandler} >Favorities</Button>
+                
               </View>
               <FlatList
                 style={styles.songsList}
@@ -102,6 +142,7 @@ const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
                     deleteVibe={deleteVibe}
                     avatar={item.user.avatar}
                     resource_type={item.resource_type}
+                    favorites={item.favorites}
                   />
                 )}
               />

@@ -16,7 +16,7 @@ import {useTrackPlayerProgress} from 'react-native-track-player/lib/hooks';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CommentModal from './CommentModal';
 import {service} from '../services/service';
-import {updateLikesUnlikes} from '../store/actions/Vibe';
+import {updateFavUnFav, updateLikesUnlikes} from '../store/actions/Vibe';
 import Slider from 'react-native-slider';
 import {useNavigation} from '@react-navigation/native';
 const PostItem = ({
@@ -32,6 +32,8 @@ const PostItem = ({
   deleteVibe,
   avatar,
   resource_type,
+  favorites,
+  updateFavUnFav
 }) => {
   const navigation = useNavigation();
   const [showCommentModal, setShowCommentModal] = useState(false);
@@ -49,9 +51,23 @@ const PostItem = ({
     if (likes) {
       likes.map((like) => {
         tempLikeCount += 1;
-      
-        if (like.user.toString() === currUser && currUser._id.toString()) {
+        console.log(like.user.toString(), 'like user id');
+        console.log(currUser._id, 'currr')
+        if (like.user.toString() ===  currUser._id.toString()) {
+          console.log('comkasdksanksank')
           setLiked(true);
+        }
+      });
+    }
+    if (favorites) {
+      // console.log(favorities, 'favvv')
+      favorites.map((fav) => {
+        // tempLikeCount += 1;
+        if(fav.user){
+
+          if (fav.user.toString() ===  currUser._id.toString()) {
+            setFavourited(true);
+          }
         }
       });
     }
@@ -81,6 +97,20 @@ const PostItem = ({
         } else {
           setLikesCount(likesCount - 1);
         }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const updateFavHandler = () => {
+    service
+      .favUnfav(vibeId)
+      .then((data) => {
+        console.log(data.data)
+        if (data.data.success) {
+          setFavourited(!favourited);
+          updateFavUnFav({vibeId, favorites: data.data.data})
+        }
+      
       })
       .catch((err) => console.log(err));
   };
@@ -170,7 +200,7 @@ const PostItem = ({
 
         <TouchableOpacity
           style={styles.icon}
-          onPress={() => setFavourited(!favourited)}>
+          onPress={updateFavHandler}>
           <AntDesign
             name={favourited ? 'heart' : 'hearto'}
             color={favourited ? Color.primary : Color.whiteColor}
@@ -201,7 +231,7 @@ const PostItem = ({
   );
 };
 
-export default connect(null, {updateLikesUnlikes})(PostItem);
+export default connect(null, {updateLikesUnlikes, updateFavUnFav})(PostItem);
 
 const styles = StyleSheet.create({
   container: {
