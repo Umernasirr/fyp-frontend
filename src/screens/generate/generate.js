@@ -42,6 +42,7 @@ const Generate = ({navigation}) => {
   const {position, duration} = useTrackPlayerProgress(250);
   const [songDuration, setSongDuration] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [caption, setCaption] = useState('');
 
   useEffect(() => {
     if (!isSeeking && position && duration) {
@@ -77,6 +78,7 @@ const Generate = ({navigation}) => {
       // // subCategory: 2,
       // post_id: id,
       // favorite: '1',
+      description: caption,
       lyrics: lyrics,
     });
     axios({
@@ -143,6 +145,18 @@ const Generate = ({navigation}) => {
                   onChangeText={(text) => setLyrics(text)}
                 />
               </View>
+              <View style={styles.inputBox}>
+                <TextInput
+                  placeholderTextColor="#bbb"
+                  placeholder="Enter the caption here"
+                  multiline={true}
+                  style={styles.inputStyle}
+                  // numberOfLines={4}
+                  value={caption}
+                  onChangeText={(text) => setCaption(text)}
+                />
+              </View>
+              
 
               {loading ? (
                 <ActivityIndicator
