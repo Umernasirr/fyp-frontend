@@ -11,6 +11,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import Slider from 'react-native-slider';
+import {connect} from 'react-redux';
 
 import TrackPlayer from 'react-native-track-player';
 import axios from 'axios';
@@ -19,6 +20,7 @@ import Color from '../../constants/Color';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useTrackPlayerProgress} from 'react-native-track-player/lib/hooks';
+import {Store} from '../../services/store';
 // import ErrorModal from '../../components/ErrorModal';
 const trackPlayerInit = async (url) => {
   await TrackPlayer.setupPlayer();
@@ -43,11 +45,13 @@ const Generate = ({navigation}) => {
   const [songDuration, setSongDuration] = useState(0);
   const [loading, setLoading] = useState(false);
   const [caption, setCaption] = useState('');
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
     if (!isSeeking && position && duration) {
       setSliderValue(position / duration);
     }
+    setToken(Store.getUserToken());
   }, [position, duration]);
 
   const onButtonPressed = () => {
@@ -87,6 +91,7 @@ const Generate = ({navigation}) => {
       data: body,
       headers: {
         'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
       },
     })
       .then(async (response) => {

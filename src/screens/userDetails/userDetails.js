@@ -115,6 +115,17 @@ const UserDetails = ({
       .catch((err) => console.log(err));
   };
 
+  const deleteFriendHandler = () => {
+    console.log(route.params.user._id, 'fsdfsdfds')
+    service.deleteFriend(route.params.user._id).then(data => {
+      if(data.data.success){
+        alert('Friend removed successfully')
+        updateUser(data.data.data);
+        // setIsDeletedFriend(!isDeletedFriend);
+        setisFriends(false);
+      }
+    }).catch(err =>  console.log(err))
+  }
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -166,9 +177,7 @@ const UserDetails = ({
               <View style={styles.itemRowBtm}>
                 <Text style={{marginRight: 40}}>{desc}</Text>
                 {user && user._id !== route.params.user._id && (
-                  <TouchableOpacity
-                    onPress={sendRequestHandler}
-                    style={styles.itemRowBtmRight}>
+                  <TouchableOpacity onPress={isFriends ? deleteFriendHandler : sendRequestHandler} style={styles.itemRowBtmRight}>
                     <Ionicons
                       color={Color.primary}
                       name={

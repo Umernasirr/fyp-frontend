@@ -39,16 +39,20 @@ const ManageFriends = ({
           });
         }
         if (data.data.success) {
+          console.log(data.data.data);
           setrequestsToShow(data.data.data);
           getRequests(data.data.data);
         }
+        
       })
       .catch((err) => console.log(err));
   }, []);
   useEffect(() => {
+    console.log(user, 'use')
     service
       .getFriendsByID(user._id)
       .then((data) => {
+        console.log(data.data.data);
         setFriendsToShow(data.data.data.friends);
       })
       .catch((err) => console.log(err));
