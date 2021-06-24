@@ -100,6 +100,7 @@ const Home = ({navigation}) => {
                       gender={item.gender}
                       friends={item.friends}
                       avatar={item.avatar}
+                      desc={item.description}
                     />
                   )}
                 />

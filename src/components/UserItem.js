@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Color from '../constants/Color';
 
 import {useNavigation} from '@react-navigation/native';
-const UserItem = ({avatar, name, gender, _id, friends}) => {
+const UserItem = ({avatar, name, gender, _id, friends, desc}) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
@@ -24,7 +24,7 @@ const UserItem = ({avatar, name, gender, _id, friends}) => {
       />
       <View style={styles.txtContainer}>
         <Text style={styles.txtTitle}>{name}</Text>
-        <Text style={styles.txtDetails}>{gender?.toUpperCase()}</Text>
+        <Text style={styles.txtDetails}>{desc}</Text>
       </View>
 
       <View
