@@ -83,13 +83,14 @@ const Generate = ({navigation}) => {
     });
     axios({
       method: 'POST',
-      url: 'http://192.168.18.49:4000/api/v1/song/get-song-by-lyrics',
+      url: 'http://192.168.18.214:3000/api/v1/song/get-song-by-lyrics',
       data: body,
       headers: {
         'Content-Type': 'application/json',
       },
     })
       .then(async (response) => {
+        console.log(response);
         const startPlayer = async () => {
           let isInit = await trackPlayerInit(response.data.data);
           setIsTrackPlayerInit(isInit);
