@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {GiftedChat, Send} from 'react-native-gifted-chat';
@@ -8,20 +8,9 @@ import {IconButton} from 'react-native-paper';
 import Color from '../../constants/Color';
 const Chat = ({route}) => {
   const [messages, setMessages] = useState([]);
-  const chatsRef = firestore().collection('chats');
-  const [roomTitle, setRoomTitle] = useState('');
   const user = useSelector((state) => state.auth.user);
 
   const thread = route.params.thread;
-
-  const appendMessages = useCallback(
-    (messages) => {
-      setMessages((previousMessages) =>
-        GiftedChat.append(previousMessages, messages),
-      );
-    },
-    [messages],
-  );
 
   async function handleSend(messages) {
     const text = messages[0].text;
@@ -54,7 +43,6 @@ const Chat = ({route}) => {
       );
   }
 
-  
   useEffect(() => {
     const messagesListener = firestore()
       .collection('threads')

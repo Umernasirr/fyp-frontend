@@ -18,15 +18,43 @@ import {deleteVibes, getVibes} from '../../store/actions/Vibe';
 const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [postsList, setPostsList] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
   const [openPostModal, setOpenPostModal] = useState(false);
   const [isDeleted, setisDeleted] = useState(false);
   const [isFav, setisFav] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    service
+      .getVibes()
+      .then((data) => {
+        if (data.data.success) {
+          getVibes(data.data.data);
+          setPostsList(data.data.data);
+          setAllPosts(data.data.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setPostsList(vibes);
 
-
-  console.log(vibes[0]);
-
+    setIsRefreshing(false);
+  };
   const onChangeSearch = (query) => {
     setSearchQuery(query);
+
+    query = query.toLowerCase();
+    if (query === '') {
+      setPostsList(allPosts);
+    } else {
+      const tempPosts = postsList.filter(
+        (posts) =>
+          posts.caption?.toLowerCase().includes(query) ||
+          posts.user.name?.toLowerCase().includes(query),
+      );
+      setPostsList(tempPosts);
+    }
   };
   const deleteVibe = (id) => {
     service
@@ -45,6 +73,7 @@ const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
         if (data.data.success) {
           getVibes(data.data.data);
           setPostsList(data.data.data);
+          setAllPosts(data.data.data);
         }
       })
       .catch((err) => {
@@ -58,29 +87,31 @@ const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
       .getVibes()
       .then((data) => {
         if (data.data.success) {
-          setisFav(false)
+          setisFav(false);
           getVibes(data.data.data);
           setPostsList(data.data.data);
+          setSearchQuery('');
         }
       })
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
   const FavHandler = () => {
     service
-    .getFav()
-    .then((data) => {
-      if (data.data.success) {
-        setisFav(true);
-        getVibes(data.data.data);
-        setPostsList(data.data.data);
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
+      .getFav()
+      .then((data) => {
+        if (data.data.success) {
+          setisFav(true);
+          getVibes(data.data.data);
+          setPostsList(data.data.data);
+          setSearchQuery('');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -89,74 +120,101 @@ const Feed = ({vibes, getVibes, deleteVibes, navigation, route}) => {
         <ImageBackground
           source={require('../../assets/images/background_texture.png')}
           style={styles.image}>
-          {postsList && postsList.length > 0 ? (
-            <View style={styles.marginContainer}>
-              <Searchbar
-                style={{borderRadius: 20, marginVertical: 20}}
-                placeholder="Search"
-                onChangeText={onChangeSearch}
-                value={searchQuery}
-              />
-              <View style={styles.actionButtons}>
-                <Button
-                  mode="contained"
-                  color={Color.whiteColor}
-                  onPress={() => setOpenPostModal(true)}>
-                  Create New Post
-                </Button>
-                
-              </View>
-              <View style={styles.actionButtons}>
-                <Button
-                  mode="contained"
-                  color={!isFav ? Color.bgLinear2 : Color.whiteColor}
-                  onPress={AllPostHandler}>
-                 All Post
-                </Button>
-                <Button mode="contained" color={isFav ? Color.bgLinear2 : Color.whiteColor} onPress={FavHandler} >Favorities</Button>
-                
-              </View>
-              <FlatList
-                style={styles.songsList}
-                ItemSeparatorComponent={
-                  Platform.OS !== 'android' &&
-                  (({highlighted}) => (
-                    <View
-                      style={[styles.separator, highlighted && {marginLeft: 0}]}
+          <Searchbar
+            style={{borderRadius: 20, marginVertical: 20}}
+            placeholder="Search"
+            onChangeText={onChangeSearch}
+            value={searchQuery}
+          />
+          <View style={styles.marginContainer}>
+            {postsList && postsList.length > 0 ? (
+              <View>
+                <View style={styles.actionButtons}>
+                  <Button
+                    mode="contained"
+                    color={Color.whiteColor}
+                    onPress={() => setOpenPostModal(true)}>
+                    Create New Post
+                  </Button>
+                </View>
+                <View style={styles.actionButtons}>
+                  <Button
+                    mode="contained"
+                    color={!isFav ? Color.bgLinear2 : Color.whiteColor}
+                    onPress={AllPostHandler}>
+                    All Post
+                  </Button>
+                  <Button
+                    mode="contained"
+                    color={isFav ? Color.bgLinear2 : Color.whiteColor}
+                    onPress={FavHandler}>
+                    Favorities
+                  </Button>
+                </View>
+                <FlatList
+                  onRefresh={handleRefresh}
+                  refreshing={isRefreshing}
+                  style={styles.songsList}
+                  ItemSeparatorComponent={
+                    Platform.OS !== 'android' &&
+                    (({highlighted}) => (
+                      <View
+                        style={[
+                          styles.separator,
+                          highlighted && {marginLeft: 0},
+                        ]}
+                      />
+                    ))
+                  }
+                  keyExtractor={(item) => item._id.toString()}
+                  data={postsList}
+                  renderItem={({item}) => (
+                    <PostItem
+                      title={item.title}
+                      caption={item.caption}
+                      createdAt={item.createdAt}
+                      user={item.user}
+                      vibeId={item._id}
+                      likes={item.likes}
+                      comments={item.comments}
+                      format={item.format}
+                      url={item.url}
+                      deleteVibe={deleteVibe}
+                      avatar={item.user.avatar}
+                      resource_type={item.resource_type}
+                      favorites={item.favorites}
                     />
-                  ))
-                }
-                keyExtractor={(item) => item._id.toString()}
-                data={postsList}
-                renderItem={({item}) => (
-                  <PostItem
-                    title={item.title}
-                    caption={item.caption}
-                    createdAt={item.createdAt}
-                    user={item.user}
-                    vibeId={item._id}
-                    likes={item.likes}
-                    comments={item.comments}
-                    format={item.format}
-                    url={item.url}
-                    deleteVibe={deleteVibe}
-                    avatar={item.user.avatar}
-                    resource_type={item.resource_type}
-                    favorites={item.favorites}
-                  />
-                )}
-              />
-            </View>
-          ) : (
-            <View style={styles.actionButtons}>
-              <Button
-                mode="contained"
-                color={Color.whiteColor}
-                onPress={() => setOpenPostModal(true)}>
-                Create New Post
-              </Button>
-            </View>
-          )}
+                  )}
+                />
+              </View>
+            ) : (
+              <View>
+                <View style={styles.actionButtons}>
+                  <Button
+                    mode="contained"
+                    color={Color.whiteColor}
+                    onPress={() => setOpenPostModal(true)}>
+                    Create New Post
+                  </Button>
+                </View>
+                <View style={styles.actionButtons}>
+                  <Button
+                    mode="contained"
+                    color={!isFav ? Color.bgLinear2 : Color.whiteColor}
+                    onPress={AllPostHandler}>
+                    All Post
+                  </Button>
+                  <Button
+                    mode="contained"
+                    color={isFav ? Color.bgLinear2 : Color.whiteColor}
+                    onPress={FavHandler}>
+                    Favorities
+                  </Button>
+                </View>
+                <Text style={styles.noPostsFoundTxt}>No Posts Founds...</Text>
+              </View>
+            )}
+          </View>
         </ImageBackground>
       </LinearGradient>
 
@@ -203,6 +261,13 @@ const styles = StyleSheet.create({
   actionButtons: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    margin: 10,
+  },
+
+  noPostsFoundTxt: {
+    fontSize: 24,
+    textAlign: 'center',
+    color: Color.whiteColor,
     margin: 10,
   },
 });

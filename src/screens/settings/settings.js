@@ -22,7 +22,7 @@ import {service} from '../../services/service';
 const Settings = ({navigation, user, updateAvatar}) => {
   const dispatch = useDispatch();
   const [image, setImage] = useState(user && user.avatar);
-  
+
   const handleLogout = () => {
     dispatch(reset(navigation));
     // navigation.navigate('Login');
@@ -53,8 +53,8 @@ const Settings = ({navigation, user, updateAvatar}) => {
         colors={[Color.linearColor1, Color.linearColor2]}
         style={styles.Linear}>
         <ImageBackground
-          source={ user &&
-            user.avatar
+          source={
+            user && user.avatar
               ? user.avatar
               : require('../../assets/images/background_texture.png')
           }
@@ -68,7 +68,7 @@ const Settings = ({navigation, user, updateAvatar}) => {
                       uri:
                         image !== ''
                           ? image
-                          : 'https://via.placeholder.com/200',
+                          : 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
                     }}
                     style={styles.profileImage}
                   />
@@ -123,9 +123,7 @@ const Settings = ({navigation, user, updateAvatar}) => {
             </View>
 
             <TouchableOpacity style={styles.btnLogin} onPress={handleLogout}>
-              <Text style={styles.btnLoginTxt} >
-                LOGOUT
-              </Text>
+              <Text style={styles.btnLoginTxt}>LOGOUT</Text>
               <AntDesign
                 style={{marginTop: 0}}
                 name="arrowright"

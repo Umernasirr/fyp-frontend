@@ -16,19 +16,32 @@ import {service} from '../../services/service';
 import {connect, useSelector} from 'react-redux';
 import PostItem from '../../components/PostItem';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { updateUser } from '../../store/actions/Auth';
+import {updateUser} from '../../store/actions/Auth';
 
 import {deleteVibes, getVibes} from '../../store/actions/Vibe';
+import {Button} from 'react-native-paper';
 
-const UserDetails = ({vibes, getVibes, deleteVibes,updateUser, route}) => {
+const UserDetails = ({
+  navigation,
+  vibes,
+  getVibes,
+  deleteVibes,
+  updateUser,
+  route,
+}) => {
   const [postsList, setPostsList] = useState([]);
   const [name, setName] = useState('');
   const [desc, setDesc] = useState('');
   const user = useSelector((state) => state.auth.user);
   const [postsCount, setPostsCount] = useState(0);
-  const [friendsCount, setFriendsCount] = useState(0);
-  const [favouritesCount, setFavouritesCount] = useState(0);
   const [isFriends, setisFriends] = useState(false);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    handleUpdate();
+    setIsRefreshing(false);
+  };
 
   const deleteVibe = (id) => {
     service
@@ -40,31 +53,30 @@ const UserDetails = ({vibes, getVibes, deleteVibes,updateUser, route}) => {
       .catch((err) => console.log(err));
   };
 
-  useEffect(() => {
-    // Get user details from route
-    // console.log(route.params.user._id, 'id')
-    // console.log(user._id, 'iddd')
-    console.log(route.params.user, 'count')
+  const handleUpdate = () => {
     if (route.params) {
       setName(route.params.user.name);
-      console.log(route.params.user.description, 'desssc');  
-      setDesc(route.params.user.description)
+      setDesc(route.params.user.description);
       // setDesc(route.params.user.desc);
-      service.getMe().then(data => {
-        // console.log(data.data, 'datata');
-        // updateUser()
-        if(data.data.success){
-          updateUser(data.data.user)
-        }
-      }).catch(err => console.log(err))
+      service
+        .getMe()
+        .then((data) => {
+          // updateUser()
+          if (data.data.success) {
+            updateUser(data.data.user);
+          }
+        })
+        .catch((err) => console.log(err));
     }
-    if(user && route.params && user.friends){
-      user.friends.map(friend => {
-        console.log(friend, 'frenenenne')
-        if(friend && friend._id.toString() === route.params.user._id.toString() ){
+    if (user && route.params && user.friends) {
+      user.friends.map((friend) => {
+        if (
+          friend &&
+          friend._id.toString() === route.params.user._id.toString()
+        ) {
           setisFriends(true);
         }
-      })
+      });
     }
 
     // Get Posts
@@ -85,19 +97,23 @@ const UserDetails = ({vibes, getVibes, deleteVibes,updateUser, route}) => {
     );
     setPostsCount(tempVibes.length);
     setPostsList(tempVibes);
-  }, []);
-  const sendRequestHandler = () => {
-    service.sendRequest({requestTo : route.params.user._id, requestBy:  user._id}).then(data => {
-      if(data.data.error){
-        alert("Request is already sent to this user");
-      }
-      else{
+  };
 
-        // console.log(data.data, 'data')
-        alert("request is sent successfully!")
-      }
-    }).catch(err => console.log(err))
-  }
+  useEffect(() => {
+    handleUpdate();
+  }, [route]);
+  const sendRequestHandler = () => {
+    service
+      .sendRequest({requestTo: route.params.user._id, requestBy: user._id})
+      .then((data) => {
+        if (data.data.error) {
+          alert('Request is already sent to this user');
+        } else {
+          alert('request is sent successfully!');
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <View style={styles.container}>
@@ -117,7 +133,7 @@ const UserDetails = ({vibes, getVibes, deleteVibes,updateUser, route}) => {
                       uri:
                         user && user.avatar
                           ? user.avatar
-                          : 'https://via.placeholder.com/200',
+                          : 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
                     }}
                   />
 
@@ -130,7 +146,13 @@ const UserDetails = ({vibes, getVibes, deleteVibes,updateUser, route}) => {
                 </View>
 
                 <View style={styles.itemCol}>
-                  <Text style={styles.txtNumber}>{route.params && route.params.user && route.params.user.friends && route.params.user.friends.length}</Text>
+                  <Text style={styles.txtNumber}>
+                    {(route.params &&
+                      route.params.user &&
+                      route.params.user.friends &&
+                      route.params.user.friends.length) ||
+                      1}
+                  </Text>
                   <Text style={styles.txtNormal}>Friends</Text>
                 </View>
 
@@ -142,15 +164,23 @@ const UserDetails = ({vibes, getVibes, deleteVibes,updateUser, route}) => {
                 </View>
               </View>
               <View style={styles.itemRowBtm}>
-                <Text style={{marginRight: 40}}>{user && user.description}</Text>
+                <Text style={{marginRight: 40}}>{desc}</Text>
                 {user && user._id !== route.params.user._id && (
-                  <TouchableOpacity onPress={sendRequestHandler} style={styles.itemRowBtmRight}>
+                  <TouchableOpacity
+                    onPress={sendRequestHandler}
+                    style={styles.itemRowBtmRight}>
                     <Ionicons
                       color={Color.primary}
-                      name={isFriends ? 'person-remove-outline':'add-circle-outline'}
+                      name={
+                        isFriends
+                          ? 'person-remove-outline'
+                          : 'add-circle-outline'
+                      }
                       size={30}
                     />
-                    <Text style={{fontSize: 12}}>{isFriends ? 'Remove from friend' : 'Add Friend'}</Text>
+                    <Text style={{fontSize: 12}}>
+                      {isFriends ? 'Remove from friend' : 'Add Friend'}
+                    </Text>
                   </TouchableOpacity>
                 )}
               </View>
@@ -161,6 +191,8 @@ const UserDetails = ({vibes, getVibes, deleteVibes,updateUser, route}) => {
               <View>
                 <FlatList
                   style={styles.songsList}
+                  onRefresh={handleRefresh}
+                  refreshing={isRefreshing}
                   ItemSeparatorComponent={
                     Platform.OS !== 'android' &&
                     (({highlighted}) => (
@@ -195,6 +227,16 @@ const UserDetails = ({vibes, getVibes, deleteVibes,updateUser, route}) => {
                 <Text style={styles.txtNoPosts}>No Posts By This User...</Text>
               </View>
             )}
+
+            <View>
+              <Button
+                mode="contained"
+                style={{margin: 10}}
+                onPress={() => navigation.navigate('UserListMain')}
+                color={Color.primary}>
+                All Users
+              </Button>
+            </View>
           </ScrollView>
         </ImageBackground>
       </LinearGradient>
@@ -207,7 +249,9 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps, {getVibes,deleteVibes, updateUser})(UserDetails);
+export default connect(mapStateToProps, {getVibes, deleteVibes, updateUser})(
+  UserDetails,
+);
 
 const styles = StyleSheet.create({
   container: {

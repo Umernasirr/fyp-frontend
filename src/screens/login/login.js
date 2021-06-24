@@ -22,11 +22,7 @@ import {service} from '../../services/service';
 import {login} from '../../store/actions/Auth';
 import {Store} from '../../services/store';
 
-
-const Login = ({
-  navigation,
-  token,
-}) => {
+const Login = ({navigation, token}) => {
   const [email, setEmail] = useState('');
   const [password, setpassword] = useState('');
   const [emailErr, setemailErr] = useState(false);
@@ -34,7 +30,7 @@ const Login = ({
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(false);
   const [tokens, setToken] = useState('');
-  const dispatch = useDispatch();   
+  const dispatch = useDispatch();
   const verificationHandler = () => {
     if (email && password) {
       return true;
@@ -45,9 +41,8 @@ const Login = ({
 
   useEffect(() => {
     const userToken = Store.getUserToken();
-      console.log(userToken, 'userr')
     setToken(token);
-    
+
     if (
       (userToken && userToken !== undefined) ||
       (token && token !== undefined)
@@ -72,9 +67,8 @@ const Login = ({
           console.log(err);
         });
     }
-
   };
-  
+
   return (
     <View style={styles.container}>
       {/* {error !== '' && (
@@ -84,7 +78,7 @@ const Login = ({
           handleErrorClose={handleErrorClose}
         />
       )} */}
-  
+
       <StatusBar backgroundColor={Color.linearColor1} />
 
       <LinearGradient

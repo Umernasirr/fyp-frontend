@@ -9,37 +9,32 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
-import {Button} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Color from '../../constants/Color';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {connect} from 'react-redux';
-import {FRIENDS, PENDING} from '../../constants/index';
 import {service} from '../../services/service';
-import {Store} from '../../services/store';
 import {deleteRequests, getRequests} from '../../store/actions/Request';
-import { updateUser } from '../../store/actions/Auth';
+import {updateUser} from '../../store/actions/Auth';
 const ManageFriends = ({
   navigation,
   requests,
   getRequests,
   deleteRequests,
   user,
-  updateUser
+  updateUser,
 }) => {
   const [requestsToShow, setrequestsToShow] = useState(requests);
   const [friendsToShow, setFriendsToShow] = useState([]);
   const [isDeletedFriend, setIsDeletedFriend] = useState(false);
-  
-  
+
   useEffect(() => {
     service
       .getRequests()
       .then((data) => {
         if (!data.data.success) {
           service.getRequests().then((data) => {
-            // console.log(data.data.data, 'sencons ');
             setrequestsToShow(data.data.data);
           });
         }
@@ -60,15 +55,16 @@ const ManageFriends = ({
   }, [requestsToShow, isDeletedFriend]);
 
   const deleteFriendHandler = (id) => {
-    console.log(id, 'id of the user');
-    service.deleteFriend(id).then(data => {
-      console.log(data.data);
-      if(data.data.success){
-        updateUser(data.data.data);
-        setIsDeletedFriend(!isDeletedFriend);
-      }
-    }).catch(err =>  console.log(err))
-  }
+    service
+      .deleteFriend(id)
+      .then((data) => {
+        if (data.data.success) {
+          updateUser(data.data.data);
+          setIsDeletedFriend(!isDeletedFriend);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   const addFriendHandler = (id) => {
     service
@@ -89,7 +85,6 @@ const ManageFriends = ({
       .catch((err) => console.log(err));
   };
   const removeFriendHandler = (id) => {
-
     service
       .deleteRequest({requestId: id})
       .then((data) => {
@@ -141,13 +136,24 @@ const ManageFriends = ({
                     data={requestsToShow}
                     renderItem={({item}) => (
                       <View style={styles.friendsList}>
-                        <View style={styles.friendsLeft}>
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigation.navigate('UserList', {
+                              screen: 'UserDetails',
+                              params: {user: item},
+                            })
+                          }
+                          style={styles.friendsLeft}>
                           <Image
                             style={styles.imgUser}
-                            source={{uri: 'https://via.placeholder.com/150'}}
+                            source={{
+                              uri: item.avatar
+                                ? item.avater
+                                : 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
+                            }}
                           />
                           <Text>{item.requestBy.name}</Text>
-                        </View>
+                        </TouchableOpacity>
 
                         <View style={styles.friendsRight}>
                           <TouchableOpacity
@@ -195,15 +201,28 @@ const ManageFriends = ({
                 data={friendsToShow}
                 renderItem={({item}) => (
                   <View style={styles.friendsList}>
-                    <View style={styles.friendsLeft}>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('UserList', {
+                          screen: 'UserDetails',
+                          params: {user: item},
+                        })
+                      }
+                      style={styles.friendsLeft}>
                       <Image
                         style={styles.imgUser}
-                        source={{uri: 'https://via.placeholder.com/150'}}
+                        source={{
+                          uri: item.avatar
+                            ? item.avatar
+                            : 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
+                        }}
                       />
 
                       <Text>{item.name}</Text>
-                    </View>
-                    <TouchableOpacity onPress={() => deleteFriendHandler(item._id)} style={styles.friendsRight}>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => deleteFriendHandler(item._id)}
+                      style={styles.friendsRight}>
                       <AntDesign
                         name="delete"
                         color={Color.primary}
@@ -226,9 +245,11 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps, {getRequests, deleteRequests, updateUser})(
-  ManageFriends,
-);
+export default connect(mapStateToProps, {
+  getRequests,
+  deleteRequests,
+  updateUser,
+})(ManageFriends);
 
 const styles = StyleSheet.create({
   container: {

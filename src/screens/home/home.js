@@ -19,6 +19,15 @@ const Home = ({navigation, route}) => {
   const [songList, setSongList] = useState([]);
   const [allSongs, setAllSongList] = useState([]);
   const [title, setTitle] = useState('');
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    getSongs();
+
+    setIsRefreshing(false);
+  };
+
   const onChangeSearch = (query) => {
     setSearchQuery(query);
     if (query === '') {
@@ -76,6 +85,8 @@ const Home = ({navigation, route}) => {
                 <View style={{paddingBottom: 20}}>
                   <FlatList
                     style={styles.songsList}
+                    onRefresh={handleRefresh}
+                    refreshing={isRefreshing}
                     ItemSeparatorComponent={
                       Platform.OS !== 'android' &&
                       (({highlighted}) => (

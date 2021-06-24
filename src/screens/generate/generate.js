@@ -83,7 +83,7 @@ const Generate = ({navigation}) => {
     });
     axios({
       method: 'POST',
-      url: 'http://192.168.18.49:3000/api/v1/song/get-song-by-lyrics',
+      url: 'http://192.168.18.49:4000/api/v1/song/get-song-by-lyrics',
       data: body,
       headers: {
         'Content-Type': 'application/json',
@@ -156,7 +156,6 @@ const Generate = ({navigation}) => {
                   onChangeText={(text) => setCaption(text)}
                 />
               </View>
-              
 
               {loading ? (
                 <ActivityIndicator
