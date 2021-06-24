@@ -44,16 +44,20 @@ const ManageFriends = ({
           });
         }
         if (data.data.success) {
+          console.log(data.data.data);
           setrequestsToShow(data.data.data);
           getRequests(data.data.data);
         }
+        
       })
       .catch((err) => console.log(err));
   }, []);
   useEffect(() => {
+    console.log(user, 'use')
     service
       .getFriendsByID(user._id)
       .then((data) => {
+        console.log(data.data.data);
         setFriendsToShow(data.data.data.friends);
       })
       .catch((err) => console.log(err));
@@ -64,6 +68,7 @@ const ManageFriends = ({
     service.deleteFriend(id).then(data => {
       console.log(data.data);
       if(data.data.success){
+        alert('Friend Removed successfully')
         updateUser(data.data.data);
         setIsDeletedFriend(!isDeletedFriend);
       }
