@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {StyleSheet, Image, View, Text, TouchableOpacity} from 'react-native';
 import Color from '../constants/Color';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {useLinkBuilder} from '@react-navigation/native';
 import {service} from '../services/service';
 
 const CommentItem = ({
@@ -30,7 +29,10 @@ const CommentItem = ({
     <View style={styles.commentContainer}>
       <Image
         style={styles.imgUser}
-        source={{uri: 'https://via.placeholder.com/150'}}
+        source={{
+          uri:
+            'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
+        }}
       />
 
       <View style={styles.textContainer}>

@@ -74,10 +74,6 @@ const Signup = ({
   const phoneref = useRef();
 
   const handleSelectCountry = (country) => {
-    // console.log(country);
-    // console.log(phoneref.current.getISOCode('af'));
-    // console.log(phoneref.current.selectCountry('af'));
-    // phoneref.current.selectCountry(country.cca2.toLowerCase());
     setcca2(country.cca2);
     setcountryCode(country.callingCode[0]);
     if (countryCode !== country.callingCode[0]) {
@@ -90,18 +86,12 @@ const Signup = ({
 
   const CountryPickerref = useRef();
 
-  // const handleErrorClose = () => {
-  //   clearError();
-  // };
-
   const {name, email, phoneNumber, password} = formData;
 
   const handleOnTextChange = (name, value) => {
-    // console.log(value);
     setFormData({...formData, [name]: value});
   };
 
-  // console.log(phoneNumber, 'phoneeeeeee');
   const verificationHandler = async (e) => {
     if (
       !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) ||

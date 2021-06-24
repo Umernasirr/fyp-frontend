@@ -44,7 +44,6 @@ import {Store} from './store';
 Axios.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-    // console.log(config);
     return config;
   },
   function (error) {
@@ -55,7 +54,6 @@ Axios.interceptors.request.use(
 export const api = {
   invoke: (method, url, data = {}, token = Store.getUserToken(null)) => {
     let progress = data && data.progress === false ? data.progress : true;
-    // console.log('progress', progress);
     let param = null;
     if (method.toLowerCase() == 'get') {
       param = data;

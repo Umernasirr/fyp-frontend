@@ -84,6 +84,7 @@ const VerifyInputs = ({
           .then((data) => {
             if (data.data.error) {
               alert(data.data.error);
+              
             } else {
               dispatch(emailVerification);
               navigation.navigate('Login');

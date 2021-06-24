@@ -33,7 +33,7 @@ const PostItem = ({
   avatar,
   resource_type,
   favorites,
-  updateFavUnFav
+  updateFavUnFav,
 }) => {
   const navigation = useNavigation();
   const [showCommentModal, setShowCommentModal] = useState(false);
@@ -45,27 +45,22 @@ const PostItem = ({
   const currUser = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    console.log(url, 'ururjrur')
     let tempLikeCount = 0;
     let tempCommentCount = 0;
     if (likes) {
       likes.map((like) => {
         tempLikeCount += 1;
-        console.log(like.user.toString(), 'like user id');
-        console.log(currUser._id, 'currr')
-        if (like.user.toString() ===  currUser._id.toString()) {
-          console.log('comkasdksanksank')
+
+        if (like.user.toString() === currUser._id.toString()) {
           setLiked(true);
         }
       });
     }
     if (favorites) {
-      // console.log(favorities, 'favvv')
       favorites.map((fav) => {
         // tempLikeCount += 1;
-        if(fav.user){
-
-          if (fav.user.toString() ===  currUser._id.toString()) {
+        if (fav.user) {
+          if (fav.user.toString() === currUser._id.toString()) {
             setFavourited(true);
           }
         }
@@ -105,12 +100,10 @@ const PostItem = ({
     service
       .favUnfav(vibeId)
       .then((data) => {
-        console.log(data.data)
         if (data.data.success) {
           setFavourited(!favourited);
-          updateFavUnFav({vibeId, favorites: data.data.data})
+          updateFavUnFav({vibeId, favorites: data.data.data});
         }
-      
       })
       .catch((err) => console.log(err));
   };
@@ -134,12 +127,14 @@ const PostItem = ({
             <Image
               style={styles.imgUser}
               source={{
-                uri: avatar ? avatar : 'https://via.placeholder.com/150',
+                uri: avatar
+                  ? avatar
+                  : 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
               }}
             />
             <Text style={styles.title}>{user.name} </Text>
           </TouchableOpacity>
-          {currUser && currUser._id === user &&  user._id && (
+          {currUser && currUser._id === user && user._id && (
             <TouchableOpacity onPress={() => deleteVibe(vibeId)}>
               <AntDesign name="delete" color={Color.whiteColor} size={24} />
             </TouchableOpacity>
@@ -198,9 +193,7 @@ const PostItem = ({
           <Text style={styles.iconTxt}>{commentCount}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.icon}
-          onPress={updateFavHandler}>
+        <TouchableOpacity style={styles.icon} onPress={updateFavHandler}>
           <AntDesign
             name={favourited ? 'heart' : 'hearto'}
             color={favourited ? Color.primary : Color.whiteColor}

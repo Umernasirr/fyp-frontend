@@ -11,8 +11,8 @@ import {Button} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Color from '../../constants/Color';
 import {useSelector, connect} from 'react-redux';
-import { service } from '../../services/service';
-import { updateUser } from '../../store/actions/Auth';
+import {service} from '../../services/service';
+import {updateUser} from '../../store/actions/Auth';
 
 const AccountSettings = ({navigation, updateUser}) => {
   const user = useSelector((state) => state.auth.user);
@@ -21,44 +21,44 @@ const AccountSettings = ({navigation, updateUser}) => {
   const [email, setEmail] = useState(user.email);
   const [desc, setDesc] = useState(user.description || '');
 
-  
   const [password, setPassword] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleUpdateHandler = () => {
-    const user1 = {...user, name: fullName, description: desc}
-    console.log(user1, 'userrrr')
+    const user1 = {...user, name: fullName, description: desc};
 
-    service.updateUser(user1).then(data =>{
-      if(data.data.success){
-        alert('data updated successfully')
-        updateUser(data.data.data);
-      }
-    }).catch(err => console.log(err))
-  }
+    service
+      .updateUser(user1)
+      .then((data) => {
+        if (data.data.success) {
+          alert('data updated successfully');
+          updateUser(data.data.data);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   const handleSaveChanges = () => {
     //   Handle Save Changes
-    if(confirmPassword !== password){
-      alert('Password and confirm password dont match')
-    }
-    else if(confirmPassword.length < 7 ){
-      alert('please type in password')
-    }
-    else {
-      service.updatePassword({currentPassword, newPassword: password}).then(data => {
-        console.log(data.data)
-        if(data.data.success){
-          alert('Password changed successfully');
-          setCurrentPassword('');
-          setPassword('');
-          setConfirmPassword('')
-        }
-        else {
-          alert(data.data.error)
-        }
-      }).catch(err => console.log(err));
+    if (confirmPassword !== password) {
+      alert('Password and confirm password dont match');
+    } else if (confirmPassword.length < 7) {
+      alert('please type in password');
+    } else {
+      service
+        .updatePassword({currentPassword, newPassword: password})
+        .then((data) => {
+          if (data.data.success) {
+            alert('Password changed successfully');
+            setCurrentPassword('');
+            setPassword('');
+            setConfirmPassword('');
+          } else {
+            alert(data.data.error);
+          }
+        })
+        .catch((err) => console.log(err));
     }
   };
   return (
@@ -82,8 +82,6 @@ const AccountSettings = ({navigation, updateUser}) => {
                     onChangeText={setFullName}
                   />
                 </View>
-
-           
 
                 <View style={styles.cardItem}>
                   <Text>Description:</Text>
@@ -113,8 +111,7 @@ const AccountSettings = ({navigation, updateUser}) => {
               </Button>
 
               <View style={styles.card}>
-
-              <View style={styles.cardItem}>
+                <View style={styles.cardItem}>
                   <Text>Current Password:</Text>
                   <TextInput
                     secureTextEntry
@@ -148,7 +145,6 @@ const AccountSettings = ({navigation, updateUser}) => {
                 </View>
               </View>
 
-         
               <Button
                 onPress={handleSaveChanges}
                 color={Color.primary}
@@ -214,8 +210,8 @@ const styles = StyleSheet.create({
     backgroundColor: Color.bgLinear1,
   },
   btn: {
-    marginHorizontal:40 ,
-    marginVertical:10, 
+    marginHorizontal: 40,
+    marginVertical: 10,
     borderRadius: 10,
   },
 });

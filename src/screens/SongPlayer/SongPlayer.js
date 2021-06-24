@@ -103,7 +103,10 @@ const SongPlayer = ({navigation, route}) => {
             <View style={styles.musicContainer}>
               <Image
                 style={styles.imgSongCover}
-                source={{uri: 'https://via.placeholder.com/300'}}
+                source={{
+                  uri:
+                    'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png',
+                }}
               />
 
               <Text style={styles.title}>{user.name}</Text>

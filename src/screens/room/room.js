@@ -16,6 +16,7 @@ import Color from '../../constants/Color';
 import {useSelector} from 'react-redux';
 import CreateChatModal from '../../components/CreateChatModal';
 import LinearGradient from 'react-native-linear-gradient';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function Room({navigation}) {
   const [threads, setThreads] = useState([]);
@@ -52,6 +53,10 @@ export default function Room({navigation}) {
     );
 
     setFilteredThreads(tempThreads);
+  };
+
+  const deleteChat = (item) => {
+    firestore().collection('threads').doc(item._id).delete();
   };
 
   useEffect(() => {
@@ -137,10 +142,21 @@ export default function Room({navigation}) {
                 keyExtractor={(item) => item._id}
                 renderItem={({item}) => (
                   <TouchableOpacity
+                    style={styles.listRoom}
                     onPress={() => navigation.navigate('Chat', {thread: item})}>
-                    <View style={styles.listRoom}>
+                    <View>
                       <Text style={styles.listTxt}>{item.name}</Text>
                     </View>
+
+                    {item.createdBy === user._id && (
+                      <TouchableOpacity onPress={() => deleteChat(item)}>
+                        <AntDesign
+                          name="delete"
+                          color={Color.primary}
+                          size={24}
+                        />
+                      </TouchableOpacity>
+                    )}
                   </TouchableOpacity>
                 )}
               />
@@ -252,6 +268,8 @@ const styles = StyleSheet.create({
     padding: 20,
     margin: 10,
     borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   listTxt: {
     fontSize: 16,
