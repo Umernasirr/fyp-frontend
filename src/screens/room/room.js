@@ -42,6 +42,8 @@ export default function Room({navigation}) {
         createdAt: firestore.FieldValue.serverTimestamp(),
       };
       firestore().collection('threads').add(newRoom);
+      setIsSwitchOn(false);
+      setRoomName('');
     }
   };
 
