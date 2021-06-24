@@ -26,20 +26,19 @@ const SongPlayer = ({navigation, route}) => {
 
   const [user, setUser] = useState({});
 
-  const title = 'Take On Me';
-  const author = 'Aha - Rick Roll';
   const startPlayer = async (url) => {
     // Set up the player
 
     if (!isInit) {
       console.log('Initiating Track Player');
+      console.log(url);
       await TrackPlayer.setupPlayer();
 
       // Add a track to the queue
       const tempUrl =
         url !== ''
           ? url
-          : 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3';
+          : 'http://res.cloudinary.com/dkmctcivw/video/upload/v1624572861/jpyds8zwgzmrgrdh0emr.wav';
 
       await TrackPlayer.add({
         id: '1',

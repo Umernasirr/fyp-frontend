@@ -76,12 +76,6 @@ const Generate = ({navigation}) => {
     setLoading(true);
 
     const body = JSON.stringify({
-      // user_id: await AsyncStorage.getItem('user_id'),
-      // category_id: 6,
-      // // sub_cateogory_id: 2,
-      // // subCategory: 2,
-      // post_id: id,
-      // favorite: '1',
       description: caption,
       lyrics: lyrics,
     });
@@ -95,7 +89,7 @@ const Generate = ({navigation}) => {
       },
     })
       .then(async (response) => {
-        console.log(response);
+        console.log(response.data.data);
         const startPlayer = async () => {
           let isInit = await trackPlayerInit(response.data.data);
           setIsTrackPlayerInit(isInit);
@@ -107,8 +101,9 @@ const Generate = ({navigation}) => {
         setLoading(false);
       })
       .catch(function (response) {
+        console.log(response);
+        setLoading(false);
         alert('Music will only be generated with english words');
-        setLoading(!loading);
       });
   };
 
